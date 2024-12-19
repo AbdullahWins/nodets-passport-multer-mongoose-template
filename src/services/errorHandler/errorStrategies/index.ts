@@ -1,4 +1,4 @@
-// src/utils/errors/index.ts
+// src/services/errorHandler/errorStrategies/index.ts
 export * from "./api.error";
 export * from "./generic.error";
 export * from "./global.error";

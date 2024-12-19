@@ -1,5 +1,4 @@
-// src/utils/helpers/global/index.ts
-export * from "./async.utli";
+//src/utils/helpers/global/index.ts
 export * from "./paginate.util";
 export * from "./parse.util";
 export * from "./response.util";

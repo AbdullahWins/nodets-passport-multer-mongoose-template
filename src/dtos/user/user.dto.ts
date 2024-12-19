@@ -35,6 +35,6 @@ export class UserResponseDto extends UserDtoBase {
     super(user);
     this.username = user.username;
     this.phone = user.phone;
-    this.isEmailVerified = user.isEmailVerified;
+    this.isEmailVerified = user.isEmailVerified || false;
   }
 }

@@ -1,4 +1,4 @@
-// src/utils/errors/mongoose.error.ts
+// src/services/errorHandler/errorStrategies/mongoose.error.ts
 export const handleMongooseServerError = (error: any) => {
   const errors = [{ path: "unknown", message: error.message }];
   return {

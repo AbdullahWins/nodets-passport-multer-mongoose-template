@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import passport from "passport";
 import httpStatus from "http-status";
 import {
+  ApiError,
   generateJwtToken,
   hashPassword,
   sendEmail,
@@ -9,8 +10,6 @@ import {
   validateZodSchema,
 } from "../../services";
 import {
-  ApiError,
-  catchAsync,
   emailProps,
   sendResponse,
   staticProps,
@@ -23,6 +22,7 @@ import {
   PassportAuthError,
   PassportAuthInfo,
 } from "../../interfaces";
+import { catchAsync } from "../../middlewares";
 
 // User Login using Local Strategy (email/password)
 export const SignInUser = (req: Request, res: Response, next: NextFunction) => {

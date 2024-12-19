@@ -1,7 +1,7 @@
-// src/utils/errors/multer.error.ts
+// src/utils/services/errorHandler/errorStrategies/multer.error.ts
 import httpStatus from "http-status";
 import { MulterError } from "multer";
-import { IErrorResponse } from "../../interfaces";
+import { IErrorResponse } from "../../../interfaces";
 
 export const handleMulterError = (error: MulterError): IErrorResponse => {
   return {

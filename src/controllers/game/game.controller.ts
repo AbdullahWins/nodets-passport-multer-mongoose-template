@@ -4,8 +4,6 @@ import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { Game } from "../../models";
 import {
-  ApiError,
-  catchAsync,
   staticProps,
   sendResponse,
   paginate,
@@ -16,8 +14,9 @@ import {
   GameAddDtoZodSchema,
   GameUpdateDtoZodSchema,
 } from "../../dtos";
-import { validateZodSchema } from "../../services";
+import { ApiError, validateZodSchema } from "../../services";
 import { IGameAdd, IGameUpdate } from "../../interfaces";
+import { catchAsync } from "../../middlewares";
 
 // get all games with pagination
 export const GetAllGames: RequestHandler = catchAsync(

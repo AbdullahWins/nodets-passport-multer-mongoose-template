@@ -1,4 +1,4 @@
-// src/configs/database/database.config.ts
+//src/configs/database/database.config.ts
 import mongoose from "mongoose";
 import { environment } from "../environment/environment.config";
 import { errorLogger, infoLogger } from "../../services";

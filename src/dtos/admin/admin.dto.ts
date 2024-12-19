@@ -23,7 +23,7 @@ class AdminDtoBase implements Partial<IAdmin> {
     this.email = admin.email;
     this.image = getFileUrl(admin.image);
     this.role = admin.role;
-    this.isEmailVerified = admin.isEmailVerified;
+    this.isEmailVerified = admin.isEmailVerified || false;
   }
 }
 

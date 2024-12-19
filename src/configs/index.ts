@@ -1,4 +1,4 @@
-// src/configs/index.ts
+//src/configs/index.ts
 export * from "./database/database.config";
 export * from "./email/email.config";
 export * from "./environment/environment.config";

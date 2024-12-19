@@ -1,3 +1,4 @@
+//src/models/user/user.model.ts
 import { Schema, model } from "mongoose";
 import { IUserDocument, IUserModel } from "../../interfaces";
 import { CommonEntitySchema } from "../common/common.schema";

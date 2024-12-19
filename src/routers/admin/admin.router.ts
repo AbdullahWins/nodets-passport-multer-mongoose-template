@@ -1,4 +1,4 @@
-// src/routers/admin/admin.router.ts
+//src/routers/admin/admin.router.ts
 import express from "express";
 const router = express.Router();
 

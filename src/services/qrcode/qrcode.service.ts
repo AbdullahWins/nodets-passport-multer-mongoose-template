@@ -2,7 +2,8 @@ import QRCode from "qrcode";
 import httpStatus from "http-status";
 import { IQRCode } from "../../interfaces";
 import { qrCodeOptions } from "../../configs";
-import { ApiError, staticProps } from "../../utils";
+import { staticProps } from "../../utils";
+import { ApiError } from "../errorHandler/errorHandler.service";
 
 // Function to generate a QR code as a Base64 string
 export const generateQRCode = async (payload: IQRCode): Promise<string> => {

@@ -1,4 +1,4 @@
-// src/configs/multer/multer.config.ts
+//src/configs/multer/multer.config.ts
 import { Request } from "express";
 import multer from "multer";
 import path from "path";

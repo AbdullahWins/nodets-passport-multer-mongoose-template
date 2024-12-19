@@ -1,4 +1,4 @@
-// src/configs/passport/strategies/local.strategy.ts
+//src/configs/passport/strategies/local.strategy.ts
 import { Strategy as LocalStrategy } from "passport-local";
 import * as bcrypt from "bcrypt";
 import { IConfigureLocalStrategy } from "../../../interfaces";

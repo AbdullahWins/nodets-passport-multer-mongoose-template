@@ -1,3 +1,4 @@
+//src/configs/passport/strategies/google.strategy.ts
 import { Model } from "mongoose";
 import { Strategy as GoogleStrategy, Profile } from "passport-google-oauth20";
 import { IUser } from "../../../interfaces";

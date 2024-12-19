@@ -1,6 +1,6 @@
-// src/utils/errors/generic.error.ts
+// src/services/errorHandler/errorStrategies/generic.error.ts
 import httpStatus from "http-status";
-import { IErrorMessage } from "../../interfaces";
+import { IErrorMessage } from "../../../interfaces";
 
 export const handleGenericErrorResponse = (error: IErrorMessage) => {
   const statusCode = httpStatus.INTERNAL_SERVER_ERROR;

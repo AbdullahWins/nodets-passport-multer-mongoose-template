@@ -1,4 +1,4 @@
-// src/utils/constants/email.constant.ts
+//src/utils/constants/email.constant.ts
 export const emailProps = {
   subject: {
     WELCOME_USER: "Welcome to our platform",

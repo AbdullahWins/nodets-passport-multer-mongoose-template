@@ -3,10 +3,8 @@ import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { User } from "../../models";
-import { hashPassword, uploadFiles } from "../../services";
+import { ApiError, hashPassword, uploadFiles } from "../../services";
 import {
-  ApiError,
-  catchAsync,
   staticProps,
   sendResponse,
   parseQueryData,
@@ -14,6 +12,7 @@ import {
 } from "../../utils";
 import { IMulterFiles } from "../../interfaces";
 import { UserResponseDto } from "../../dtos";
+import { catchAsync } from "../../middlewares";
 
 // get all users
 export const GetAllUsers: RequestHandler = catchAsync(

@@ -1,4 +1,4 @@
-// src/configs/logger/logger.config.ts
+//src/configs/logger/logger.config.ts
 import winston from "winston";
 import path from "path";
 import fs from "fs";

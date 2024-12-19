@@ -1,4 +1,4 @@
-// src/utils/enums/payment.enum.ts
+//src/utils/enums/payment.enum.ts
 export enum ENUM_PAYMENT_STATUS_NAME {
   PENDING = "pending",
   PROCESSING = "processing",

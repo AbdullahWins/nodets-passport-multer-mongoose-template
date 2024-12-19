@@ -1,4 +1,4 @@
-// src/models/ticket/ticket.model.ts
+//src/models/ticket/ticket.model.ts
 import mongoose, { Schema, model } from "mongoose";
 import moment from "moment";
 import { ITicket, ITicketDocument, ITicketModel } from "../../interfaces";

@@ -1,4 +1,6 @@
+//src/middlewares/global/global.middleware.ts
 import express from "express";
+import passport from "passport";
 import { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -6,7 +8,6 @@ import sanitize from "express-mongo-sanitize";
 import { upload } from "../../configs/multer/multer.config";
 import { requestLoggerMiddleware } from "../logger/logger.middleware";
 import { promClientMiddleware } from "../monitor/monitor.middleware";
-import passport from "passport";
 import { configurePassport } from "../../configs/passport/passport.config";
 import { parseJsonBodyMiddleware } from "../parse/parse.middleware";
 

@@ -1,4 +1,4 @@
-// src/routers/ticket/ticket.router.ts
+//src/routers/ticket/ticket.router.ts
 import express from "express";
 const router = express.Router();
 

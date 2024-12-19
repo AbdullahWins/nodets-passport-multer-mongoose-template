@@ -1,4 +1,4 @@
-// src/configs/monitor/monitor.config.ts
+//src/configs/monitor/monitor.config.ts
 import promClient from "prom-client";
 
 // Initialize Prometheus metrics

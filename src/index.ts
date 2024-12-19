@@ -1,8 +1,11 @@
-// src/index.ts
+//src/index.ts
 import express, { Application } from "express";
 import { startServer } from "./configs";
-import { checkImageExists, globalMiddleware } from "./middlewares";
-import { globalErrorHandler } from "./utils";
+import {
+  checkImageExists,
+  globalErrorHandler,
+  globalMiddleware,
+} from "./middlewares";
 import { apiRouter } from "./routers/main/routes";
 import { metricsRouter, notFoundRouter } from "./routers";
 

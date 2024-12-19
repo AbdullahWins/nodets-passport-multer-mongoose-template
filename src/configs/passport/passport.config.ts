@@ -1,3 +1,4 @@
+//src/configs/passport/passport.config.ts
 import passport from "passport";
 import { Model } from "mongoose";
 import {
@@ -8,7 +9,7 @@ import {
 } from "./strategies";
 import { environment } from "../environment/environment.config";
 import { Admin, Store, User } from "../../models";
-import { ApiError } from "../../utils";
+import { ApiError } from "../../services";
 
 export const configurePassport = () => {
   try {

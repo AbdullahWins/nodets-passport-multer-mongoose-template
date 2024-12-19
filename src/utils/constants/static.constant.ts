@@ -1,4 +1,4 @@
-// src/utils/constants/static.constant.ts
+//src/utils/constants/static.constant.ts
 export const staticProps = {
   default: {
     DEFAULT_IMAGE_PATH: "public/default/default.png",

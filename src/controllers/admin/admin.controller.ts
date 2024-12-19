@@ -3,10 +3,8 @@ import httpStatus from "http-status";
 import { Request, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import { Admin } from "../../models";
-import { hashPassword, uploadFiles, validateZodSchema } from "../../services";
+import { ApiError, hashPassword, uploadFiles, validateZodSchema } from "../../services";
 import {
-  ApiError,
-  catchAsync,
   staticProps,
   sendResponse,
   parseQueryData,
@@ -14,6 +12,7 @@ import {
 } from "../../utils";
 import { IAdmin, IMulterFiles } from "../../interfaces";
 import { AdminResponseDto, AdminUpdateDtoZodSchema } from "../../dtos";
+import { catchAsync } from "../../middlewares";
 
 // get all admins with pagination
 export const GetAllAdmins: RequestHandler = catchAsync(

@@ -1,3 +1,4 @@
+//src/models/admin/admin.model.ts
 import { Schema, model } from "mongoose";
 import { IAdminDocument, IAdminModel } from "../../interfaces";
 import { CommonEntitySchema } from "../common/common.schema";

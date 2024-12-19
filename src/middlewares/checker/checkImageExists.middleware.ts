@@ -1,3 +1,4 @@
+//src/middlewares/checker/checkImageExists.middleware.ts
 import fs from "fs";
 import path from "path";
 import { Request, Response, NextFunction } from "express";

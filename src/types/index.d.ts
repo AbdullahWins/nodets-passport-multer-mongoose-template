@@ -1,4 +1,4 @@
-// src/types/index.d.ts
+//src/types/index.d.ts
 import { IJwtPayload, IMulterFiles } from "../interfaces";
 
 declare global {

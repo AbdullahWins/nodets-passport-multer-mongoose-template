@@ -1,7 +1,7 @@
 // src/services/validation/validation.service.ts
 import { ZodSchema } from "zod";
 import httpStatus from "http-status";
-import { ApiError } from "../../utils";
+import { ApiError } from "../errorHandler/errorHandler.service";
 
 export const validateZodSchema = <T>(
   schema: ZodSchema<T>,

@@ -1,7 +1,7 @@
-// src/utils/errors/zod.error.ts
+// src/utils/services/errorHandler/errorStrategies/zod.error.ts
 import httpStatus from "http-status";
-import { IErrorMessage, IErrorResponse } from "../../interfaces";
-import { staticProps } from "../constants/static.constant";
+import { IErrorMessage, IErrorResponse } from "../../../interfaces";
+import { staticProps } from "../../../utils/constants/static.constant";
 
 // Custom error handler for Zod validation errors
 export const handleZodError = (error: any): IErrorResponse => {

@@ -4,10 +4,8 @@ import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { Product } from "../../models";
 import {
-  catchAsync,
   staticProps,
   sendResponse,
-  ApiError,
   parseQueryData,
   paginate,
 } from "../../utils";
@@ -16,8 +14,9 @@ import {
   ProductResponseDto,
   ProductUpdateDtoZodSchema,
 } from "../../dtos";
-import { validateZodSchema } from "../../services";
+import { ApiError, validateZodSchema } from "../../services";
 import { IProductAdd, IProductUpdate } from "../../interfaces";
+import { catchAsync } from "../../middlewares";
 
 // get all products with pagination
 export const GetAllProducts: RequestHandler = catchAsync(

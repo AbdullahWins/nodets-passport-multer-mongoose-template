@@ -1,4 +1,4 @@
-// src/configs/server/server.config.ts
+//src/configs/server/server.config.ts
 import { Application } from "express";
 import { Server } from "http";
 import { connectToDatabase } from "../database/database.config";

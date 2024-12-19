@@ -11,10 +11,12 @@
     "build": "tsc -p tsconfig.build.json && npm run copy-views && npm run copy-types",
     "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "test": "jest --no-cache",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepare": "husky"
   },
   "dependencies": {
-    "@types/passport-local": "^1.0.38",
+    "@commitlint/cli": "^19.6.1",
+    "@commitlint/config-conventional": "^19.6.0",
     "bcrypt": "^5.1.0",
     "class-validator": "^0.14.1",
     "copyfiles": "^2.4.1",
@@ -44,6 +46,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/passport-local": "^1.0.38",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.13",
     "@types/ejs": "^3.1.5",

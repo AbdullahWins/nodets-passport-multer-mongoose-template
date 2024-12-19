@@ -1,4 +1,4 @@
-// src/utils/enums/auth.enum.ts
+//src/utils/enums/auth.enum.ts
 export enum ENUM_AUTH_ROLES {
   NORMAL_USER = "normal-user",
   PREMIUM_USER = "premium-user",

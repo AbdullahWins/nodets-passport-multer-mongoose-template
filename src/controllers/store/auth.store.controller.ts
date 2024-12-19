@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import { Request, RequestHandler, Response } from "express";
 import { Store } from "../../models";
 import {
+  ApiError,
   comparePassword,
   generateJwtToken,
   generateOtp,
@@ -12,8 +13,6 @@ import {
   validateZodSchema,
 } from "../../services";
 import {
-  ApiError,
-  catchAsync,
   emailProps,
   staticProps,
   sendResponse,
@@ -31,6 +30,7 @@ import {
   StoreResponseDto,
   StoreSignupDtoZodSchema,
 } from "../../dtos";
+import { catchAsync } from "../../middlewares";
 
 // Sign-In: Generate OTP for Store
 export const SignInStore: RequestHandler = catchAsync(

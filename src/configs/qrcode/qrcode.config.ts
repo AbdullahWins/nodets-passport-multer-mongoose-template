@@ -1,3 +1,4 @@
+//src/configs/qrcode/qrcode.config.ts
 import { IQRCodeOptions } from "../../interfaces";
 import { staticProps } from "../../utils";
 

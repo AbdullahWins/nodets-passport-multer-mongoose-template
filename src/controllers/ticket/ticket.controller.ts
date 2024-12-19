@@ -5,8 +5,6 @@ import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { Ticket } from "../../models";
 import {
-  ApiError,
-  catchAsync,
   staticProps,
   sendResponse,
   paginate,
@@ -18,8 +16,9 @@ import {
   TicketResponseDto,
   TicketUpdateDtoZodSchema,
 } from "../../dtos";
-import { generateQRCode, validateZodSchema } from "../../services";
+import { ApiError, generateQRCode, validateZodSchema } from "../../services";
 import { ITicketAdd, ITicketUpdate } from "../../interfaces";
+import { catchAsync } from "../../middlewares";
 
 // get all tickets with pagination
 export const GetAllTickets: RequestHandler = catchAsync(

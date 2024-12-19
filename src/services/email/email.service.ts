@@ -1,10 +1,11 @@
 // src/services/email/email.service.ts
 import httpStatus from "http-status";
 import { environment, transporter } from "../../configs";
-import { ApiError, staticProps } from "../../utils";
+import { staticProps } from "../../utils";
 import { renderTemplate } from "../handlebar/handlebar.service";
 import { errorLogger, infoLogger } from "../logger/logger.service";
 import { IEMailPayload, ISendEmail } from "../../interfaces";
+import { ApiError } from "../errorHandler/errorHandler.service";
 
 // Function to handle send email errors
 const handleSendEmailError = (error: unknown) => {

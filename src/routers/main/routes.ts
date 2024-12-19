@@ -1,4 +1,4 @@
-// src/routers/main/routes.ts
+//src/routers/main/routes.ts
 import express, { Router } from "express";
 import {
   AdminRouter,

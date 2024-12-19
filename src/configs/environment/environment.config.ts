@@ -1,4 +1,4 @@
-// src/configs/environment/environment.config.ts
+//src/configs/environment/environment.config.ts
 import dotenv from "dotenv";
 import path from "path";
 import { projectRootPath } from "../../utils";

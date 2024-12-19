@@ -1,8 +1,8 @@
-// src/models/game/game.model.ts
+//src/models/game/game.model.ts
 import { Schema, model } from "mongoose";
 import moment from "moment";
 import { IGame, IPrize, IGameDocument, IGameModel } from "../../interfaces";
-import { ApiError } from "../../utils";
+import { ApiError } from "../../services";
 
 // Prize schema for embedded array of prizes
 const PrizeSchema = new Schema<IPrize>({

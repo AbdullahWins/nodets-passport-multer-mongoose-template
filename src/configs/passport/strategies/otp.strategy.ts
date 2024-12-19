@@ -1,8 +1,9 @@
+//src/configs/passport/strategies/otp.strategy.ts
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Model } from "mongoose";
 import httpStatus from "http-status";
 import bcrypt from "bcrypt";
-import { ApiError } from "../../../utils";
+import { ApiError } from "../../../services";
 
 export const configureOtpStrategy = (model: Model<any>): CustomStrategy => {
   return new CustomStrategy(async (req, done) => {

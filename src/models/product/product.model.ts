@@ -1,4 +1,4 @@
-// src/models/product/product.model.ts
+//src/models/product/product.model.ts
 import moment from "moment";
 import { Schema, model } from "mongoose";
 import { IProduct, IProductDocument, IProductModel } from "../../interfaces";

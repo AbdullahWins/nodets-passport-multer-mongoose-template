@@ -1,4 +1,5 @@
-// src/utils/errors/api.error.ts
+//src/services/errorHandler/errorHandler.service.ts
+
 export class ApiError extends Error {
   statusCode: number;
 
@@ -14,15 +15,3 @@ export class ApiError extends Error {
     }
   }
 }
-
-export const handleApiErrorResponse = (error: ApiError) => {
-  // Don't create a new error, just return the response structure
-  return {
-    statusCode: error.statusCode,
-    message: error.message,
-    errorMessages: error.stack,
-    success: false,
-    data: null,
-    meta: null,
-  };
-};

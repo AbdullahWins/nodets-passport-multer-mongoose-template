@@ -1,4 +1,4 @@
-// src/routers/game/game.router.ts
+//src/routers/game/game.router.ts
 import express from "express";
 const router = express.Router();
 

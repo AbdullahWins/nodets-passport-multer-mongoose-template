@@ -1,4 +1,5 @@
 // src/services/index.ts
+export * from "./errorHandler";
 export * from "./bcrypt/bcrypt.service";
 export * from "./email/email.service";
 export * from "./file/file.service";

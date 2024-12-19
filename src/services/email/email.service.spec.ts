@@ -1,9 +1,10 @@
 import httpStatus from "http-status";
 import { transporter } from "../../configs";
-import { ApiError, emailProps } from "../../utils";
+import { emailProps } from "../../utils";
 import { renderTemplate } from "../handlebar/handlebar.service";
 import { errorLogger } from "../logger/logger.service";
 import { sendEmail } from "./email.service";
+import { ApiError } from "../errorHandler/errorHandler.service";
 
 // Mock dependencies
 jest.mock("../../configs", () => ({
