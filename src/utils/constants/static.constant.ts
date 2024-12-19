@@ -9,6 +9,11 @@ export const staticProps = {
     FAILED_TO_FETCH_METRICS: "Failed to fetch metrics",
   },
 
+  database: {
+    CONNECTION_SUCCESS: "Connected to MongoDB using Mongoose!",
+    CONNECTION_ERROR: "Error connecting database",
+  },
+
   color: {
     RED: "#ff0000",
     GREEN: "#00ff00",
@@ -70,6 +75,7 @@ export const staticProps = {
     TOKEN_NOT_ACTIVE: "Token not active!",
     TOKEN_VERIFIED: "Token verified successfully!",
     TOKEN_GENERATED: "Token generated successfully!",
+    TOKEN_GENERATION_FAILED: "Failed to generate token!",
     TOKEN_REFRESHED: "Token refreshed successfully!",
     TOKEN_REVOKED: "Token revoked successfully!",
     TOKEN_NOT_FOUND: "Token not found!",

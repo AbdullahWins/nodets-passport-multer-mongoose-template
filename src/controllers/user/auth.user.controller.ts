@@ -9,11 +9,7 @@ import {
   uploadFiles,
   validateZodSchema,
 } from "../../services";
-import {
-  emailProps,
-  sendResponse,
-  staticProps,
-} from "../../utils";
+import { emailProps, sendResponse, staticProps } from "../../utils";
 import { UserResponseDto, UserSignupDtoZodSchema } from "../../dtos";
 import { User } from "../../models";
 import {
@@ -49,7 +45,7 @@ export const SignInUser = (req: Request, res: Response, next: NextFunction) => {
       if (!token) {
         throw new ApiError(
           httpStatus.INTERNAL_SERVER_ERROR,
-          "Token generation failed."
+          staticProps.jwt.TOKEN_GENERATION_FAILED
         );
       }
 
@@ -98,7 +94,7 @@ export const SignInUserWithGoogle = (
       if (!token) {
         throw new ApiError(
           httpStatus.INTERNAL_SERVER_ERROR,
-          "Token generation failed."
+          staticProps.jwt.TOKEN_GENERATION_FAILED
         );
       }
 

@@ -39,7 +39,7 @@ export const SignInAdmin = (
 
       if (!admin) {
         return res.status(401).json({
-          message: info?.message || "Invalid credentials.",
+          message: info?.message || staticProps.common.UNAUTHORIZED,
         });
       }
 
@@ -47,12 +47,12 @@ export const SignInAdmin = (
       const token = generateJwtToken(admin);
 
       if (!token) {
-        return res.status(500).json({ message: "Token generation failed." });
+        return res.status(500).json({ message: staticProps.jwt.TOKEN_GENERATION_FAILED });
       }
 
       // Return the token and admin info
       res.status(200).json({
-        message: "Logged in successfully.",
+        message: staticProps.common.LOGGED_IN,
         accessToken: token,
         admin: admin, // Optionally, use DTO to format the admin response
       });
