@@ -14,7 +14,7 @@ export const app: Application = express();
 // middleware
 globalMiddleware(app);
 
-// all routes
+// all routes 
 app.use("/api/v1", apiRouter);
 
 // files route
