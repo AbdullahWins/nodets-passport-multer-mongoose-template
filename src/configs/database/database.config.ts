@@ -10,6 +10,9 @@ export const connectToDatabase = async () => {
   try {
     await mongoose.connect(uri, {
       writeConcern: { w: "majority" },
+      maxPoolSize: 50,
+      minPoolSize: 5,
+      serverSelectionTimeoutMS: 5000,
     });
     infoLogger.info(staticProps.database.CONNECTION_SUCCESS);
   } catch (error) {
