@@ -3,7 +3,12 @@ import httpStatus from "http-status";
 import { Request, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
 import { Admin } from "../../models";
-import { ApiError, hashPassword, uploadFiles, validateZodSchema } from "../../services";
+import {
+  ApiError,
+  hashString,
+  uploadFiles,
+  validateZodSchema,
+} from "../../services";
 import {
   staticProps,
   sendResponse,
@@ -90,7 +95,7 @@ export const UpdateAdminById: RequestHandler = catchAsync(
     };
 
     if (password) {
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashString(password);
       constructedData = {
         ...constructedData,
         password: hashedPassword,

@@ -37,6 +37,7 @@ export const staticProps = {
     FILE_RETRIEVED: "File retrieved successfully!",
 
     ALREADY_EXISTS: "Already exists!",
+    NO_PASSWORD_SET: "No password set!",
 
     CREATED: "Created successfully!",
     RETRIEVED: "Retrieved successfully!",

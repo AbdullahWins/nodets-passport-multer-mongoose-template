@@ -3,7 +3,7 @@ import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { User } from "../../models";
-import { ApiError, hashPassword, uploadFiles } from "../../services";
+import { ApiError, hashString, uploadFiles } from "../../services";
 import {
   staticProps,
   sendResponse,
@@ -89,7 +89,7 @@ export const UpdateUserById: RequestHandler = catchAsync(
 
     // hash password
     if (password) {
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashString(password);
       constructedData = {
         ...constructedData,
         password: hashedPassword,

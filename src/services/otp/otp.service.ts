@@ -1,7 +1,7 @@
 // src/services/otp/otp.service.ts
 import moment from "moment";
-import bcrypt from "bcrypt";
 import { staticProps } from "../../utils";
+import { compareString } from "../bcrypt/bcrypt.service";
 
 // generate random number
 const generateRandomNumber = (length: number): string => {
@@ -38,7 +38,7 @@ export const validateOtp = async (
       message: staticProps.otp.OTP_EXPIRED,
     };
   }
-  const isMatched = await bcrypt.compare(otp, hashedOtp);
+  const isMatched = await compareString(otp, hashedOtp);
   return {
     isMatched: isMatched,
     message: isMatched

@@ -2,8 +2,7 @@
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Model } from "mongoose";
 import httpStatus from "http-status";
-import bcrypt from "bcrypt";
-import { ApiError } from "../../../services";
+import { ApiError, compareString } from "../../../services";
 
 export const configureOtpStrategy = (model: Model<any>): CustomStrategy => {
   return new CustomStrategy(async (req, done) => {
@@ -44,7 +43,7 @@ export const configureOtpStrategy = (model: Model<any>): CustomStrategy => {
       }
 
       // Compare the provided OTP with the hashed OTP
-      const isCorrectOtp = await bcrypt.compare(otp, store.otp);
+      const isCorrectOtp = await compareString(otp, store.otp);
       if (!isCorrectOtp) {
         return done(
           new ApiError(httpStatus.UNAUTHORIZED, "Incorrect OTP"),

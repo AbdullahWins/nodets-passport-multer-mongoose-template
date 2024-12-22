@@ -15,11 +15,8 @@ export const environment = {
   },
 
   db: {
-    MONGOOSE_URI: process.env.MONGOOSE_URI || "mongodb://localhost:27017",
-    DATABASE_NAME: process.env.DATABASE_NAME || "default",
-    CONNECTION_STRING:
-      `${process.env.MONGOOSE_URI}/${process.env.DATABASE_NAME}` ||
-      "mongodb://localhost:27017/default",
+    MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017",
+    REDIS_URI: process.env.REDIS_URI || "redis://localhost:6379",
   },
 
   jwt: {

@@ -5,10 +5,10 @@ import { errorLogger, infoLogger } from "../../services";
 import { staticProps } from "../../utils";
 
 export const connectToDatabase = async () => {
-  const uri = environment.db.CONNECTION_STRING;
+  const uri = environment.db.MONGODB_URI;
+  console.log("Connecting to MongoDB with URI:", uri); // Log the URI for debugging
   try {
     await mongoose.connect(uri, {
-      // Specify the write concern mode
       writeConcern: { w: "majority" },
     });
     infoLogger.info(staticProps.database.CONNECTION_SUCCESS);

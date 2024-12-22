@@ -1,8 +1,8 @@
 // src/services/bcrypt/bcrypt.service.ts
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { environment } from "../../configs";
 
-export const comparePassword = async (
+export const compareString = async (
   normalPassword: string,
   hashedPassword: string
 ): Promise<boolean> => {
@@ -10,7 +10,7 @@ export const comparePassword = async (
   return isMatched;
 };
 
-export const hashPassword = async (string: string): Promise<string> => {
+export const hashString = async (string: string): Promise<string> => {
   const hashedString = await bcrypt.hash(
     string,
     environment.encryption.BCRYPT_SALT_ROUND

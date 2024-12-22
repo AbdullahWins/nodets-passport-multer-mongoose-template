@@ -9,7 +9,7 @@ import {
 import {
   ApiError,
   generateJwtToken,
-  hashPassword,
+  hashString,
   sendEmail,
   uploadFiles,
   validateZodSchema,
@@ -47,7 +47,9 @@ export const SignInAdmin = (
       const token = generateJwtToken(admin);
 
       if (!token) {
-        return res.status(500).json({ message: staticProps.jwt.TOKEN_GENERATION_FAILED });
+        return res
+          .status(500)
+          .json({ message: staticProps.jwt.TOKEN_GENERATION_FAILED });
       }
 
       // Return the token and admin info
@@ -79,7 +81,7 @@ export const SignUpAdmin: RequestHandler = catchAsync(
     }
 
     // Hash password
-    const hashedPassword = await hashPassword(password as string);
+    const hashedPassword = await hashString(password as string);
 
     // Data to be stored
     let constructedData = {

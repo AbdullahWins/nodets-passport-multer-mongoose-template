@@ -3,7 +3,7 @@ import { isValidObjectId } from "mongoose";
 import httpStatus from "http-status";
 import { Request, RequestHandler, Response } from "express";
 import { Store } from "../../models";
-import { ApiError, hashPassword, uploadFiles } from "../../services";
+import { ApiError, hashString, uploadFiles } from "../../services";
 import {
   staticProps,
   sendResponse,
@@ -91,7 +91,7 @@ export const UpdateStoreById: RequestHandler = catchAsync(
 
     //hash password if password exists
     if (password) {
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = await hashString(password);
       constructedData = { ...constructedData, password: hashedPassword };
     }
 

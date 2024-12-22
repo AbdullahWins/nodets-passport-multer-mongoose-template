@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import moment from "moment";
 import { generateOtp, otpExpiresIn, validateOtp } from "./otp.service";
 import { staticProps } from "../../utils";

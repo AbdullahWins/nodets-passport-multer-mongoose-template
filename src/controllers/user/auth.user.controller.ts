@@ -4,7 +4,7 @@ import httpStatus from "http-status";
 import {
   ApiError,
   generateJwtToken,
-  hashPassword,
+  hashString,
   sendEmail,
   uploadFiles,
   validateZodSchema,
@@ -133,7 +133,7 @@ export const SignUpUser: RequestHandler = catchAsync(
     }
 
     // Hash the password
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashString(password);
 
     // Construct the user data
     let constructedData = {

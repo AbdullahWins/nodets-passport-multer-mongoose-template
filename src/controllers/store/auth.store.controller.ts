@@ -3,20 +3,16 @@ import { Request, RequestHandler, Response } from "express";
 import { Store } from "../../models";
 import {
   ApiError,
-  comparePassword,
+  compareString,
   generateJwtToken,
   generateOtp,
-  hashPassword,
+  hashString,
   otpExpiresIn,
   sendEmail,
   uploadFiles,
   validateZodSchema,
 } from "../../services";
-import {
-  emailProps,
-  staticProps,
-  sendResponse,
-} from "../../utils";
+import { emailProps, staticProps, sendResponse } from "../../utils";
 import {
   IEmailData,
   IStoreLogin,
@@ -47,7 +43,7 @@ export const SignInStore: RequestHandler = catchAsync(
     }
 
     // Validate password
-    const isValidPassword = await comparePassword(password, store.password);
+    const isValidPassword = await compareString(password, store.password);
     if (!isValidPassword) {
       throw new ApiError(
         httpStatus.UNAUTHORIZED,
@@ -57,7 +53,7 @@ export const SignInStore: RequestHandler = catchAsync(
 
     // Generate OTP and hash it
     const otp = await generateOtp();
-    const hashedOtp = await hashPassword(otp);
+    const hashedOtp = await hashString(otp);
 
     // Save OTP and expiration in the store record
     store.otp = hashedOtp;
@@ -105,7 +101,7 @@ export const VerifyOtpStore: RequestHandler = catchAsync(
     }
 
     // Verify OTP and expiration
-    const isCorrectOtp = await comparePassword(otp, store.otp);
+    const isCorrectOtp = await compareString(otp, store.otp);
     const isOtpValid = new Date(store.otpExpires) > new Date();
     if (!isCorrectOtp || !isOtpValid) {
       throw new ApiError(
@@ -161,7 +157,7 @@ export const AddOneStore: RequestHandler = catchAsync(
     }
 
     // hash password
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = await hashString(password);
 
     // data to be stored
     let updatedData = {
