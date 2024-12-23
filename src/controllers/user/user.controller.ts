@@ -9,8 +9,9 @@ import {
   sendResponse,
   parseQueryData,
   paginate,
+  isEntityAllowed,
 } from "../../utils";
-import { IMulterFiles } from "../../interfaces";
+import { IJwtPayload, IMulterFiles } from "../../interfaces";
 import { UserResponseDto } from "../../dtos";
 import { catchAsync } from "../../middlewares";
 
@@ -38,10 +39,24 @@ export const GetAllUsers: RequestHandler = catchAsync(
 export const GetUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { userId } = req.params;
+    const entity = req.user as IJwtPayload;
 
     // Validate ID format
     if (!isValidObjectId(userId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
+    }
+
+    if (!userId) {
+      throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
+    }
+
+    // check the entity role
+    const isAllowed = isEntityAllowed(entity.role, entity._id, userId);
+    if (!isAllowed) {
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        staticProps.common.UNAUTHORIZED
+      );
     }
 
     const user = await User.findById(userId).lean();
@@ -67,12 +82,22 @@ export const UpdateUserById: RequestHandler = catchAsync(
     const { userId } = req.params;
     const parsedData = req.body;
     const { single } = req.files as IMulterFiles;
+    const entity = req.user as IJwtPayload;
 
     if (!userId || !parsedData)
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         staticProps.common.MISSING_REQUIRED_FIELDS
       );
+
+    // check the entity role
+    const isAllowed = isEntityAllowed(entity.role, entity._id, userId);
+    if (!isAllowed) {
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        staticProps.common.UNAUTHORIZED
+      );
+    }
 
     //get parsed data
     const { password, ...body } = parsedData;
@@ -131,9 +156,23 @@ export const UpdateUserById: RequestHandler = catchAsync(
 export const DeleteUserById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { userId } = req.params;
+    const entity = req.user as IJwtPayload;
 
     if (!isValidObjectId(userId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
+    }
+
+    if (!userId) {
+      throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
+    }
+
+    // check the entity role
+    const isAllowed = isEntityAllowed(entity.role, entity._id, userId);
+    if (!isAllowed) {
+      throw new ApiError(
+        httpStatus.UNAUTHORIZED,
+        staticProps.common.UNAUTHORIZED
+      );
     }
 
     const result = await User.deleteOne({ _id: userId });
