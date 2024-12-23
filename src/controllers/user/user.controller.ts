@@ -3,7 +3,7 @@ import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { User } from "../../models";
-import { ApiError, hashString, uploadFiles } from "../../services";
+import { ApiError, hashString, removeFile, uploadFiles } from "../../services";
 import {
   staticProps,
   sendResponse,
@@ -103,6 +103,11 @@ export const UpdateUserById: RequestHandler = catchAsync(
         ...constructedData,
         image: filePath || staticProps.default.DEFAULT_IMAGE_PATH,
       };
+
+      //remove old image
+      if (existsUser.image) {
+        await removeFile(existsUser.image);
+      }
     }
 
     // updating role info

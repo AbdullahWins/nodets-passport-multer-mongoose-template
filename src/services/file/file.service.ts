@@ -2,9 +2,15 @@ import fs from "fs";
 import { errorLogger, infoLogger } from "../logger/logger.service";
 import path from "path";
 import { IUploadFile } from "../../interfaces";
+import { staticProps } from "../../utils";
 
 export const removeFile = async (imgPath: string) => {
   try {
+    //return if default image
+    if (imgPath === staticProps.default.DEFAULT_IMAGE_PATH) {
+      infoLogger.info(`File ${imgPath} is default image, not deleted`);
+      return;
+    }
     if (fs.existsSync(imgPath)) {
       // Check if file exists
       fs.unlinkSync(imgPath);

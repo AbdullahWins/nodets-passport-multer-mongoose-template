@@ -6,6 +6,7 @@ import { Admin } from "../../models";
 import {
   ApiError,
   hashString,
+  removeFile,
   uploadFiles,
   validateZodSchema,
 } from "../../services";
@@ -109,6 +110,11 @@ export const UpdateAdminById: RequestHandler = catchAsync(
         ...constructedData,
         image: filePath || staticProps.default.DEFAULT_IMAGE_PATH,
       };
+      
+      //remove old image
+      if (existsAdmin.image) {
+        await removeFile(existsAdmin.image);
+      }
     }
 
     // updating role info
