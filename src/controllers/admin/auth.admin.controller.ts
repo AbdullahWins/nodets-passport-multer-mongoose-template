@@ -1,6 +1,6 @@
 import httpStatus from "http-status";
 import passport from "passport";
-import { AdminResponseDto, AdminSignupDtoZodSchema } from "../../dtos";
+import { AdminResponseDto } from "../../dtos";
 import {
   emailProps,
   sendResponse,
@@ -23,6 +23,7 @@ import {
   PassportAuthInfo,
 } from "../../interfaces";
 import { catchAsync } from "../../middlewares";
+import { AdminSignupDtoZodSchema } from "../../validations";
 
 // Admin Login using Local Strategy (email/password)
 export const SignInAdmin = (
