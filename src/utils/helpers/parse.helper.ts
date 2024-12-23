@@ -1,4 +1,4 @@
-//src/utils/helpers/global/parse.util.ts
+//src/utils/helpers/global/parse.helper.ts
 
 //parse request data
 // export const parseRequestData = (body: any) => {
@@ -11,4 +11,3 @@ export const parseQueryData = (query: any): { page: number; limit: number } => {
   const limit = query.limit ? parseInt(query.limit as string, 10) : 10;
   return { page, limit };
 };
-

@@ -1,4 +1,4 @@
-//src/utils/helpers/global/response.util.ts
+//src/utils/helpers/global/response.helper.ts
 import { Response } from "express";
 import { IApiReponse } from "../../interfaces";
 import { infoLogger } from "../../services";

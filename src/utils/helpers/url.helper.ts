@@ -1,4 +1,4 @@
-//src/utils/helpers/global/url.util.ts
+//src/utils/helpers/global/url.helper.ts
 import { Request } from "express";
 import { environment } from "../../configs";
 

@@ -1,4 +1,4 @@
-//src/utils/pagination.utils.ts
+//src/utils/pagination.helper.ts
 import { Document, Query } from "mongoose";
 import { PaginatedResponse, PaginationOptions } from "../../interfaces";
 
