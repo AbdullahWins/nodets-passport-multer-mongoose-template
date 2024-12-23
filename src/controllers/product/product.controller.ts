@@ -10,13 +10,12 @@ import {
   paginate,
 } from "../../utils";
 import {
-  ProductAddDtoZodSchema,
   ProductResponseDto,
-  ProductUpdateDtoZodSchema,
 } from "../../dtos";
 import { ApiError, validateZodSchema } from "../../services";
 import { IProductAdd, IProductUpdate } from "../../interfaces";
 import { catchAsync } from "../../middlewares";
+import { ProductAddDtoZodSchema, ProductUpdateDtoZodSchema } from "../../validations";
 
 // get all products with pagination
 export const GetAllProducts: RequestHandler = catchAsync(

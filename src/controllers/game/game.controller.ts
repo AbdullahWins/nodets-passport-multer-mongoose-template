@@ -11,12 +11,11 @@ import {
 } from "../../utils";
 import {
   GameResponseDto,
-  GameAddDtoZodSchema,
-  GameUpdateDtoZodSchema,
 } from "../../dtos";
 import { ApiError, validateZodSchema } from "../../services";
 import { IGameAdd, IGameUpdate } from "../../interfaces";
 import { catchAsync } from "../../middlewares";
+import { GameAddDtoZodSchema, GameUpdateDtoZodSchema } from "../../validations";
 
 // get all games with pagination
 export const GetAllGames: RequestHandler = catchAsync(

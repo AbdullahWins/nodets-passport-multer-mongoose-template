@@ -21,12 +21,10 @@ import {
   IStoreAdd,
 } from "../../interfaces";
 import {
-  StoreLoginDtoZodSchema,
-  StoreOtpDtoZodSchema,
   StoreResponseDto,
-  StoreSignupDtoZodSchema,
 } from "../../dtos";
 import { catchAsync } from "../../middlewares";
+import { StoreLoginDtoZodSchema, StoreOtpDtoZodSchema, StoreSignupDtoZodSchema } from "../../validations";
 
 // Sign-In: Generate OTP for Store
 export const SignInStore: RequestHandler = catchAsync(

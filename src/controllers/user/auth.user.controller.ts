@@ -10,7 +10,7 @@ import {
   validateZodSchema,
 } from "../../services";
 import { emailProps, sendResponse, staticProps } from "../../utils";
-import { UserResponseDto, UserSignupDtoZodSchema } from "../../dtos";
+import { UserResponseDto } from "../../dtos";
 import { User } from "../../models";
 import {
   IMulterFiles,
@@ -19,6 +19,7 @@ import {
   PassportAuthInfo,
 } from "../../interfaces";
 import { catchAsync } from "../../middlewares";
+import { UserSignupDtoZodSchema } from "../../validations";
 
 // User Login using Local Strategy (email/password)
 export const SignInUser = (req: Request, res: Response, next: NextFunction) => {

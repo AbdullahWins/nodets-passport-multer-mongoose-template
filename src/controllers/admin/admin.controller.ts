@@ -17,8 +17,9 @@ import {
   paginate,
 } from "../../utils";
 import { IAdmin, IMulterFiles } from "../../interfaces";
-import { AdminResponseDto, AdminUpdateDtoZodSchema } from "../../dtos";
+import { AdminResponseDto } from "../../dtos";
 import { catchAsync } from "../../middlewares";
+import { AdminUpdateDtoZodSchema } from "../../validations";
 
 // get all admins with pagination
 export const GetAllAdmins: RequestHandler = catchAsync(
@@ -110,7 +111,7 @@ export const UpdateAdminById: RequestHandler = catchAsync(
         ...constructedData,
         image: filePath || staticProps.default.DEFAULT_IMAGE_PATH,
       };
-      
+
       //remove old image
       if (existsAdmin.image) {
         await removeFile(existsAdmin.image);

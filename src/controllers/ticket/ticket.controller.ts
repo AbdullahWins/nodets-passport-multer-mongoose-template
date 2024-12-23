@@ -10,14 +10,12 @@ import {
   parseQueryData,
 } from "../../utils";
 import {
-  TicketAddDtoZodSchema,
-  TicketAddManyDtoZodSchema,
   TicketResponseDto,
-  TicketUpdateDtoZodSchema,
 } from "../../dtos";
 import { ApiError, generateQRCode, validateZodSchema } from "../../services";
 import { ITicketAdd, ITicketUpdate } from "../../interfaces";
 import { catchAsync } from "../../middlewares";
+import { TicketAddDtoZodSchema, TicketAddManyDtoZodSchema, TicketUpdateDtoZodSchema } from "../../validations";
 
 // get all tickets with pagination
 export const GetAllTickets: RequestHandler = catchAsync(

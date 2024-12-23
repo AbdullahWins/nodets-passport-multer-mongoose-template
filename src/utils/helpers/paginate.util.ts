@@ -1,6 +1,6 @@
 //src/utils/pagination.utils.ts
 import { Document, Query } from "mongoose";
-import { PaginatedResponse, PaginationOptions } from "../../../interfaces";
+import { PaginatedResponse, PaginationOptions } from "../../interfaces";
 
 // Centralizing pagination logic
 export const paginate = async <T extends Document>(

@@ -1,7 +1,7 @@
 //src/utils/helpers/global/response.util.ts
 import { Response } from "express";
-import { IApiReponse } from "../../../interfaces";
-import { infoLogger } from "../../../services";
+import { IApiReponse } from "../../interfaces";
+import { infoLogger } from "../../services";
 
 export const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
   const responseData: IApiReponse<T> = {
