@@ -5,6 +5,13 @@ export const staticProps = {
     DEFAULT_DOCUMENT_PATH: "public/default/default.png",
   },
 
+  cors: {
+    CORS_BLOCKED: "CORS blocked for this origin!",
+    CORS_ALLOWED: "CORS allowed for this origin!",
+    CORS_BLOCKED_FOR_ORIGIN: "CORS blocked for origin",
+    CORS_ALLOWED_FOR_ORIGIN: "CORS allowed for origin",
+  },
+
   monitor: {
     FAILED_TO_FETCH_METRICS: "Failed to fetch metrics",
   },

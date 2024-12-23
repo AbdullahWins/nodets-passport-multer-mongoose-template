@@ -2,17 +2,17 @@
 import express from "express";
 import passport from "passport";
 import { Application } from "express";
-import cors from "cors";
 import helmet from "helmet";
 import sanitize from "express-mongo-sanitize";
-import { upload } from "../../configs/multer/multer.config";
-import { requestLoggerMiddleware } from "../logger/logger.middleware";
-import { promClientMiddleware } from "../monitor/monitor.middleware";
-import { configurePassport } from "../../configs/passport/passport.config";
+import { corsConfig } from "../../configs";
+import { multerConfig } from "../../configs/multer/multer.config";
 import { parseJsonBodyMiddleware } from "../parse/parse.middleware";
+import { promClientMiddleware } from "../monitor/monitor.middleware";
+import { requestLoggerMiddleware } from "../logger/logger.middleware";
+import { configurePassport } from "../../configs/passport/passport.config";
 
 export const globalMiddleware = (app: Application) => {
-  app.use(cors());
+  app.use(corsConfig);
   app.use(sanitize());
   app.use(helmet());
   app.use(requestLoggerMiddleware);
@@ -22,13 +22,7 @@ export const globalMiddleware = (app: Application) => {
   app.use(express.urlencoded({ extended: true }));
 
   // Multer middleware for handling multipart/form-data (both files and text)
-  app.use(
-    upload.fields([
-      { name: "single", maxCount: 1 },
-      { name: "document", maxCount: 1 },
-      { name: "multiple", maxCount: 10 },
-    ])
-  );
+  app.use(multerConfig);
 
   // Custom JSON parsing middleware
   app.use(parseJsonBodyMiddleware);
