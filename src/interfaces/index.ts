@@ -15,3 +15,5 @@ export * from "./email/email.interface";
 export * from "./jwt/jwt.interface";
 export * from "./passport/passport.interface";
 export * from "./primary"
+export * from "./secondary";
+

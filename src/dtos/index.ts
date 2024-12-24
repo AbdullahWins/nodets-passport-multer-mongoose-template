@@ -5,4 +5,5 @@ export * from "./store/store.dto";
 export * from "./game/game.dto";
 export * from "./product/product.dto";
 export * from "./ticket/ticket.dto";
+export * from "./secondary";
 

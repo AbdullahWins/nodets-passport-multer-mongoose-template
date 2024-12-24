@@ -9,3 +9,4 @@ export * from "./game/game.router";
 export * from "./product/product.router";
 export * from "./ticket/ticket.router";
 export * from "./primary/school/schoolUsersMapping.router";
+export * from "./secondary";
