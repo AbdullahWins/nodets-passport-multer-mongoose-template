@@ -16,6 +16,10 @@ export const environment = {
 
   db: {
     MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017",
+    MONGODB_PRIMARY_DB_URI:
+      process.env.MONGODB_PRIMARY_DB_URI || "mongodb://localhost:27017",
+    MONGODB_SECONDARY_DB_URI:
+      process.env.MONGODB_SECONDARY_DB_URI || "mongodb://localhost:27017",
     REDIS_URI: process.env.REDIS_URI || "redis://localhost:6379",
   },
 

@@ -7,6 +7,7 @@ import {
   StoreRouter,
   TicketRouter,
   UserRouter,
+  SchoolUsersMappingRouter,
 } from "..";
 
 export const apiRouter = express.Router();
@@ -35,6 +36,10 @@ const apiRoutes: { path: string; route: Router }[] = [
   {
     path: "/tickets",
     route: TicketRouter,
+  },
+  {
+    path: "/school-users-mapping",
+    route: SchoolUsersMappingRouter,
   },
 ];
 

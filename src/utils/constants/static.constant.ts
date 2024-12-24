@@ -17,8 +17,10 @@ export const staticProps = {
   },
 
   database: {
-    CONNECTION_SUCCESS: "Connected to MongoDB using Mongoose!",
-    CONNECTION_ERROR: "Error connecting database",
+    CONNECTION_SUCCESS_PRIMARY: "Connected to primary database",
+    CONNECTION_SUCCESS_SECONDARY: "Connected to secondary database",
+    CONNECTION_ERROR_PRIMARY: "Error connecting to primary database",
+    CONNECTION_ERROR_SECONDARY: "Error connecting to secondary database",
   },
 
   color: {
