@@ -1,4 +1,4 @@
-//src/routers/guardian/guardian.router.ts
+//src/routers/student/student.router.ts
 import express from "express";
 const router = express.Router();
 
@@ -10,12 +10,12 @@ import { ENUM_AUTH_ROLES } from "../../../utils";
 
 // controllers
 import {
-  GetAllGuardians,
-  GetGuardianById,
-  SignUpGuardian,
-  SignInGuardian,
-  UpdateGuardianById,
-  DeleteGuardianById,
+  GetAllStudents,
+  GetStudentById,
+  SignUpStudent,
+  SignInStudent,
+  UpdateStudentById,
+  DeleteStudentById,
 } from "../../../controllers";
 
 //routes
@@ -27,36 +27,36 @@ router.get(
     ENUM_AUTH_ROLES.NORMAL_ADMIN,
     ENUM_AUTH_ROLES.STORE_ADMIN,
   ]),
-  GetAllGuardians
+  GetAllStudents
 );
 router.get(
-  "/find/:guardianId",
+  "/find/:studentId",
   authenticateEntity,
   authorizeEntity([
     ENUM_AUTH_ROLES.SUPER_ADMIN,
     ENUM_AUTH_ROLES.NORMAL_ADMIN,
     ENUM_AUTH_ROLES.STORE_ADMIN,
   ]),
-  GetGuardianById
+  GetStudentById
 );
 router.post(
   "/add",
   authenticateEntity,
   authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
-  SignUpGuardian
+  SignUpStudent
 );
-router.post("/login", SignInGuardian);
+router.post("/login", SignInStudent);
 router.patch(
-  "/update/:guardianId",
+  "/update/:studentId",
   authenticateEntity,
   authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
-  UpdateGuardianById
+  UpdateStudentById
 );
 router.delete(
-  "/delete/:guardianId",
+  "/delete/:studentId",
   authenticateEntity,
   authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
-  DeleteGuardianById
+  DeleteStudentById
 );
 
-export const GuardianRouter = router;
+export const StudentRouter = router;

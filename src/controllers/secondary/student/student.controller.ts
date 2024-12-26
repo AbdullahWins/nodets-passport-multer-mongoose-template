@@ -1,91 +1,96 @@
-// src/controllers/guardian/guardian.controller.ts
+// src/controllers/student/student.controller.ts
 import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
-import { Guardian, School } from "../../../models";
+import { Student, School } from "../../../models";
 import {
   staticProps,
   sendResponse,
   paginate,
   parseQueryData,
 } from "../../../utils";
-import { ApiError, compareString, generateJwtToken, hashString } from "../../../cores";
-import { IGuardian, IGuardianUpdate } from "../../../interfaces";
+import {
+  ApiError,
+  compareString,
+  generateJwtToken,
+  hashString,
+} from "../../../cores";
+import { IStudent, IStudentUpdate } from "../../../interfaces";
 import mongoose from "mongoose";
 import { catchAsync } from "../../../middlewares";
 // import {
-import { GuardianResponseDto } from "../../../dtos";
+import { StudentResponseDto } from "../../../dtos";
 import { connectToSchoolDB } from "../../../configs";
 
-// get all guardians with pagination
-export const GetAllGuardians: RequestHandler = catchAsync(
+// get all students with pagination
+export const GetAllStudents: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { page, limit } = parseQueryData(req.query);
 
-    const paginatedResult = await paginate(Guardian.find(), { page, limit });
+    const paginatedResult = await paginate(Student.find(), { page, limit });
 
-    const guardiansFromDto = paginatedResult.data.map(
-      (guardian) => new GuardianResponseDto(guardian.toObject())
+    const studentsFromDto = paginatedResult.data.map(
+      (student) => new StudentResponseDto(student.toObject())
     );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: guardiansFromDto,
+      data: studentsFromDto,
       meta: paginatedResult.meta,
     });
   }
 );
 
-export const GetGuardianById: RequestHandler = catchAsync(
+export const GetStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { guardianId } = req.params;
+    const { studentId } = req.params;
 
     // Validate ID format
-    if (!isValidObjectId(guardianId)) {
+    if (!isValidObjectId(studentId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // Fetch db_name from the primary DB
-    const guardianMapping = await School.findOne({
-      guardianId,
+    const studentMapping = await School.findOne({
+      studentId,
     }).lean();
-    if (!guardianMapping) {
+    if (!studentMapping) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const { school_db_name } = guardianMapping;
+    const { school_db_name } = studentMapping;
 
     // Connect to the corresponding secondary DB
-    const guardianDB = await connectToSchoolDB(school_db_name);
+    const studentDB = await connectToSchoolDB(school_db_name);
 
-    // Fetch guardian data from the secondary DB
-    if (!guardianDB) {
+    // Fetch student data from the secondary DB
+    if (!studentDB) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,
         staticProps.database.CONNECTION_ERROR_SECONDARY
       );
     }
-    const guardian = await guardianDB
-      .collection("guardians")
-      .findOne({ _id: new mongoose.Types.ObjectId(guardianId) });
+    const student = await studentDB
+      .collection("students")
+      .findOne({ _id: new mongoose.Types.ObjectId(studentId) });
 
-    if (!guardian) {
+    if (!student) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const guardianFromDto = new GuardianResponseDto(guardian as IGuardian);
+    const studentFromDto = new StudentResponseDto(student as IStudent);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: guardianFromDto,
+      data: studentFromDto,
     });
   }
 );
 
-// Add or register a guardian
-export const SignUpGuardian: RequestHandler = catchAsync(
+// Add or register a student
+export const SignUpStudent: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { name, email, image, address, school_uid, password } = req.body;
 
@@ -107,8 +112,8 @@ export const SignUpGuardian: RequestHandler = catchAsync(
     // Hash the password (assuming bcrypt is used for hashing)
     const hashedPassword = await hashString(password);
 
-    // Construct guardian data
-    const guardianData = {
+    // Construct student data
+    const studentData = {
       name,
       email,
       image,
@@ -116,31 +121,31 @@ export const SignUpGuardian: RequestHandler = catchAsync(
       password: hashedPassword,
     };
 
-    // Add the guardian to the school's database
+    // Add the student to the school's database
     const insertResult = await schoolDB
-      .collection("guardians")
-      .insertOne(guardianData);
+      .collection("students")
+      .insertOne(studentData);
 
-    const guardian = await schoolDB
-      .collection("guardians")
+    const student = await schoolDB
+      .collection("students")
       .findOne({ _id: insertResult.insertedId });
 
-    if (!guardian) {
+    if (!student) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const guardianFromDto = new GuardianResponseDto(guardian as IGuardian);
+    const studentFromDto = new StudentResponseDto(student as IStudent);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       message: staticProps.common.CREATED,
-      data: guardianFromDto,
+      data: studentFromDto,
     });
   }
 );
 
-// Guardian login
-export const SignInGuardian: RequestHandler = catchAsync(
+// Student login
+export const SignInStudent: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { email, password, school_uid } = req.body;
 
@@ -159,55 +164,54 @@ export const SignInGuardian: RequestHandler = catchAsync(
       );
     }
 
-    // Find guardian by email
-    const guardian = await schoolDB.collection("guardians").findOne({ email });
-    if (!guardian) {
+    // Find student by email
+    const student = await schoolDB.collection("students").findOne({ email });
+    if (!student) {
       throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid credentials.");
     }
 
     // Compare the password
-    const isPasswordMatch = await compareString(password, guardian.password);
+    const isPasswordMatch = await compareString(password, student.password);
     if (!isPasswordMatch) {
       throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid credentials.");
     }
 
     // Generate a JWT token (assuming JWT is used)
     const jwtPayload = {
-      _id: guardian._id,
-      email: guardian.email,
-      role: guardian.role,
+      _id: student._id,
+      email: student.email,
+      role: student.role,
     };
     const token = generateJwtToken(jwtPayload);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: "Login successful.",
-      data: { token, guardian: new GuardianResponseDto(guardian as IGuardian) },
+      data: { token, student: new StudentResponseDto(student as IStudent) },
     });
   }
 );
 
-
-// update one guardian
-export const UpdateGuardianById: RequestHandler = catchAsync(
+// update one student
+export const UpdateStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     // parsing data and params
-    const guardianId = req.params.guardianId;
+    const studentId = req.params.studentId;
     const parsedData = req.body;
 
     //get parsed data
-    const { name, image, address } = parsedData as IGuardianUpdate;
+    const { name, image, address } = parsedData as IStudentUpdate;
 
-    if (!isValidObjectId(guardianId)) {
+    if (!isValidObjectId(studentId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // validate data with zod schema
-    // validateZodSchema(GuardianUpdateDtoZodSchema, parsedData);
+    // validateZodSchema(StudentUpdateDtoZodSchema, parsedData);
 
-    // Check if a guardian exists or not
-    const existsGuardian = await Guardian.findById(guardianId);
-    if (!existsGuardian) {
+    // Check if a student exists or not
+    const existsStudent = await Student.findById(studentId);
+    if (!existsStudent) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
 
@@ -219,37 +223,37 @@ export const UpdateGuardianById: RequestHandler = catchAsync(
     };
 
     // updating role info
-    const guardianData = await Guardian.findOneAndUpdate(
-      { _id: guardianId },
+    const studentData = await Student.findOneAndUpdate(
+      { _id: studentId },
       {
         $set: constructedData,
       },
       { new: true, runValidators: true }
     );
 
-    //process the guardian data
-    if (!guardianData) {
+    //process the student data
+    if (!studentData) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
-    const guardianFromDto = new GuardianResponseDto(guardianData);
+    const studentFromDto = new StudentResponseDto(studentData);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.UPDATED,
-      data: guardianFromDto,
+      data: studentFromDto,
     });
   }
 );
 
-// delete one guardian
-export const DeleteGuardianById: RequestHandler = catchAsync(
+// delete one student
+export const DeleteStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const guardianId = req.params.guardianId;
+    const studentId = req.params.studentId;
 
-    if (!isValidObjectId(guardianId))
+    if (!isValidObjectId(studentId))
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 
-    const result = await Guardian.deleteOne({ _id: guardianId });
+    const result = await Student.deleteOne({ _id: studentId });
 
     if (result.deletedCount === 0) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);

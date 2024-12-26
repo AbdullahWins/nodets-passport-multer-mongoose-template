@@ -1,6 +1,6 @@
 //src/routers/main/routes.ts
 import express, { Router } from "express";
-import { AdminRouter, UserRouter, SchoolRouter, GuardianRouter } from "..";
+import { AdminRouter, UserRouter, SchoolRouter, StudentRouter } from "..";
 
 export const apiRouter = express.Router();
 
@@ -18,8 +18,8 @@ const apiRoutes: { path: string; route: Router }[] = [
     route: SchoolRouter,
   },
   {
-    path: "/guardians",
-    route: GuardianRouter,
+    path: "/students",
+    route: StudentRouter,
   },
 ];
 
