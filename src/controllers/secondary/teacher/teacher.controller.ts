@@ -1,8 +1,8 @@
-// src/controllers/student/student.controller.ts
+// src/controllers/teacher/teacher.controller.ts
 import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
-import { Student, School } from "../../../models";
+import { Teacher, School } from "../../../models";
 import {
   staticProps,
   sendResponse,
@@ -10,100 +10,100 @@ import {
   parseQueryData,
 } from "../../../utils";
 import { ApiError } from "../../../cores";
-import { IStudent, IStudentUpdate } from "../../../interfaces";
+import { ITeacher, ITeacherUpdate } from "../../../interfaces";
 import mongoose from "mongoose";
 import { catchAsync } from "../../../middlewares";
 // import {
-import { StudentResponseDto } from "../../../dtos";
+import { TeacherResponseDto } from "../../../dtos";
 import { connectToSchoolDB } from "../../../configs";
 
-// get all students with pagination
-export const GetAllStudents: RequestHandler = catchAsync(
+// get all teachers with pagination
+export const GetAllTeachers: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { page, limit } = parseQueryData(req.query);
 
-    const paginatedResult = await paginate(Student.find(), { page, limit });
+    const paginatedResult = await paginate(Teacher.find(), { page, limit });
 
-    const studentsFromDto = paginatedResult.data.map(
-      (student) => new StudentResponseDto(student.toObject())
+    const teachersFromDto = paginatedResult.data.map(
+      (teacher) => new TeacherResponseDto(teacher.toObject())
     );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: studentsFromDto,
+      data: teachersFromDto,
       meta: paginatedResult.meta,
     });
   }
 );
 
-export const GetStudentById: RequestHandler = catchAsync(
+export const GetTeacherById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { studentId } = req.params;
+    const { teacherId } = req.params;
 
     // Validate ID format
-    if (!isValidObjectId(studentId)) {
+    if (!isValidObjectId(teacherId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // Fetch db_name from the primary DB
-    const studentMapping = await School.findOne({
-      studentId,
+    const teacherMapping = await School.findOne({
+      teacherId,
     }).lean();
-    if (!studentMapping) {
+    if (!teacherMapping) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const { school_db_name } = studentMapping;
+    const { school_db_name } = teacherMapping;
 
     // Connect to the corresponding secondary DB
-    const studentDB = await connectToSchoolDB(school_db_name);
+    const teacherDB = await connectToSchoolDB(school_db_name);
 
-    // Fetch student data from the secondary DB
-    if (!studentDB) {
+    // Fetch teacher data from the secondary DB
+    if (!teacherDB) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,
         staticProps.database.CONNECTION_ERROR_SECONDARY
       );
     }
-    const student = await studentDB
-      .collection("students")
-      .findOne({ _id: new mongoose.Types.ObjectId(studentId) });
+    const teacher = await teacherDB
+      .collection("teachers")
+      .findOne({ _id: new mongoose.Types.ObjectId(teacherId) });
 
-    if (!student) {
+    if (!teacher) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const studentFromDto = new StudentResponseDto(student as IStudent);
+    const teacherFromDto = new TeacherResponseDto(teacher as ITeacher);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: studentFromDto,
+      data: teacherFromDto,
     });
   }
 );
 
-// update one student
-export const UpdateStudentById: RequestHandler = catchAsync(
+// update one teacher
+export const UpdateTeacherById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     // parsing data and params
-    const studentId = req.params.studentId;
+    const teacherId = req.params.teacherId;
     const parsedData = req.body;
 
     //get parsed data
-    const { name, image, address } = parsedData as IStudentUpdate;
+    const { name, image, address } = parsedData as ITeacherUpdate;
 
-    if (!isValidObjectId(studentId)) {
+    if (!isValidObjectId(teacherId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // validate data with zod schema
-    // validateZodSchema(StudentUpdateDtoZodSchema, parsedData);
+    // validateZodSchema(TeacherUpdateDtoZodSchema, parsedData);
 
-    // Check if a student exists or not
-    const existsStudent = await Student.findById(studentId);
-    if (!existsStudent) {
+    // Check if a teacher exists or not
+    const existsTeacher = await Teacher.findById(teacherId);
+    if (!existsTeacher) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
 
@@ -115,37 +115,37 @@ export const UpdateStudentById: RequestHandler = catchAsync(
     };
 
     // updating role info
-    const studentData = await Student.findOneAndUpdate(
-      { _id: studentId },
+    const teacherData = await Teacher.findOneAndUpdate(
+      { _id: teacherId },
       {
         $set: constructedData,
       },
       { new: true, runValidators: true }
     );
 
-    //process the student data
-    if (!studentData) {
+    //process the teacher data
+    if (!teacherData) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
-    const studentFromDto = new StudentResponseDto(studentData);
+    const teacherFromDto = new TeacherResponseDto(teacherData);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.UPDATED,
-      data: studentFromDto,
+      data: teacherFromDto,
     });
   }
 );
 
-// delete one student
-export const DeleteStudentById: RequestHandler = catchAsync(
+// delete one teacher
+export const DeleteTeacherById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const studentId = req.params.studentId;
+    const teacherId = req.params.teacherId;
 
-    if (!isValidObjectId(studentId))
+    if (!isValidObjectId(teacherId))
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 
-    const result = await Student.deleteOne({ _id: studentId });
+    const result = await Teacher.deleteOne({ _id: teacherId });
 
     if (result.deletedCount === 0) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);

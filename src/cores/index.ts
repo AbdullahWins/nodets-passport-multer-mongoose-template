@@ -8,4 +8,6 @@ export * from "./jwt/jwt.core";
 export * from "./otp/otp.core";
 export * from "./validation/validation.core";
 export * from "./qrcode/qrcode.core";
+export * from "./handlebar/handlebar.core";
+export * from "./database/database.core";
 

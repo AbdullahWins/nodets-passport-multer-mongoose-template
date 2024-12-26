@@ -1,12 +1,16 @@
 //src/models/student/student.model.ts
 import moment from "moment";
 import { Schema, model } from "mongoose";
-import { IStudent, IStudentDocument, IStudentModel } from "../../../interfaces";
+import { IStudentDocument, IStudentModel } from "../../../interfaces";
 
 const StudentSchema = new Schema<IStudentDocument>({
   name: {
     type: String,
     required: [true, "Name is required"],
+  },
+  password: {
+    type: String,
+    required: [true, "Password is required"],
   },
   image: {
     type: String,
@@ -26,23 +30,8 @@ const StudentSchema = new Schema<IStudentDocument>({
   },
 });
 
-// checking is student found with the id
-StudentSchema.statics.isStudentExistsById = async function (
-  studentId: string,
-  select: string
-): Promise<IStudent | null> {
-  const student = await this.findById(studentId).select(select).lean();
-  return student;
-};
-
-// checking is student found with the email
-StudentSchema.statics.isStudentExistsByName = async function (
-  name: string,
-  select: string
-): Promise<IStudent | null> {
-  const student = await this.findOne({ name }).select(select).lean();
-  return student;
-};
-
-const Student = model<IStudentDocument, IStudentModel>("Student", StudentSchema);
+const Student = model<IStudentDocument, IStudentModel>(
+  "Student",
+  StudentSchema
+);
 export default Student;
