@@ -1,8 +1,8 @@
-// src/controllers/school/school.controller.ts
+// src/controllers/guardian/guardian.controller.ts
 import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
-import { School, SchoolUsersMapping } from "../../../models";
+import { Guardian, School } from "../../../models";
 import {
   staticProps,
   sendResponse,
@@ -10,113 +10,115 @@ import {
   parseQueryData,
 } from "../../../utils";
 import { ApiError } from "../../../services";
-import { ISchool, ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
+import { IGuardian, IGuardianAdd, IGuardianUpdate } from "../../../interfaces";
 import mongoose from "mongoose";
 import { catchAsync } from "../../../middlewares";
 // import {
-import { SchoolResponseDto } from "../../../dtos";
+import { GuardianResponseDto } from "../../../dtos";
 import { connectToSchoolDB } from "../../../configs";
 
-// get all schools with pagination
-export const GetAllSchools: RequestHandler = catchAsync(
+// get all guardians with pagination
+export const GetAllGuardians: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { page, limit } = parseQueryData(req.query);
 
-    const paginatedResult = await paginate(School.find(), { page, limit });
+    const paginatedResult = await paginate(Guardian.find(), { page, limit });
 
-    const schoolsFromDto = paginatedResult.data.map(
-      (school) => new SchoolResponseDto(school.toObject())
+    const guardiansFromDto = paginatedResult.data.map(
+      (guardian) => new GuardianResponseDto(guardian.toObject())
     );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: schoolsFromDto,
+      data: guardiansFromDto,
       meta: paginatedResult.meta,
     });
   }
 );
 
-export const GetSchoolById: RequestHandler = catchAsync(
+export const GetGuardianById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { schoolId } = req.params;
+    const { guardianId } = req.params;
 
     // Validate ID format
-    if (!isValidObjectId(schoolId)) {
+    if (!isValidObjectId(guardianId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // Fetch db_name from the primary DB
-    const schoolMapping = await SchoolUsersMapping.findOne({ schoolId }).lean();
-    if (!schoolMapping) {
+    const guardianMapping = await School.findOne({
+      guardianId,
+    }).lean();
+    if (!guardianMapping) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const { db_name } = schoolMapping;
+    const { db_name } = guardianMapping;
 
     // Connect to the corresponding secondary DB
-    const schoolDB = await connectToSchoolDB(db_name);
+    const guardianDB = await connectToSchoolDB(db_name);
 
-    // Fetch school data from the secondary DB
-    if (!schoolDB) {
+    // Fetch guardian data from the secondary DB
+    if (!guardianDB) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,
         staticProps.database.CONNECTION_ERROR_SECONDARY
       );
     }
-    const school = await schoolDB
-      .collection("schools")
-      .findOne({ _id: new mongoose.Types.ObjectId(schoolId) });
+    const guardian = await guardianDB
+      .collection("guardians")
+      .findOne({ _id: new mongoose.Types.ObjectId(guardianId) });
 
-    if (!school) {
+    if (!guardian) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const schoolFromDto = new SchoolResponseDto(school as ISchool);
+    const guardianFromDto = new GuardianResponseDto(guardian as IGuardian);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.RETRIEVED,
-      data: schoolFromDto,
+      data: guardianFromDto,
     });
   }
 );
 
-// get one school
-// export const GetSchoolById: RequestHandler = catchAsync(
+// get one guardian
+// export const GetGuardianById: RequestHandler = catchAsync(
 //   async (req: Request, res: Response) => {
-//     const { schoolId } = req.params;
+//     const { guardianId } = req.params;
 
 //     // Validate ID format
-//     if (!isValidObjectId(schoolId)) {
+//     if (!isValidObjectId(guardianId)) {
 //       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 //     }
 
-//     const school = await School.findById(schoolId);
+//     const guardian = await Guardian.findById(guardianId);
 
-//     if (!school) {
+//     if (!guardian) {
 //       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
 //     }
 
-//     const schoolFromDto = new SchoolResponseDto(school);
+//     const guardianFromDto = new GuardianResponseDto(guardian);
 
 //     sendResponse(res, {
 //       statusCode: httpStatus.OK,
 //       message: staticProps.common.RETRIEVED,
-//       data: schoolFromDto,
+//       data: guardianFromDto,
 //     });
 //   }
 // );
 
-// create one school
-// export const AddOneSchool: RequestHandler = catchAsync(
+// create one guardian
+// export const AddOneGuardian: RequestHandler = catchAsync(
 //   async (req: Request, res: Response) => {
 //     // Parsing data
 //     const parsedData = req.body;
-//     const { name, image, address } = parsedData as ISchoolAdd;
+//     const { name, image, address } = parsedData as IGuardianAdd;
 
 //     // validate data with zod schema
-//     // validateZodSchema(SchoolAddDtoZodSchema, parsedData);
+//     // validateZodSchema(GuardianAddDtoZodSchema, parsedData);
 
 //     const constructedData = {
 //       name,
@@ -124,49 +126,49 @@ export const GetSchoolById: RequestHandler = catchAsync(
 //       address,
 //     };
 
-//     // Create new school
-//     const schoolData = await School.create(constructedData);
+//     // Create new guardian
+//     const guardianData = await Guardian.create(constructedData);
 
-//     if (!schoolData) {
+//     if (!guardianData) {
 //       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
 //     }
 
-//     const schoolFromDto = new SchoolResponseDto(schoolData);
+//     const guardianFromDto = new GuardianResponseDto(guardianData);
 
 //     sendResponse(res, {
 //       statusCode: httpStatus.CREATED,
 //       message: staticProps.common.CREATED,
-//       data: schoolFromDto,
+//       data: guardianFromDto,
 //     });
 //   }
 // );
 
-export const AddOneSchool: RequestHandler = catchAsync(
+export const AddOneGuardian: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { name, image, address } = req.body as ISchoolAdd;
+    const { name, image, address } = req.body as IGuardianAdd;
 
-    // Create a unique `db_name` for the new school
-    const dbName = `school_${name.toLowerCase().replace(/\s+/g, "_")}`;
+    // Create a unique `db_name` for the new guardian
+    const dbName = `guardian_${name.toLowerCase().replace(/\s+/g, "_")}`;
 
-    // Add school entry to the primary DB (mapping)
-    await SchoolUsersMapping.create({
-      schoolId: new mongoose.Types.ObjectId(),
+    // Add guardian entry to the primary DB (mapping)
+    await School.create({
+      guardianId: new mongoose.Types.ObjectId(),
       email: "abc@gmail.com",
-      school_id: new mongoose.Types.ObjectId(),
-      school_image: image,
-      school_name: name,
+      guardian_id: new mongoose.Types.ObjectId(),
+      guardian_image: image,
+      guardian_name: name,
       db_name: dbName,
       name,
     });
 
-    // Connect to the secondary DB for this school
-    const schoolDB = await connectToSchoolDB(dbName);
+    // Connect to the secondary DB for this guardian
+    const guardianDB = await connectToSchoolDB(dbName);
 
-    console.log("schoolDB", schoolDB);
+    console.log("guardianDB", guardianDB);
 
-    // Add school data to the secondary DB
+    // Add guardian data to the secondary DB
     const constructedData = { name, image, address };
-    if (!schoolDB) {
+    if (!guardianDB) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,
         staticProps.database.CONNECTION_ERROR_SECONDARY
@@ -175,52 +177,52 @@ export const AddOneSchool: RequestHandler = catchAsync(
 
     console.log("constructedData", constructedData);
 
-    const insertResult = await schoolDB
-      .collection("schools")
+    const insertResult = await guardianDB
+      .collection("guardians")
       .insertOne(constructedData);
 
     console.log("insertResult", insertResult);
 
-    const school = await schoolDB
-      .collection("schools")
+    const guardian = await guardianDB
+      .collection("guardians")
       .findOne({ _id: insertResult.insertedId });
 
-    if (!school) {
+    if (!guardian) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const schoolFromDto = new SchoolResponseDto(school as ISchool);
+    const guardianFromDto = new GuardianResponseDto(guardian as IGuardian);
 
-    console.log("schoolFromDto", schoolFromDto);
+    console.log("guardianFromDto", guardianFromDto);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       message: staticProps.common.CREATED,
-      data: schoolFromDto,
+      data: guardianFromDto,
     });
   }
 );
 
-// update one school
-export const UpdateSchoolById: RequestHandler = catchAsync(
+// update one guardian
+export const UpdateGuardianById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     // parsing data and params
-    const schoolId = req.params.schoolId;
+    const guardianId = req.params.guardianId;
     const parsedData = req.body;
 
     //get parsed data
-    const { name, image, address } = parsedData as ISchoolUpdate;
+    const { name, image, address } = parsedData as IGuardianUpdate;
 
-    if (!isValidObjectId(schoolId)) {
+    if (!isValidObjectId(guardianId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
     // validate data with zod schema
-    // validateZodSchema(SchoolUpdateDtoZodSchema, parsedData);
+    // validateZodSchema(GuardianUpdateDtoZodSchema, parsedData);
 
-    // Check if a school exists or not
-    const existsSchool = await School.findById(schoolId);
-    if (!existsSchool) {
+    // Check if a guardian exists or not
+    const existsGuardian = await Guardian.findById(guardianId);
+    if (!existsGuardian) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
 
@@ -232,37 +234,37 @@ export const UpdateSchoolById: RequestHandler = catchAsync(
     };
 
     // updating role info
-    const schoolData = await School.findOneAndUpdate(
-      { _id: schoolId },
+    const guardianData = await Guardian.findOneAndUpdate(
+      { _id: guardianId },
       {
         $set: constructedData,
       },
       { new: true, runValidators: true }
     );
 
-    //process the school data
-    if (!schoolData) {
+    //process the guardian data
+    if (!guardianData) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
-    const schoolFromDto = new SchoolResponseDto(schoolData);
+    const guardianFromDto = new GuardianResponseDto(guardianData);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       message: staticProps.common.UPDATED,
-      data: schoolFromDto,
+      data: guardianFromDto,
     });
   }
 );
 
-// delete one school
-export const DeleteSchoolById: RequestHandler = catchAsync(
+// delete one guardian
+export const DeleteGuardianById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const schoolId = req.params.schoolId;
+    const guardianId = req.params.guardianId;
 
-    if (!isValidObjectId(schoolId))
+    if (!isValidObjectId(guardianId))
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 
-    const result = await School.deleteOne({ _id: schoolId });
+    const result = await Guardian.deleteOne({ _id: guardianId });
 
     if (result.deletedCount === 0) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);

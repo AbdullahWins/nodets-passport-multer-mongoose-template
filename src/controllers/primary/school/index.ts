@@ -1,1 +1,1 @@
-export * from "./schoolUsersMapping.controller"
+export * from "./school.controller"

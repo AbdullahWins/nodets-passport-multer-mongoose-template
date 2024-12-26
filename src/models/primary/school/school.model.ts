@@ -1,14 +1,14 @@
-// src/models/primary/schoolUsersMapping.model.ts
+// src/models/primary/school.model.ts
 import { Schema, model } from "mongoose";
 import moment from "moment";
 import {
-  ISchoolUsersMapping,
-  ISchoolUsersMappingDocument,
-  ISchoolUsersMappingModel,
+  ISchool,
+  ISchoolDocument,
+  ISchoolModel,
 } from "../../../interfaces";
 
 // Define the schema for the school_users_mapping collection
-const SchoolUsersMappingSchema = new Schema<ISchoolUsersMappingDocument>({
+const SchoolSchema = new Schema<ISchoolDocument>({
   email: {
     type: String,
     required: [true, "Email is required"],
@@ -41,7 +41,7 @@ const SchoolUsersMappingSchema = new Schema<ISchoolUsersMappingDocument>({
 });
 
 // Validate that email is unique before saving
-SchoolUsersMappingSchema.pre<ISchoolUsersMappingDocument>(
+SchoolSchema.pre<ISchoolDocument>(
   "save",
   function (next) {
     // You can add custom validation logic here if needed
@@ -50,7 +50,7 @@ SchoolUsersMappingSchema.pre<ISchoolUsersMappingDocument>(
 );
 
 // Update `updatedAt` field on each update
-SchoolUsersMappingSchema.pre<ISchoolUsersMappingDocument>(
+SchoolSchema.pre<ISchoolDocument>(
   "updateOne",
   function (next) {
     this.updatedAt = moment().utc().unix();
@@ -59,25 +59,25 @@ SchoolUsersMappingSchema.pre<ISchoolUsersMappingDocument>(
 );
 
 // Check if a user exists by email
-SchoolUsersMappingSchema.statics.isUserExistsByEmail = async function (
+SchoolSchema.statics.isUserExistsByEmail = async function (
   email: string
-): Promise<ISchoolUsersMapping | null> {
+): Promise<ISchool | null> {
   const user = await this.findOne({ email }).lean();
   return user;
 };
 
 // Check if a user exists by school ID
-SchoolUsersMappingSchema.statics.isUserExistsBySchoolId = async function (
+SchoolSchema.statics.isUserExistsBySchoolId = async function (
   schoolId: string
-): Promise<ISchoolUsersMapping | null> {
+): Promise<ISchool | null> {
   const user = await this.findOne({ school_id: schoolId }).lean();
   return user;
 };
 
 // Create a model from the schema
-const SchoolUsersMapping = model<
-  ISchoolUsersMappingDocument,
-  ISchoolUsersMappingModel
->("SchoolUsersMapping", SchoolUsersMappingSchema);
+const School = model<
+  ISchoolDocument,
+  ISchoolModel
+>("School", SchoolSchema);
 
-export default SchoolUsersMapping;
+export default School;

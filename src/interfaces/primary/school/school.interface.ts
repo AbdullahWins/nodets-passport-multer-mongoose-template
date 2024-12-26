@@ -4,32 +4,39 @@ import { ICommonSchema } from "../../common/common.interface";
 
 // school interface
 export interface ISchool extends ICommonSchema {
-  name: string;
-  image: string;
-  address: string;
+  email: string;
+  school_name: string;
+  school_image: string;
+  school_id: string;
+  db_name: string;
 }
 
 // school add interface
 export interface ISchoolAdd {
-  name: string;
-  image: string;
-  address: string;
+  email: string;
+  school_name: string;
+  school_image: string;
+  school_id: string;
+  db_name: string;
 }
 
 // school update interface
 export interface ISchoolUpdate {
-  name?: string;
-  image?: string;
-  address?: string;
+  email?: string;
+  school_name?: string;
+  school_image?: string;
+  school_id?: string;
+  db_name?: string;
 }
 
 // school schema methods
 export interface ISchoolModel extends Model<ISchool> {
   isSchoolExistsById(
-    schoolId?: string,
-    name?: string,
+    school_id: string,
     select?: string
   ): Promise<ISchool | null>;
 }
 
-export interface ISchoolDocument extends ISchool, Document {}
+export interface ISchoolDocument
+  extends ISchool,
+    Document {}

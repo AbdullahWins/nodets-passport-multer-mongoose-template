@@ -1,1 +1,1 @@
-export * from "./school"
+export * from "./guardian"

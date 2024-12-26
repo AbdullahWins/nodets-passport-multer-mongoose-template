@@ -1,1 +1,1 @@
-export * from "./schoolUsersMapping.model";
+export { default as School } from "./school.model";

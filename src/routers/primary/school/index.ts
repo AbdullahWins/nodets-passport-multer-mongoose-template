@@ -1,1 +1,1 @@
-export * from "./schoolUsersMapping.router";
+export * from "./school.router";

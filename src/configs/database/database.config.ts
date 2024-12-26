@@ -5,7 +5,7 @@ import { errorLogger, infoLogger } from "../../services";
 import { staticProps } from "../../utils";
 import { secondaryDatabaseOptions } from "./secondary/secondary.database.config";
 import { primaryDatabaseOptions } from "./primary/primary.database.config";
-import { SchoolUsersMapping } from "../../models";
+import { School } from "../../models";
 
 // Primary DB Connection
 export const connectToPrimaryDB = async () => {
@@ -87,7 +87,7 @@ export const connectToDatabases = async () => {
     await connectToPrimaryDB();
 
     // 2. Retrieve db_name from school_users_mapping collection (primary DB)
-    const usersMapping = await SchoolUsersMapping.find().lean();
+    const usersMapping = await School.find().lean();
 
     if (usersMapping && usersMapping.length > 0) {
       // 3. Loop through the mapping and connect to each secondary DB dynamically

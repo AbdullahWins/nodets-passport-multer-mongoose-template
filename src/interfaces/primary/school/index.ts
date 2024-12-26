@@ -1,1 +1,1 @@
-export * from "./schoolUsersMapping.interface"
+export * from "./school.interface"
