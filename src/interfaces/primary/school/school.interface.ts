@@ -4,29 +4,32 @@ import { ICommonSchema } from "../../common/common.interface";
 
 // school interface
 export interface ISchool extends ICommonSchema {
-  email: string;
+  school_email: string;
   school_name: string;
+  school_address: string;
   school_image: string;
-  school_id: string;
-  db_name: string;
+  school_uid: string;
+  school_db_name: string;
 }
 
 // school add interface
 export interface ISchoolAdd {
-  email: string;
+  school_email: string;
   school_name: string;
+  school_address: string;
   school_image: string;
-  school_id: string;
-  db_name: string;
+  school_uid: string;
+  school_db_name: string;
 }
 
 // school update interface
 export interface ISchoolUpdate {
-  email?: string;
+  school_email?: string;
   school_name?: string;
+  school_address?: string;
   school_image?: string;
-  school_id?: string;
-  db_name?: string;
+  school_uid?: string;
+  school_db_name?: string;
 }
 
 // school schema methods

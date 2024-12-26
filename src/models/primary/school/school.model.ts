@@ -9,7 +9,7 @@ import {
 
 // Define the schema for the school_users_mapping collection
 const SchoolSchema = new Schema<ISchoolDocument>({
-  email: {
+  school_email: {
     type: String,
     required: [true, "Email is required"],
     unique: true,
@@ -18,15 +18,19 @@ const SchoolSchema = new Schema<ISchoolDocument>({
     type: String,
     required: [true, "School name is required"],
   },
+  school_address: {
+    type: String,
+    required: [true, "School address is required"],
+  },
   school_image: {
     type: String,
     required: [true, "School image is required"],
   },
-  school_id: {
+  school_uid: {
     type: String,
     required: true,
   },
-  db_name: {
+  school_db_name: {
     type: String,
     required: true,
   },

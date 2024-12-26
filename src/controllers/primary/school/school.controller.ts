@@ -12,7 +12,7 @@ import { ApiError } from "../../../services";
 import { ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
 import { catchAsync } from "../../../middlewares";
 import { SchoolResponseDto } from "../../../dtos";
-import School from "../../../models/primary/school/school.model";
+import { School } from "../../../models";
 
 // get all schools with pagination
 export const GetAllSchools: RequestHandler = catchAsync(
@@ -69,15 +69,22 @@ export const AddOneSchool: RequestHandler = catchAsync(
     // Parsing data
     const parsedData = req.body;
 
-    const { email, school_name, school_image, school_id, db_name } =
-      parsedData as ISchoolAdd;
+    const {
+      school_email,
+      school_name,
+      school_address,
+      school_image,
+      school_uid,
+      school_db_name,
+    } = parsedData as ISchoolAdd;
 
     const constructedData = {
-      email,
+      school_email,
       school_name,
+      school_address,
       school_image,
-      school_id,
-      db_name,
+      school_uid,
+      school_db_name,
     };
 
     // Create new school
@@ -105,8 +112,14 @@ export const UpdateSchoolById: RequestHandler = catchAsync(
     const parsedData = req.body;
 
     //get parsed data
-    const { email, school_name, school_image, school_id, db_name } =
-      parsedData as ISchoolUpdate;
+    const {
+      school_email,
+      school_name,
+      school_address,
+      school_image,
+      school_uid,
+      school_db_name,
+    } = parsedData as ISchoolUpdate;
 
     if (!isValidObjectId(schoolId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
@@ -119,11 +132,12 @@ export const UpdateSchoolById: RequestHandler = catchAsync(
 
     //construct data
     let constructedData = {
-      email,
+      school_email,
       school_name,
+      school_address,
       school_image,
-      school_id,
-      db_name,
+      school_uid,
+      school_db_name,
     };
 
     // updating role info
