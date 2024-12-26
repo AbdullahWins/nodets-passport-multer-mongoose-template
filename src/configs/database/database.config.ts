@@ -24,32 +24,6 @@ export const connectToPrimaryDB = async () => {
   }
 };
 
-// Simple ping document insertion
-export const addPingToSchoolDB = async (dbName: string) => {
-  try {
-    const schoolDBConnection = schoolDBConnections.get(dbName);
-
-    if (schoolDBConnection) {
-      const collection = schoolDBConnection.collection("pingCollection");
-
-      // Insert a simple ping document
-      await collection.insertOne({
-        ping: "Connection is working",
-        timestamp: new Date(),
-      });
-      infoLogger.info(`Ping added to secondary DB: ${dbName}`);
-    } else {
-      errorLogger.error(`No connection found for DB: ${dbName}`);
-    }
-  } catch (error) {
-    errorLogger.error(
-      `Error adding ping to DB ${dbName}: ${
-        error instanceof Error ? error.message : "unknown"
-      }`
-    );
-  }
-};
-
 // Map to store the connections for secondary databases (per school)
 const schoolDBConnections: Map<string, mongoose.Connection> = new Map();
 
@@ -57,6 +31,7 @@ const schoolDBConnections: Map<string, mongoose.Connection> = new Map();
 export const connectToSchoolDB = async (dbName: string) => {
   if (schoolDBConnections.has(dbName)) {
     // Return the existing connection if already created
+    infoLogger.info(`Reusing existing connection for DB: ${dbName}`);
     return schoolDBConnections.get(dbName);
   }
 
@@ -68,15 +43,15 @@ export const connectToSchoolDB = async (dbName: string) => {
       secondaryDatabaseOptions
     );
     schoolDBConnections.set(dbName, connection);
-    infoLogger.info(`Connected to Secondary DB: ${dbName}`);
+    infoLogger.info(`Connected to school shread: ${dbName}`);
     return connection;
   } catch (error) {
     errorLogger.error(
-      `Error connecting to Secondary DB ${dbName}: ${
+      `Error connecting to school shread ${dbName}: ${
         error instanceof Error ? error.message : "unknown"
       }`
     );
-    throw error; // Throw error if connection fails
+    throw error;
   }
 };
 
@@ -96,10 +71,6 @@ export const connectToDatabases = async () => {
 
         // Connect to each secondary DB (per school)
         await connectToSchoolDB(school_db_name);
-        await addPingToSchoolDB(school_db_name);
-        infoLogger.info(
-          `Successfully connected to secondary DB: ${school_db_name}`
-        );
       }
     } else {
       infoLogger.info("No school users mapping found.");

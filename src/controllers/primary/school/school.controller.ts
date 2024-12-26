@@ -13,6 +13,7 @@ import { ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
 import { catchAsync } from "../../../middlewares";
 import { SchoolResponseDto } from "../../../dtos";
 import { School } from "../../../models";
+import { connectToSchoolDB } from "../../../configs";
 
 // get all schools with pagination
 export const GetAllSchools: RequestHandler = catchAsync(
@@ -63,10 +64,10 @@ export const GetSchoolById: RequestHandler = catchAsync(
   }
 );
 
-// create one school
+// add one school
 export const AddOneSchool: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    // Parsing data
+    // Parsing data from the request
     const parsedData = req.body;
 
     const {
@@ -75,9 +76,10 @@ export const AddOneSchool: RequestHandler = catchAsync(
       school_address,
       school_image,
       school_uid,
-      school_db_name,
     } = parsedData as ISchoolAdd;
 
+    // Construct the new school data
+    const school_db_name = `school_${school_uid.toLowerCase()}`;
     const constructedData = {
       school_email,
       school_name,
@@ -87,13 +89,31 @@ export const AddOneSchool: RequestHandler = catchAsync(
       school_db_name,
     };
 
-    // Create new school
+    // Step 1: Insert the school data into the main database
     const schoolData = await School.create(constructedData);
 
     if (!schoolData) {
-      throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
+      throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
 
+    // Step 2: Create a connection to the new database
+    const schoolDB = await connectToSchoolDB(school_db_name);
+
+    if (!schoolDB) {
+      throw new ApiError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        staticProps.database.CONNECTION_ERROR_SECONDARY
+      );
+    }
+
+    // Optional: Add some initial setup to the new database if required
+    await schoolDB.collection("metadata").insertOne({
+      created_at: new Date(),
+      school_name,
+      school_uid,
+    });
+
+    // Step 3: Return the school information in the response
     const schoolFromDto = new SchoolResponseDto(schoolData);
 
     sendResponse(res, {

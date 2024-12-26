@@ -12,7 +12,8 @@ import { ENUM_AUTH_ROLES } from "../../../utils";
 import {
   GetAllGuardians,
   GetGuardianById,
-  AddOneGuardian,
+  SignUpGuardian,
+  SignInGuardian,
   UpdateGuardianById,
   DeleteGuardianById,
 } from "../../../controllers";
@@ -42,8 +43,9 @@ router.post(
   "/add",
   authenticateEntity,
   authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
-  AddOneGuardian
+  SignUpGuardian
 );
+router.post("/login", SignInGuardian);
 router.patch(
   "/update/:guardianId",
   authenticateEntity,
