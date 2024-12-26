@@ -1,7 +1,6 @@
 // src/dtos/schoolUsersMapping/schoolUsersMapping.dto.ts
 import { Types } from "mongoose";
 import { ISchoolUsersMapping } from "../../../interfaces";
-import { Schema } from "mongoose";
 
 // Base SchoolUsersMapping DTO
 export class SchoolUsersMappingDto implements Partial<ISchoolUsersMapping> {
@@ -9,7 +8,7 @@ export class SchoolUsersMappingDto implements Partial<ISchoolUsersMapping> {
   email: string;
   school_name: string;
   school_image: string;
-  school_id: Schema.Types.ObjectId;
+  school_id: string;
   db_name: string;
 
   constructor(schoolUsersMapping: ISchoolUsersMapping) {

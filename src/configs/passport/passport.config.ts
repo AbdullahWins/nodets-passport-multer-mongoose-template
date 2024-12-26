@@ -4,11 +4,10 @@ import { Model } from "mongoose";
 import {
   configureGoogleStrategy,
   configureJwtStrategy,
-  configureOtpStrategy,
   configureLocalStrategy,
 } from "./strategies";
 import { environment } from "../environment/environment.config";
-import { Admin, Store, User } from "../../models";
+import { Admin, User } from "../../models";
 import { ApiError } from "../../services";
 
 export const configurePassport = () => {
@@ -16,10 +15,6 @@ export const configurePassport = () => {
     // Local Strategies
     passport.use("admin-local", configureLocalStrategy(Admin as Model<any>));
     passport.use("user-local", configureLocalStrategy(User as Model<any>));
-    passport.use("store-local", configureLocalStrategy(Store as Model<any>));
-
-    // OTP Strategy
-    passport.use("store-otp", configureOtpStrategy(Store as Model<any>));
 
     // JWT Strategies
     passport.use(
@@ -40,14 +35,6 @@ export const configurePassport = () => {
       "user-google",
       configureGoogleStrategy(
         User as Model<any>,
-        environment.google.GOOGLE_CLIENT_ID,
-        environment.google.GOOGLE_CLIENT_SECRET
-      )
-    );
-    passport.use(
-      "store-google",
-      configureGoogleStrategy(
-        Store as Model<any>,
         environment.google.GOOGLE_CLIENT_ID,
         environment.google.GOOGLE_CLIENT_SECRET
       )

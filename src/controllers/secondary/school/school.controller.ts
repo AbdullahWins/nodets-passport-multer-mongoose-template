@@ -150,7 +150,7 @@ export const AddOneSchool: RequestHandler = catchAsync(
 
     // Add school entry to the primary DB (mapping)
     await SchoolUsersMapping.create({
-      schoolId: new mongoose.Types.ObjectId(), // Generate a new school ID
+      schoolId: new mongoose.Types.ObjectId(),
       email: "abc@gmail.com",
       school_id: new mongoose.Types.ObjectId(),
       school_image: image,

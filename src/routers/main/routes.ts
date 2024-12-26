@@ -2,10 +2,6 @@
 import express, { Router } from "express";
 import {
   AdminRouter,
-  GameRouter,
-  ProductRouter,
-  StoreRouter,
-  TicketRouter,
   UserRouter,
   SchoolUsersMappingRouter,
   SchoolRouter,
@@ -21,22 +17,6 @@ const apiRoutes: { path: string; route: Router }[] = [
   {
     path: "/admins",
     route: AdminRouter,
-  },
-  {
-    path: "/stores",
-    route: StoreRouter,
-  },
-  {
-    path: "/games",
-    route: GameRouter,
-  },
-  {
-    path: "/products",
-    route: ProductRouter,
-  },
-  {
-    path: "/tickets",
-    route: TicketRouter,
   },
   {
     path: "/school-users-mapping",

@@ -6,10 +6,9 @@ import {
   VerifiedCallback,
 } from "passport-jwt";
 import { IConfigureJwtStrategy, IJwtPayload } from "../../../interfaces";
-import { Admin, Store, User } from "../../../models";
+import { Admin, User } from "../../../models";
 import {
   ENUM_ADMIN_ROLES,
-  ENUM_STORE_ROLES,
   ENUM_USER_ROLES,
   staticProps,
 } from "../../../utils";
@@ -35,13 +34,7 @@ export const configureJwtStrategy: IConfigureJwtStrategy = (
           )
         ) {
           entity = await User.findById(payload._id);
-        } else if (
-          Object.values(ENUM_STORE_ROLES).includes(
-            payload.role as ENUM_STORE_ROLES
-          )
-        ) {
-          entity = await Store.findById(payload._id);
-        } else if (
+        }else if (
           Object.values(ENUM_ADMIN_ROLES).includes(
             payload.role as ENUM_ADMIN_ROLES
           )
