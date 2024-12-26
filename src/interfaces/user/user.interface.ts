@@ -1,6 +1,6 @@
 // src/interfaces/user/user.interface.ts
 import { Model } from "mongoose";
-import { ICommonEntitySchema } from "../common/common.interface";
+import { ICommonEntitySchema } from "../common/common/common.interface";
 
 // user interface
 export interface IUser extends ICommonEntitySchema {

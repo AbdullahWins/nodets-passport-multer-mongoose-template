@@ -1,6 +1,6 @@
 // src/interfaces/guardian/guardian.interface.ts
 import { Model } from "mongoose";
-import { ICommonSchema } from "../../common/common.interface";
+import { ICommonSchema } from "../../common/common/common.interface";
 
 // guardian interface
 export interface IGuardian extends ICommonSchema {

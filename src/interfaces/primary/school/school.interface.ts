@@ -1,6 +1,6 @@
 // src/interfaces/school/school.interface.ts
 import { Model } from "mongoose";
-import { ICommonSchema } from "../../common/common.interface";
+import { ICommonSchema } from "../../common/common/common.interface";
 
 // school interface
 export interface ISchool extends ICommonSchema {
