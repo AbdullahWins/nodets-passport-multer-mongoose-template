@@ -13,7 +13,7 @@ import {
   sendEmail,
   uploadFiles,
   validateZodSchema,
-} from "../../services";
+} from "../../cores";
 import { Admin } from "../../models";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import {

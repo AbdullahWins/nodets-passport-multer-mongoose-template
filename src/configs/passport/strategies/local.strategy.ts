@@ -1,7 +1,7 @@
 //src/configs/passport/strategies/local.strategy.ts
 import { Strategy as LocalStrategy } from "passport-local";
 import { IConfigureLocalStrategy } from "../../../interfaces";
-import { compareString } from "../../../services";
+import { compareString } from "../../../cores";
 import { staticProps } from "../../../utils";
 
 export const configureLocalStrategy: IConfigureLocalStrategy = (model) => {

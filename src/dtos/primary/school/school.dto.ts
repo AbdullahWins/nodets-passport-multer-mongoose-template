@@ -5,19 +5,21 @@ import { ISchool } from "../../../interfaces";
 // Base School DTO
 export class SchoolDto implements Partial<ISchool> {
   _id: Types.ObjectId;
-  email: string;
+  school_email: string;
   school_name: string;
+  school_address: string;
   school_image: string;
-  school_id: string;
-  db_name: string;
+  school_uid: string;
+  school_db_name: string;
 
   constructor(school: ISchool) {
     this._id = school._id!;
-    this.email = school.email;
+    this.school_email = school.school_email;
     this.school_name = school.school_name;
+    this.school_address = school.school_address;
     this.school_image = school.school_image;
-    this.school_id = school.school_id;
-    this.db_name = school.db_name;
+    this.school_uid = school.school_uid;
+    this.school_db_name = school.school_db_name;
   }
 }
 

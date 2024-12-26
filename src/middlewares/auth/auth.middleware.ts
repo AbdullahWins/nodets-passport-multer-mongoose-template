@@ -1,10 +1,10 @@
-//src/middlewares/auth/auth.middleware.ts 
+//src/middlewares/auth/auth.middleware.ts
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
 import httpStatus from "http-status";
 import { ENUM_AUTH_ROLES, staticProps } from "../../utils";
 import { IJwtPayload } from "../../interfaces";
-import { ApiError } from "../../services";
+import { ApiError } from "../../cores";
 
 // Auth middleware for roles
 export const authorizeEntity =

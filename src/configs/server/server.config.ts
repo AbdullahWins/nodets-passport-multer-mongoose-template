@@ -3,7 +3,7 @@ import { Application } from "express";
 import { Server } from "http";
 import { connectToDatabases } from "../database/database.config";
 import { environment } from "../environment/environment.config";
-import { errorLogger, infoLogger } from "../../services";
+import { errorLogger, infoLogger } from "../../cores";
 
 // server related works
 process.on("uncaughtException", (error) => {

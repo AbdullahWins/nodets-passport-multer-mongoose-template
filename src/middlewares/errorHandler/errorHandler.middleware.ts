@@ -1,7 +1,7 @@
 //src/middlewares/errorHandler/errorHandler.middleware.ts
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import { environment } from "../../configs";
-import { errorLogger, getErrorResponse } from "../../services";
+import { errorLogger, getErrorResponse } from "../../cores";
 
 export const globalErrorHandler: ErrorRequestHandler = (
   error,

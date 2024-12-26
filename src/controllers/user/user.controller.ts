@@ -3,7 +3,7 @@ import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
 import { User } from "../../models";
-import { ApiError, hashString, removeFile, uploadFiles } from "../../services";
+import { ApiError, hashString, removeFile, uploadFiles } from "../../cores";
 import {
   staticProps,
   sendResponse,

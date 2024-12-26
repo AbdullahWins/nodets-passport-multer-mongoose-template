@@ -8,7 +8,7 @@ import {
 } from "./strategies";
 import { environment } from "../environment/environment.config";
 import { Admin, User } from "../../models";
-import { ApiError } from "../../services";
+import { ApiError } from "../../cores";
 
 export const configurePassport = () => {
   try {

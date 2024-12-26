@@ -9,7 +9,7 @@ import {
   removeFile,
   uploadFiles,
   validateZodSchema,
-} from "../../services";
+} from "../../cores";
 import {
   staticProps,
   sendResponse,

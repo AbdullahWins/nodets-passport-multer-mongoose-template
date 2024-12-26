@@ -2,7 +2,7 @@
 import { Strategy as CustomStrategy } from "passport-custom";
 import { Model } from "mongoose";
 import httpStatus from "http-status";
-import { ApiError, compareString } from "../../../services";
+import { ApiError, compareString } from "../../../cores";
 
 export const configureOtpStrategy = (model: Model<any>): CustomStrategy => {
   return new CustomStrategy(async (req, done) => {

@@ -9,7 +9,7 @@ import {
   paginate,
   parseQueryData,
 } from "../../../utils";
-import { ApiError } from "../../../services";
+import { ApiError } from "../../../cores";
 import { IGuardian, IGuardianAdd, IGuardianUpdate } from "../../../interfaces";
 import mongoose from "mongoose";
 import { catchAsync } from "../../../middlewares";
@@ -54,10 +54,10 @@ export const GetGuardianById: RequestHandler = catchAsync(
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
 
-    const { db_name } = guardianMapping;
+    const { school_db_name } = guardianMapping;
 
     // Connect to the corresponding secondary DB
-    const guardianDB = await connectToSchoolDB(db_name);
+    const guardianDB = await connectToSchoolDB(school_db_name);
 
     // Fetch guardian data from the secondary DB
     if (!guardianDB) {

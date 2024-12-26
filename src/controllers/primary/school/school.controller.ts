@@ -8,7 +8,7 @@ import {
   paginate,
   parseQueryData,
 } from "../../../utils";
-import { ApiError } from "../../../services";
+import { ApiError } from "../../../cores";
 import { ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
 import { catchAsync } from "../../../middlewares";
 import { SchoolResponseDto } from "../../../dtos";

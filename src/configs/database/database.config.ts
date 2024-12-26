@@ -1,7 +1,7 @@
 // src/configs/database/database.config.ts
 import mongoose from "mongoose";
 import { environment } from "../environment/environment.config";
-import { errorLogger, infoLogger } from "../../services";
+import { errorLogger, infoLogger } from "../../cores";
 import { staticProps } from "../../utils";
 import { secondaryDatabaseOptions } from "./secondary/secondary.database.config";
 import { primaryDatabaseOptions } from "./primary/primary.database.config";
@@ -92,12 +92,14 @@ export const connectToDatabases = async () => {
     if (usersMapping && usersMapping.length > 0) {
       // 3. Loop through the mapping and connect to each secondary DB dynamically
       for (const userMapping of usersMapping) {
-        const { db_name } = userMapping;
+        const { school_db_name } = userMapping;
 
         // Connect to each secondary DB (per school)
-        await connectToSchoolDB(db_name);
-        await addPingToSchoolDB(db_name);
-        infoLogger.info(`Successfully connected to secondary DB: ${db_name}`);
+        await connectToSchoolDB(school_db_name);
+        await addPingToSchoolDB(school_db_name);
+        infoLogger.info(
+          `Successfully connected to secondary DB: ${school_db_name}`
+        );
       }
     } else {
       infoLogger.info("No school users mapping found.");
