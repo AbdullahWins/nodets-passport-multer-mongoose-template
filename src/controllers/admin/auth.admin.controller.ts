@@ -70,7 +70,7 @@ export const SignUpAdmin: RequestHandler = catchAsync(
     const { single } = req.files as IMulterFiles;
     const { email, fullName, password, role } = req.body;
 
-    validateZodSchema(AdminSignupDtoZodSchema, req.body);
+    validateZodSchema(req.body, AdminSignupDtoZodSchema);
 
     // Check if admin already exists
     const findAdmin = await Admin.isEntityExistsByEmail(email as string);

@@ -4,14 +4,15 @@ import httpStatus from "http-status";
 import { ApiError } from "../error_handler/error_handler.core";
 
 export const validateZodSchema = <T>(
-  schema: ZodSchema<T>,
-  data: unknown
-): void => {
+  data: unknown,
+  schema: ZodSchema<T>
+): T => {
   const result = schema.safeParse(data);
 
-  if (result.success) return;
+  if (result.success) {
+    return result.data;
+  }
 
-  // Collecting error messages from Zod validation
   const errorMessages = result.error.errors
     .map((err) => `${err.path.join(".")}: ${err.message}`)
     .join(", ");

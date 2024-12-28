@@ -1,20 +1,21 @@
 // src/controllers/student/student.controller.ts
 import httpStatus from "http-status";
 import { Request, Response, RequestHandler } from "express";
-import { ApiError } from "../../../cores";
+import { ApiError, validateZodSchema } from "../../../cores";
 import { catchAsync } from "../../../middlewares";
-import { sendResponse, staticProps } from "../../../utils";
+import { parseQueryData, sendResponse, staticProps } from "../../../utils";
 import {
   getAllStudentsService,
   getStudentByIdService,
   updateStudentByIdService,
   deleteStudentByIdService,
 } from "../../../services";
+import { StudentUpdateDtoZodSchema } from "../../../validations";
 
 // Get all students with pagination
 export const GetAllStudents: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { page, limit } = req.query;
+    const { page, limit } = parseQueryData(req.query);
     const { school_uid } = req.body;
 
     if (!school_uid) {
@@ -23,8 +24,8 @@ export const GetAllStudents: RequestHandler = catchAsync(
 
     const { studentsFromDto, meta } = await getAllStudentsService(
       school_uid,
-      Number(page),
-      Number(limit)
+      page,
+      limit
     );
 
     sendResponse(res, {
@@ -72,10 +73,14 @@ export const UpdateStudentById: RequestHandler = catchAsync(
       );
     }
 
+    const validatedData = validateZodSchema(
+      parsedData,
+      StudentUpdateDtoZodSchema
+    );
+
     const updatedStudent = await updateStudentByIdService(
-      parsedData.school_uid,
       studentId,
-      parsedData
+      validatedData
     );
 
     sendResponse(res, {
@@ -92,7 +97,7 @@ export const DeleteStudentById: RequestHandler = catchAsync(
     const studentId = req.params.studentId;
     const { school_uid } = req.body;
 
-    if (!studentId) {
+    if (!studentId || !school_uid) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         staticProps.common.DATA_REQUIRED

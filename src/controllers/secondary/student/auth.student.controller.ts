@@ -1,23 +1,29 @@
 import { Request, Response, RequestHandler } from "express";
 import { catchAsync } from "../../../middlewares";
 import httpStatus from "http-status";
-import { sendResponse, staticProps } from "../../../utils";
+import { ENUM_SCHOOL_ROLES, sendResponse, staticProps } from "../../../utils";
 import { signInStudentService, signUpStudentService } from "../../../services";
+import { validateZodSchema } from "../../../cores";
+import {
+  StudentLoginDtoZodSchema,
+  StudentSignupDtoZodSchema,
+} from "../../../validations";
 
 // Add or register a student
 export const SignUpStudent: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { name, email, image, address, school_uid, password } = req.body;
+    const parsedData = req.body;
 
-    const studentData = {
-      name,
-      email,
-      image,
-      address,
-      password,
-    };
+    //add default role
+    parsedData.student_role = ENUM_SCHOOL_ROLES.STUDENT;
 
-    const student = await signUpStudentService(school_uid, studentData);
+    //validate the student data
+    const validatedData = validateZodSchema(
+      parsedData,
+      StudentSignupDtoZodSchema
+    );
+
+    const student = await signUpStudentService(validatedData);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
@@ -29,13 +35,11 @@ export const SignUpStudent: RequestHandler = catchAsync(
 
 // SignInStudent Handler
 export const SignInStudent: RequestHandler = catchAsync(async (req, res) => {
-  const { email, password, school_uid } = req.body;
+  const parsedData = req.body;
+  //validate the student data
+  const validatedData = validateZodSchema(parsedData, StudentLoginDtoZodSchema);
 
-  const { token, student } = await signInStudentService(
-    school_uid,
-    email,
-    password
-  );
+  const { token, student } = await signInStudentService(validatedData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

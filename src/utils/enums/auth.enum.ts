@@ -26,3 +26,10 @@ export enum ENUM_STORE_ROLES {
   STORE_MANAGER = "store-manager",
   STORE_STAFF = "store-staff",
 }
+
+export enum ENUM_SCHOOL_ROLES {
+  SCHOOL_ADMIN = "school-admin",
+  HEAD_TEACHER = "head-teacher",
+  TEACHER = "teacher",
+  STUDENT = "student",
+}

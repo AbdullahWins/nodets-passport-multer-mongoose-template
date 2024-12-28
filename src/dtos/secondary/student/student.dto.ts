@@ -5,15 +5,19 @@ import { IStudent } from "../../../interfaces";
 // Base Student DTO
 export class StudentDto implements Partial<IStudent> {
   _id: Types.ObjectId;
-  name: string;
-  image: string;
-  address: string;
+  school_uid: string;
+  student_name: string;
+  student_email: string;
+  student_image: string;
+  student_address: string;
 
   constructor(student: IStudent) {
     this._id = student._id!;
-    this.name = student.name;
-    this.image = student.image;
-    this.address = student.address;
+    this.school_uid = student.school_uid;
+    this.student_name = student.student_name;
+    this.student_email = student.student_email;
+    this.student_image = student.student_image;
+    this.student_address = student.student_address;
   }
 }
 

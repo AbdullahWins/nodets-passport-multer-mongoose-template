@@ -4,24 +4,28 @@ import { IStudent } from "../../../interfaces";
 
 // Define the Student schema
 export const StudentSchema = new Schema<IStudent>({
-  name: {
+  school_uid: {
+    type: String,
+    required: [true, "School UID is required"],
+  },
+  student_name: {
     type: String,
     required: [true, "Name is required"],
   },
-  password: {
+  student_password: {
     type: String,
     required: [true, "Password is required"],
   },
-  email: {
+  student_email: {
     type: String,
     unique: true,
     required: [true, "Email is required"],
   },
-  image: {
+  student_image: {
     type: String,
     required: [true, "Image is required"],
   },
-  address: {
+  student_address: {
     type: String,
     required: [true, "Address is required"],
   },

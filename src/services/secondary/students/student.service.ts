@@ -49,12 +49,11 @@ export const getStudentByIdService = async (
 
 // Update a student by ID
 export const updateStudentByIdService = async (
-  school_uid: string,
   studentId: string,
   updateData: IStudentUpdate
 ) => {
   const StudentModel = await getSchoolModel<IStudent>(
-    school_uid,
+    updateData.school_uid,
     STUDENT_MODEL_NAME,
     StudentSchema
   );
