@@ -13,9 +13,9 @@ import { StudentResponseDto } from "../../../dtos";
 import { IStudent } from "../../../interfaces";
 import {
   STUDENT_MODEL_NAME,
-  studentSchema,
+  StudentSchema,
 } from "../../../models/secondary/student/student.model";
-import { getDatabaseFromUid } from "../../../utils/helpers/db_finder.helper";
+import { getDatabaseFromUid } from "../../../utils/helpers/dbFinder.helper";
 
 // Add or register a student
 export const SignUpStudent: RequestHandler = catchAsync(
@@ -28,7 +28,7 @@ export const SignUpStudent: RequestHandler = catchAsync(
     const StudentModel = await getSchoolModel<IStudent>(
       school_db_name,
       STUDENT_MODEL_NAME,
-      studentSchema
+      StudentSchema
     );
 
     // Hash the password (assuming bcrypt is used for hashing)
@@ -70,7 +70,7 @@ export const SignInStudent: RequestHandler = catchAsync(async (req, res) => {
   const StudentModel = await getSchoolModel<IStudent>(
     school_db_name,
     STUDENT_MODEL_NAME,
-    studentSchema
+    StudentSchema
   );
 
   // Step 3: Find the student by email

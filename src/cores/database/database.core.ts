@@ -1,5 +1,6 @@
 import { Schema, Model, Connection } from "mongoose";
 import { connectToSchoolDB } from "../../configs";
+import { getDatabaseFromUid } from "../../utils";
 
 // Cache for models
 // const modelCache: { [dbName: string]: { [modelName: string]: Model<any> } } =
@@ -7,7 +8,7 @@ import { connectToSchoolDB } from "../../configs";
 
 // Utility to get or define a model on a specific school database connection
 export const getSchoolModel = async <T>(
-  schoolDbName: string,
+  schoolUid: string,
   modelName: string,
   schema: Schema<T>
 ): Promise<Model<T>> => {
@@ -15,6 +16,8 @@ export const getSchoolModel = async <T>(
   // if (modelCache[schoolDbName]?.[modelName]) {
   //   return modelCache[schoolDbName][modelName] as Model<T>;
   // }
+
+  const schoolDbName = getDatabaseFromUid(schoolUid);
 
   // Get the connection to the school's database
   const schoolConnection = await connectToSchoolDB(schoolDbName);

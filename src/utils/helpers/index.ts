@@ -5,3 +5,4 @@ export * from "./parse.helper";
 export * from "./response.helper";
 export * from "./root.helper";
 export * from "./url.helper";
+export * from "./dbFinder.helper";

@@ -1,9 +1,9 @@
 //src/models/teacher/teacher.model.ts
 import moment from "moment";
-import { Schema, model } from "mongoose";
-import { ITeacher, ITeacherDocument, ITeacherModel } from "../../../interfaces";
+import { Schema } from "mongoose";
+import { ITeacher } from "../../../interfaces";
 
-const TeacherSchema = new Schema<ITeacherDocument>({
+export const TeacherSchema = new Schema<ITeacher>({
   name: {
     type: String,
     required: [true, "Name is required"],
@@ -26,26 +26,5 @@ const TeacherSchema = new Schema<ITeacherDocument>({
   },
 });
 
-// checking is teacher found with the id
-TeacherSchema.statics.isTeacherExistsById = async function (
-  teacherId: string,
-  select: string
-): Promise<ITeacher | null> {
-  const teacher = await this.findById(teacherId).select(select).lean();
-  return teacher;
-};
-
-// checking is teacher found with the email
-TeacherSchema.statics.isTeacherExistsByName = async function (
-  name: string,
-  select: string
-): Promise<ITeacher | null> {
-  const teacher = await this.findOne({ name }).select(select).lean();
-  return teacher;
-};
-
-const Teacher = model<ITeacherDocument, ITeacherModel>(
-  "Teacher",
-  TeacherSchema
-);
-export default Teacher;
+// Export model name for dynamic usage
+export const TEACHER_MODEL_NAME = "Teacher";

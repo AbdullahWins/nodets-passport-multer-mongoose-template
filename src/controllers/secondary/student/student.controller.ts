@@ -2,33 +2,28 @@
 import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
-import { STUDENT_MODEL_NAME, studentSchema } from "../../../models";
+import { STUDENT_MODEL_NAME, StudentSchema } from "../../../models";
+import { ApiError, getSchoolModel } from "../../../cores";
+import { IStudent, IStudentUpdate } from "../../../interfaces";
+import { catchAsync } from "../../../middlewares";
+import { StudentResponseDto } from "../../../dtos";
 import {
   staticProps,
   sendResponse,
   paginate,
   parseQueryData,
 } from "../../../utils";
-import { ApiError, getSchoolModel } from "../../../cores";
-import { IStudent, IStudentUpdate } from "../../../interfaces";
-import { catchAsync } from "../../../middlewares";
-// import {
-import { StudentResponseDto } from "../../../dtos";
-import { getDatabaseFromUid } from "../../../utils/helpers/db_finder.helper";
 
 // get all students with pagination
 export const GetAllStudents: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-    const { school_uid } = req.body;
     const { page, limit } = parseQueryData(req.query);
+    const { school_uid } = req.body;
 
-    const school_db_name = getDatabaseFromUid(school_uid);
-
-    // Step 2: Get the Student model from the school's database
     const StudentModel = await getSchoolModel<IStudent>(
-      school_db_name,
+      school_uid,
       STUDENT_MODEL_NAME,
-      studentSchema
+      StudentSchema
     );
 
     const paginatedResult = await paginate(StudentModel.find(), {
@@ -59,13 +54,10 @@ export const GetStudentById: RequestHandler = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
-    const school_db_name = getDatabaseFromUid(school_uid);
-
-    // Step 2: Get the Student model from the school's database
     const StudentModel = await getSchoolModel<IStudent>(
-      school_db_name,
+      school_uid,
       STUDENT_MODEL_NAME,
-      studentSchema
+      StudentSchema
     );
 
     const student = await StudentModel.findById(studentId);
@@ -100,13 +92,10 @@ export const UpdateStudentById: RequestHandler = catchAsync(
     // validate data with zod schema
     // validateZodSchema(StudentUpdateDtoZodSchema, parsedData);
 
-    const school_db_name = getDatabaseFromUid(school_uid);
-
-    // Step 2: Get the Student model from the school's database
     const StudentModel = await getSchoolModel<IStudent>(
-      school_db_name,
+      school_uid,
       STUDENT_MODEL_NAME,
-      studentSchema
+      StudentSchema
     );
 
     // Check if a student exists or not
@@ -154,13 +143,10 @@ export const DeleteStudentById: RequestHandler = catchAsync(
     if (!isValidObjectId(studentId))
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 
-    const school_db_name = getDatabaseFromUid(school_uid);
-
-    // Step 2: Get the Student model from the school's database
     const StudentModel = await getSchoolModel<IStudent>(
-      school_db_name,
+      school_uid,
       STUDENT_MODEL_NAME,
-      studentSchema
+      StudentSchema
     );
 
     const result = await StudentModel.deleteOne({ _id: studentId });

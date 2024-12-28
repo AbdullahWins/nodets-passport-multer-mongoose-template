@@ -1,8 +1,9 @@
+import moment from "moment";
 import { Schema } from "mongoose";
 import { IStudent } from "../../../interfaces";
 
 // Define the Student schema
-export const studentSchema = new Schema<IStudent>({
+export const StudentSchema = new Schema<IStudent>({
   name: {
     type: String,
     required: [true, "Name is required"],
@@ -26,11 +27,11 @@ export const studentSchema = new Schema<IStudent>({
   },
   createdAt: {
     type: Number,
-    default: () => Date.now(),
+    default: () => moment().utc().unix(),
   },
   updatedAt: {
     type: Number,
-    default: () => Date.now(),
+    default: () => moment().utc().unix(),
   },
 });
 
