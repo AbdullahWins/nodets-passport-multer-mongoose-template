@@ -13,6 +13,7 @@ export const studentSchema = new Schema<IStudent>({
   },
   email: {
     type: String,
+    unique: true,
     required: [true, "Email is required"],
   },
   image: {

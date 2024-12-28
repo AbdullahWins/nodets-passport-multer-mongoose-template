@@ -2,27 +2,39 @@
 import httpStatus from "http-status";
 import { isValidObjectId } from "mongoose";
 import { Request, RequestHandler, Response } from "express";
-import { Student, School } from "../../../models";
+import { STUDENT_MODEL_NAME, studentSchema } from "../../../models";
 import {
   staticProps,
   sendResponse,
   paginate,
   parseQueryData,
 } from "../../../utils";
-import { ApiError } from "../../../cores";
+import { ApiError, getSchoolModel } from "../../../cores";
 import { IStudent, IStudentUpdate } from "../../../interfaces";
-import mongoose from "mongoose";
 import { catchAsync } from "../../../middlewares";
 // import {
 import { StudentResponseDto } from "../../../dtos";
-import { connectToSchoolDB } from "../../../configs";
+import { getDatabaseFromUid } from "../../../utils/helpers/db_finder.helper";
 
 // get all students with pagination
 export const GetAllStudents: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
+    const { school_uid } = req.body;
     const { page, limit } = parseQueryData(req.query);
 
-    const paginatedResult = await paginate(Student.find(), { page, limit });
+    const school_db_name = getDatabaseFromUid(school_uid);
+
+    // Step 2: Get the Student model from the school's database
+    const StudentModel = await getSchoolModel<IStudent>(
+      school_db_name,
+      STUDENT_MODEL_NAME,
+      studentSchema
+    );
+
+    const paginatedResult = await paginate(StudentModel.find(), {
+      page,
+      limit,
+    });
 
     const studentsFromDto = paginatedResult.data.map(
       (student) => new StudentResponseDto(student.toObject())
@@ -40,36 +52,23 @@ export const GetAllStudents: RequestHandler = catchAsync(
 export const GetStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { studentId } = req.params;
+    const { school_uid } = req.body;
 
     // Validate ID format
     if (!isValidObjectId(studentId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
     }
 
-    // Fetch db_name from the primary DB
-    const studentMapping = await School.findOne({
-      studentId,
-    }).lean();
-    if (!studentMapping) {
-      throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
-    }
+    const school_db_name = getDatabaseFromUid(school_uid);
 
-    const { school_db_name } = studentMapping;
+    // Step 2: Get the Student model from the school's database
+    const StudentModel = await getSchoolModel<IStudent>(
+      school_db_name,
+      STUDENT_MODEL_NAME,
+      studentSchema
+    );
 
-    // Connect to the corresponding secondary DB
-    const studentDB = await connectToSchoolDB(school_db_name);
-
-    // Fetch student data from the secondary DB
-    if (!studentDB) {
-      throw new ApiError(
-        httpStatus.INTERNAL_SERVER_ERROR,
-        staticProps.database.CONNECTION_ERROR_SECONDARY
-      );
-    }
-    const student = await studentDB
-      .collection("students")
-      .findOne({ _id: new mongoose.Types.ObjectId(studentId) });
-
+    const student = await StudentModel.findById(studentId);
     if (!student) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
     }
@@ -92,7 +91,7 @@ export const UpdateStudentById: RequestHandler = catchAsync(
     const parsedData = req.body;
 
     //get parsed data
-    const { name, image, address } = parsedData as IStudentUpdate;
+    const { name, image, address, school_uid } = parsedData as IStudentUpdate;
 
     if (!isValidObjectId(studentId)) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
@@ -101,8 +100,17 @@ export const UpdateStudentById: RequestHandler = catchAsync(
     // validate data with zod schema
     // validateZodSchema(StudentUpdateDtoZodSchema, parsedData);
 
+    const school_db_name = getDatabaseFromUid(school_uid);
+
+    // Step 2: Get the Student model from the school's database
+    const StudentModel = await getSchoolModel<IStudent>(
+      school_db_name,
+      STUDENT_MODEL_NAME,
+      studentSchema
+    );
+
     // Check if a student exists or not
-    const existsStudent = await Student.findById(studentId);
+    const existsStudent = await StudentModel.findById(studentId);
     if (!existsStudent) {
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
@@ -115,7 +123,7 @@ export const UpdateStudentById: RequestHandler = catchAsync(
     };
 
     // updating role info
-    const studentData = await Student.findOneAndUpdate(
+    const studentData = await StudentModel.findOneAndUpdate(
       { _id: studentId },
       {
         $set: constructedData,
@@ -141,11 +149,21 @@ export const UpdateStudentById: RequestHandler = catchAsync(
 export const DeleteStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const studentId = req.params.studentId;
+    const { school_uid } = req.body;
 
     if (!isValidObjectId(studentId))
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.INVALID_ID);
 
-    const result = await Student.deleteOne({ _id: studentId });
+    const school_db_name = getDatabaseFromUid(school_uid);
+
+    // Step 2: Get the Student model from the school's database
+    const StudentModel = await getSchoolModel<IStudent>(
+      school_db_name,
+      STUDENT_MODEL_NAME,
+      studentSchema
+    );
+
+    const result = await StudentModel.deleteOne({ _id: studentId });
 
     if (result.deletedCount === 0) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);

@@ -1,6 +1,5 @@
 import { Request, Response, RequestHandler } from "express";
 import { catchAsync } from "../../../middlewares";
-import { School } from "../../../models";
 import {
   ApiError,
   compareString,
@@ -9,7 +8,6 @@ import {
   hashString,
 } from "../../../cores";
 import httpStatus from "http-status";
-import { connectToSchoolDB } from "../../../configs";
 import { sendResponse, staticProps } from "../../../utils";
 import { StudentResponseDto } from "../../../dtos";
 import { IStudent } from "../../../interfaces";
@@ -24,20 +22,14 @@ export const SignUpStudent: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const { name, email, image, address, school_uid, password } = req.body;
 
-    // Validate school_uid
-    const school = await School.findOne({ school_uid });
-    if (!school) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Invalid school UID.");
-    }
+    const school_db_name = getDatabaseFromUid(school_uid);
 
-    // Connect to the school's database
-    const schoolDB: any = await connectToSchoolDB(school.school_db_name);
-    if (!schoolDB) {
-      throw new ApiError(
-        httpStatus.INTERNAL_SERVER_ERROR,
-        staticProps.database.CONNECTION_ERROR_SECONDARY
-      );
-    }
+    // Step 2: Get the Student model from the school's database
+    const StudentModel = await getSchoolModel<IStudent>(
+      school_db_name,
+      STUDENT_MODEL_NAME,
+      studentSchema
+    );
 
     // Hash the password (assuming bcrypt is used for hashing)
     const hashedPassword = await hashString(password);
@@ -52,13 +44,7 @@ export const SignUpStudent: RequestHandler = catchAsync(
     };
 
     // Add the student to the school's database
-    const insertResult = await schoolDB
-      .collection("students")
-      .insertOne(studentData);
-
-    const student = await schoolDB
-      .collection("students")
-      .findOne({ _id: insertResult.insertedId });
+    const student = await StudentModel.create(studentData);
 
     if (!student) {
       throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
@@ -77,12 +63,6 @@ export const SignUpStudent: RequestHandler = catchAsync(
 // SignInStudent Handler
 export const SignInStudent: RequestHandler = catchAsync(async (req, res) => {
   const { email, password, school_uid } = req.body;
-
-  // Step 1: Validate the school
-  // const school = await School.findOne({ school_uid });
-  // if (!school) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, "Invalid school UID.");
-  // }
 
   const school_db_name = getDatabaseFromUid(school_uid);
 

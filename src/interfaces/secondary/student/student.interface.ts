@@ -19,6 +19,7 @@ export interface IStudentAdd {
   image: string;
   address: string;
   password: string;
+  school_uid: string;
   role: string;
 }
 
@@ -29,6 +30,7 @@ export interface IStudentUpdate {
   image?: string;
   address?: string;
   password?: string;
+  school_uid: string;
 }
 
 // student schema methods
