@@ -6,7 +6,7 @@ const BaseStudentDtoZodSchema = z.object({
   school_uid: z.string().min(1),
   student_name: z.string().min(1),
   student_email: z.string().min(1).email(),
-  student_image: z.string().min(1).url(),
+  student_image: z.string().min(1),
   student_address: z.string().min(1),
   student_password: z.string().min(1),
   student_isEmailVerified: z.boolean(),

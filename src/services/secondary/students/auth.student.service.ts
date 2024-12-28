@@ -66,5 +66,8 @@ export const signInStudentService = async (studentData: IStudentSignIn) => {
   };
   const token = generateJwtToken(jwtPayload);
 
-  return { token, student };
+  // use dto to format the student response
+  const studentFromDto = new StudentResponseDto(student);
+
+  return { token, student: studentFromDto };
 };

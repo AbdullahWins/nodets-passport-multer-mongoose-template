@@ -1,7 +1,11 @@
 // src/controllers/student/student.controller.ts
 import httpStatus from "http-status";
 import { Request, Response, RequestHandler } from "express";
-import { ApiError, validateZodSchema } from "../../../cores";
+import {
+  ApiError,
+  uploadFiles,
+  validateZodSchema,
+} from "../../../cores";
 import { catchAsync } from "../../../middlewares";
 import { parseQueryData, sendResponse, staticProps } from "../../../utils";
 import {
@@ -11,6 +15,7 @@ import {
   deleteStudentByIdService,
 } from "../../../services";
 import { StudentUpdateDtoZodSchema } from "../../../validations";
+import { IMulterFiles } from "../../../interfaces";
 
 // Get all students with pagination
 export const GetAllStudents: RequestHandler = catchAsync(
@@ -65,12 +70,24 @@ export const UpdateStudentById: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const studentId = req.params.studentId;
     const parsedData = req.body;
+    const { single } = req.files as IMulterFiles;
 
     if (!studentId) {
       throw new ApiError(
         httpStatus.BAD_REQUEST,
         staticProps.common.DATA_REQUIRED
       );
+    }
+
+    //TODO:: Check if student exists and delete the previous image if new image is uploaded
+    // if (student.student_image) {
+    //   removeFile(student.student_image);
+    // }
+
+    if (single) {
+      const { filePath } = await uploadFiles(single);
+      parsedData.student_image =
+        filePath || staticProps.default.DEFAULT_IMAGE_PATH;
     }
 
     const validatedData = validateZodSchema(

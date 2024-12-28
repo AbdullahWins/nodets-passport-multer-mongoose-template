@@ -1,6 +1,7 @@
 // src/dtos/student/student.dto.ts
 import { Types } from "mongoose";
 import { IStudent } from "../../../interfaces";
+import { getFileUrl } from "../../../utils";
 
 // Base Student DTO
 export class StudentDto implements Partial<IStudent> {
@@ -16,7 +17,7 @@ export class StudentDto implements Partial<IStudent> {
     this.school_uid = student.school_uid;
     this.student_name = student.student_name;
     this.student_email = student.student_email;
-    this.student_image = student.student_image;
+    this.student_image = getFileUrl(student.student_image);
     this.student_address = student.student_address;
   }
 }
