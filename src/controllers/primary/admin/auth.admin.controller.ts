@@ -1,11 +1,7 @@
 import httpStatus from "http-status";
 import passport from "passport";
-import { AdminResponseDto } from "../../dtos";
-import {
-  emailProps,
-  sendResponse,
-  staticProps,
-} from "../../utils";
+import { AdminResponseDto } from "../../../dtos";
+import { emailProps, sendResponse, staticProps } from "../../../utils";
 import {
   ApiError,
   generateJwtToken,
@@ -13,17 +9,17 @@ import {
   sendEmail,
   uploadFiles,
   validateZodSchema,
-} from "../../cores";
-import { Admin } from "../../models";
+} from "../../../cores";
+import { Admin } from "../../../models";
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import {
   IAdmin,
   IMulterFiles,
   PassportAuthError,
   PassportAuthInfo,
-} from "../../interfaces";
-import { catchAsync } from "../../middlewares";
-import { AdminSignupDtoZodSchema } from "../../validations";
+} from "../../../interfaces";
+import { catchAsync } from "../../../middlewares";
+import { AdminSignupDtoZodSchema } from "../../../validations";
 
 // Admin Login using Local Strategy (email/password)
 export const SignInAdmin = (

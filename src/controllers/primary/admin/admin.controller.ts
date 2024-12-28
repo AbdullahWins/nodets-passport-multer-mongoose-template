@@ -2,24 +2,24 @@
 import httpStatus from "http-status";
 import { Request, RequestHandler, Response } from "express";
 import { isValidObjectId } from "mongoose";
-import { Admin } from "../../models";
+import { Admin } from "../../../models";
 import {
   ApiError,
   hashString,
   removeFile,
   uploadFiles,
   validateZodSchema,
-} from "../../cores";
+} from "../../../cores";
 import {
   staticProps,
   sendResponse,
   parseQueryData,
   paginate,
-} from "../../utils";
-import { IAdmin, IMulterFiles } from "../../interfaces";
-import { AdminResponseDto } from "../../dtos";
-import { catchAsync } from "../../middlewares";
-import { AdminUpdateDtoZodSchema } from "../../validations";
+} from "../../../utils";
+import { IAdmin, IMulterFiles } from "../../../interfaces";
+import { AdminResponseDto } from "../../../dtos";
+import { catchAsync } from "../../../middlewares";
+import { AdminUpdateDtoZodSchema } from "../../../validations";
 
 // get all admins with pagination
 export const GetAllAdmins: RequestHandler = catchAsync(

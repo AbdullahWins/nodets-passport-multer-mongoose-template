@@ -1,7 +1,7 @@
 // src/dtos/admin/admin.dto.ts
 import { Types } from "mongoose";
-import { IAdmin } from "../../interfaces";
-import { getFileUrl } from "../../utils";
+import { IAdmin } from "../../../interfaces";
+import { getFileUrl } from "../../../utils";
 
 // Base Admin DTO with minimal properties
 class AdminDtoBase implements Partial<IAdmin> {

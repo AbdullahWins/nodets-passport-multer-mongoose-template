@@ -1,6 +1,6 @@
 // src/interfaces/admin/admin.interface.ts
 import { Model } from "mongoose";
-import { ICommonEntitySchema } from "../common/common/common.interface";
+import { ICommonEntitySchema } from "../../common/common/common.interface";
 
 // admin interface
 export interface IAdmin extends ICommonEntitySchema {
