@@ -1,11 +1,11 @@
 //src/routers/main/routes.ts
 import express, { Router } from "express";
 import {
-  AdminRouter,
   UserRouter,
   SchoolRouter,
   StudentRouter,
-  TeacherRouter,
+  EntityRouter,
+  AdminRouter,
 } from "..";
 
 export const apiRouter = express.Router();
@@ -24,12 +24,12 @@ const apiRoutes: { path: string; route: Router }[] = [
     route: SchoolRouter,
   },
   {
-    path: "/students",
-    route: StudentRouter,
+    path: "/entities",
+    route: EntityRouter,
   },
   {
-    path: "/teachers",
-    route: TeacherRouter,
+    path: "/students",
+    route: StudentRouter,
   },
 ];
 
