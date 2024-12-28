@@ -8,7 +8,7 @@ import { primaryDatabaseOptions } from "./primary/primary.database.config";
 import { School } from "../../models";
 
 // Primary DB Connection
-export const connectToPrimaryDB = async () => {
+const connectToPrimaryDB = async () => {
   const uri = environment.db.MONGODB_PRIMARY_DB_URI;
   try {
     await mongoose.connect(uri, primaryDatabaseOptions);
@@ -61,19 +61,19 @@ export const connectToDatabases = async () => {
     // 1. Connect to Primary DB
     await connectToPrimaryDB();
 
-    // 2. Retrieve db_name from school_users_mapping collection (primary DB)
-    const usersMapping = await School.find().lean();
+    // 2. Retrieve db_name from school collection (primary DB)
+    const schoolFromPrimaryDb = await School.find().lean();
 
-    if (usersMapping && usersMapping.length > 0) {
+    if (schoolFromPrimaryDb && schoolFromPrimaryDb.length > 0) {
       // 3. Loop through the mapping and connect to each secondary DB dynamically
-      for (const userMapping of usersMapping) {
-        const { school_db_name } = userMapping;
+      for (const school of schoolFromPrimaryDb) {
+        const { school_db_name } = school;
 
         // Connect to each secondary DB (per school)
         await connectToSchoolDB(school_db_name);
       }
     } else {
-      infoLogger.info("No school users mapping found.");
+      infoLogger.info("No school mapping found.");
     }
   } catch (error) {
     errorLogger.error(

@@ -41,6 +41,7 @@ export const staticProps = {
     FAILED_TO_CREATE: "Failed to create!",
     SOMETHING_WENT_WRONG: "Something went wrong!",
     NOT_FOUND: "Not found!",
+    NOT_CREATED: "Not created!",
 
     FILE_NOT_FOUND: "File not found!",
     FILE_RETRIEVED: "File retrieved successfully!",
