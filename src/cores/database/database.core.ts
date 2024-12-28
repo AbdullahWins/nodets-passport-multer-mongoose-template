@@ -1,27 +1,46 @@
-import { Model } from "mongoose";
+import { Schema, Model, Connection } from "mongoose";
 import { connectToSchoolDB } from "../../configs";
 
-// Function to get or define a model on a specific school DB connection
+// Cache for models
+const modelCache: { [dbName: string]: { [modelName: string]: Model<any> } } =
+  {};
+
+// Utility to get or define a model on a specific school database connection
 export const getSchoolModel = async <T>(
   schoolDbName: string,
-  model: Model<T>
+  modelName: string,
+  schema: Schema<T>
 ): Promise<Model<T>> => {
-  // Get the connection to the school DB
+  // Check if the model is already cached
+  if (modelCache[schoolDbName]?.[modelName]) {
+    return modelCache[schoolDbName][modelName] as Model<T>;
+  }
+
+  // Get the connection to the school's database
   const schoolConnection = await connectToSchoolDB(schoolDbName);
 
   if (!schoolConnection) {
-    throw new Error(`No connection found for school: ${schoolDbName}`);
+    throw new Error(
+      `Failed to connect to the school database: ${schoolDbName}`
+    );
   }
 
-  // Extract the model name and schema from the provided model
-  const modelName = model.modelName;
-  const schema = model.schema;
+  const typedSchoolConnection: Connection = schoolConnection;
 
-  // Check if the model is already defined for this connection
-  if (schoolConnection.models[modelName]) {
-    return schoolConnection.models[modelName] as Model<T>;
+  // Cache the models for reuse
+  if (!modelCache[schoolDbName]) {
+    modelCache[schoolDbName] = {};
   }
 
-  // Define and return the model
-  return schoolConnection.model<T>(modelName, schema);
+  // Check if the model is already defined on the connection
+  if (typedSchoolConnection.models[modelName]) {
+    const cachedModel = typedSchoolConnection.models[modelName] as Model<T>;
+    modelCache[schoolDbName][modelName] = cachedModel;
+    return cachedModel;
+  }
+
+  // Define the model and cache it
+  const newModel = typedSchoolConnection.model<T>(modelName, schema);
+  modelCache[schoolDbName][modelName] = newModel;
+  return newModel;
 };

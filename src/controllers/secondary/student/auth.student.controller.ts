@@ -1,6 +1,6 @@
 import { Request, Response, RequestHandler } from "express";
 import { catchAsync } from "../../../middlewares";
-import { School, Student } from "../../../models";
+import { School } from "../../../models";
 import {
   ApiError,
   compareString,
@@ -13,6 +13,11 @@ import { connectToSchoolDB } from "../../../configs";
 import { sendResponse, staticProps } from "../../../utils";
 import { StudentResponseDto } from "../../../dtos";
 import { IStudent } from "../../../interfaces";
+import {
+  STUDENT_MODEL_NAME,
+  studentSchema,
+} from "../../../models/secondary/student/student.model";
+import { getDatabaseFromUid } from "../../../utils/helpers/db_finder.helper";
 
 // Add or register a student
 export const SignUpStudent: RequestHandler = catchAsync(
@@ -26,7 +31,7 @@ export const SignUpStudent: RequestHandler = catchAsync(
     }
 
     // Connect to the school's database
-    const schoolDB = await connectToSchoolDB(school.school_db_name);
+    const schoolDB: any = await connectToSchoolDB(school.school_db_name);
     if (!schoolDB) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,
@@ -69,61 +74,49 @@ export const SignUpStudent: RequestHandler = catchAsync(
   }
 );
 
-// Student login
+// SignInStudent Handler
 export const SignInStudent: RequestHandler = catchAsync(async (req, res) => {
   const { email, password, school_uid } = req.body;
 
-  // Validate the school
-  const school = await School.findOne({ school_uid });
-  if (!school) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Invalid school UID.");
-  }
+  // Step 1: Validate the school
+  // const school = await School.findOne({ school_uid });
+  // if (!school) {
+  //   throw new ApiError(httpStatus.NOT_FOUND, "Invalid school UID.");
+  // }
 
-  // Get the Student model from the school's database
+  const school_db_name = getDatabaseFromUid(school_uid);
+
+  // Step 2: Get the Student model from the school's database
   const StudentModel = await getSchoolModel<IStudent>(
-    school.school_db_name,
-    Student
+    school_db_name,
+    STUDENT_MODEL_NAME,
+    studentSchema
   );
 
-  if (!StudentModel) {
-    throw new ApiError(
-      httpStatus.INTERNAL_SERVER_ERROR,
-      staticProps.database.CONNECTION_ERROR_SECONDARY
-    );
-  }
-
-  // Find the student by email
+  // Step 3: Find the student by email
   const student = await StudentModel.findOne({ email });
   if (!student) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid credentials.");
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Not Found.");
   }
 
-  console.log("student", student);
-
-  console.log("password", password);
-  
-  console.log("student.password", student.password);
-
-  // Validate the password
+  // Step 4: Validate the password
   const isPasswordMatch = await compareString(password, student.password);
   if (!isPasswordMatch) {
     throw new ApiError(httpStatus.UNAUTHORIZED, "Invalid credentials.");
   }
 
-  // Generate JWT token
+  // Step 5: Generate JWT token
   const jwtPayload = {
     _id: student._id,
     email: student.email,
     role: student.role,
   };
-
-  console.log("jwtPayload", jwtPayload);
   const token = generateJwtToken(jwtPayload);
 
-  // Respond with success
+  // Step 6: Respond with success
   sendResponse(res, {
     statusCode: httpStatus.OK,
     message: "Login successful.",
-    data: { token, student: new StudentResponseDto(student) },
+    data: { token, student },
   });
 });

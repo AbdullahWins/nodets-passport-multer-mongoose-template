@@ -1,9 +1,8 @@
-//src/models/student/student.model.ts
-import moment from "moment";
-import { Schema, model } from "mongoose";
-import { IStudentDocument, IStudentModel } from "../../../interfaces";
+import { Schema } from "mongoose";
+import { IStudent } from "../../../interfaces";
 
-const StudentSchema = new Schema<IStudentDocument>({
+// Define the Student schema
+export const studentSchema = new Schema<IStudent>({
   name: {
     type: String,
     required: [true, "Name is required"],
@@ -12,9 +11,13 @@ const StudentSchema = new Schema<IStudentDocument>({
     type: String,
     required: [true, "Password is required"],
   },
+  email: {
+    type: String,
+    required: [true, "Email is required"],
+  },
   image: {
     type: String,
-    required: [true, "Image is required."],
+    required: [true, "Image is required"],
   },
   address: {
     type: String,
@@ -22,16 +25,13 @@ const StudentSchema = new Schema<IStudentDocument>({
   },
   createdAt: {
     type: Number,
-    default: () => moment().utc().unix(),
+    default: () => Date.now(),
   },
   updatedAt: {
     type: Number,
-    default: () => moment().utc().unix(),
+    default: () => Date.now(),
   },
 });
 
-const Student = model<IStudentDocument, IStudentModel>(
-  "Student",
-  StudentSchema
-);
-export default Student;
+// Export model name for dynamic usage
+export const STUDENT_MODEL_NAME = "Student";
