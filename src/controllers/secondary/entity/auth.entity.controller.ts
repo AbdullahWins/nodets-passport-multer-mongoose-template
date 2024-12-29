@@ -5,18 +5,18 @@ import { sendResponse, staticProps } from "../../../utils";
 import { signInEntityService, signUpEntityService } from "../../../services";
 import { IMulterFiles } from "../../../interfaces";
 
-// Add or register a entity
+// SignUpEntity Handler
 export const SignUpEntity: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const parsedData = req.body;
     const { single } = req.files as IMulterFiles;
 
-    const entity = await signUpEntityService(parsedData, single);
+    const result = await signUpEntityService(parsedData, single);
 
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       message: staticProps.common.CREATED,
-      data: entity,
+      data: result,
     });
   }
 );

@@ -7,18 +7,18 @@ import { getFileUrl } from "../../../utils";
 export class EntityDto implements Partial<IEntity> {
   _id: Types.ObjectId;
   school_uid: string;
-  entity_name: string;
-  entity_email: string;
-  entity_image: string;
-  entity_address: string;
+  name: string;
+  email: string;
+  image: string;
+  address: string;
 
   constructor(entity: IEntity) {
     this._id = entity._id!;
     this.school_uid = entity.school_uid;
-    this.entity_name = entity.entity_name;
-    this.entity_email = entity.entity_email;
-    this.entity_image = getFileUrl(entity.entity_image);
-    this.entity_address = entity.entity_address;
+    this.name = entity.name;
+    this.email = entity.email;
+    this.image = getFileUrl(entity.image);
+    this.address = entity.address;
   }
 }
 

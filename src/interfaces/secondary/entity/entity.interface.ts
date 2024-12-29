@@ -5,41 +5,41 @@ import { ICommonSchema } from "../../common/common/common.interface";
 // entity interface
 export interface IEntity extends ICommonSchema {
   school_uid: string;
-  entity_name: string;
-  entity_email: string;
-  entity_image: string;
-  entity_address: string;
-  entity_password: string;
-  entity_role: string;
+  name: string;
+  email: string;
+  image: string;
+  address: string;
+  password: string;
+  role: string;
 }
 
 // entity add interface
 export interface IEntityCreate {
   school_uid: string;
-  entity_name: string;
-  entity_email: string;
-  entity_image: string;
-  entity_address: string;
-  entity_password: string;
-  entity_role: string;
+  name: string;
+  email: string;
+  image: string;
+  address: string;
+  password: string;
+  role: string;
 }
 
 // entity update interface
 export interface IEntityUpdate {
   school_uid: string;
-  entity_name?: string | undefined;
-  entity_email?: string | undefined;
-  entity_image?: string | undefined;
-  entity_address?: string | undefined;
-  entity_password?: string | undefined;
-  entity_isEmailVerified?: boolean | undefined;
-  entity_role?: string | undefined;
+  name?: string | undefined;
+  email?: string | undefined;
+  image?: string | undefined;
+  address?: string | undefined;
+  password?: string | undefined;
+  isEmailVerified?: boolean | undefined;
+  role?: string | undefined;
 }
 
 export interface IEntitySignIn {
   school_uid: string;
-  entity_email: string;
-  entity_password: string;
+  email: string;
+  password: string;
 }
 
 // entity schema methods

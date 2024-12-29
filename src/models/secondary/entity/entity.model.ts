@@ -9,24 +9,24 @@ export const EntitySchema = new Schema<IEntity>({
     type: String,
     required: [true, "School UID is required"],
   },
-  entity_name: {
+  name: {
     type: String,
     required: [true, "Name is required"],
   },
-  entity_password: {
+  password: {
     type: String,
     required: [true, "Password is required"],
   },
-  entity_email: {
+  email: {
     type: String,
     unique: true,
     required: [true, "Email is required"],
   },
-  entity_image: {
+  image: {
     type: String,
     required: [true, "Image is required"],
   },
-  entity_address: {
+  address: {
     type: String,
     required: [true, "Address is required"],
   },

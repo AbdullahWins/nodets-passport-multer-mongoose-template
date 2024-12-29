@@ -75,11 +75,11 @@ export const updateEntityByIdService = async (
     try {
       const { filePath } = await uploadFiles(single);
 
-      if (data.entity_image) {
-        removeFile(data.entity_image);
+      if (data.image) {
+        removeFile(data.image);
       }
 
-      data.entity_image = filePath || staticProps.default.DEFAULT_IMAGE_PATH;
+      data.image = filePath || staticProps.default.DEFAULT_IMAGE_PATH;
     } catch (error) {
       throw new ApiError(
         httpStatus.INTERNAL_SERVER_ERROR,

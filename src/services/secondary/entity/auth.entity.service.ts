@@ -16,17 +16,17 @@ export const signUpEntityService = async (
   file: IUploadFile[] | undefined
 ) => {
   //add default role
-  entityData.entity_role = ENUM_SCHOOL_ROLES.STUDENT;
+  entityData.role = ENUM_SCHOOL_ROLES.STUDENT;
   // Hash the password
-  entityData.entity_password = await hashString(entityData.entity_password!);
+  entityData.password = await hashString(entityData.password!);
   // Add default image
-  entityData.entity_image = staticProps.default.DEFAULT_IMAGE_PATH;
+  entityData.image = staticProps.default.DEFAULT_IMAGE_PATH;
 
   // Upload file if exists
   if (file) {
     const { filePath } = await uploadFiles(file);
     if (filePath) {
-      entityData.entity_image = filePath;
+      entityData.image = filePath;
     }
   }
 
@@ -56,7 +56,7 @@ export const signInEntityService = async (entityData: IEntitySignIn) => {
 
   // Find the entity by email
   const entity = await EntityModel.findOne({
-    entity_email: validatedData.entity_email,
+    email: validatedData.email,
   });
 
   if (!entity) {
@@ -65,8 +65,8 @@ export const signInEntityService = async (entityData: IEntitySignIn) => {
 
   // Validate the password
   const isPasswordMatch = await compareString(
-    entityData.entity_password,
-    entity.entity_password
+    entityData.password,
+    entity.password
   );
   if (!isPasswordMatch) {
     throw new ApiError(
@@ -78,8 +78,8 @@ export const signInEntityService = async (entityData: IEntitySignIn) => {
   // Generate JWT token
   const jwtPayload = {
     _id: entity._id,
-    email: entity.entity_email,
-    role: entity.entity_role,
+    email: entity.email,
+    role: entity.role,
   };
   const token = generateJwtToken(jwtPayload);
 

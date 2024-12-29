@@ -22,40 +22,32 @@ import {
 router.get(
   "/all",
   authenticateEntity,
-  authorizeEntity([
-    ENUM_AUTH_ROLES.SUPER_ADMIN,
-    ENUM_AUTH_ROLES.NORMAL_ADMIN,
-    ENUM_AUTH_ROLES.STORE_ADMIN,
-  ]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   GetAllEntitys
 );
 router.get(
   "/find/:entityId",
   authenticateEntity,
-  authorizeEntity([
-    ENUM_AUTH_ROLES.SUPER_ADMIN,
-    ENUM_AUTH_ROLES.NORMAL_ADMIN,
-    ENUM_AUTH_ROLES.STORE_ADMIN,
-  ]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   GetEntityById
 );
 router.post(
   "/add",
   authenticateEntity,
-  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   SignUpEntity
 );
 router.post("/login", SignInEntity);
 router.patch(
   "/update/:entityId",
   authenticateEntity,
-  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   UpdateEntityById
 );
 router.delete(
   "/delete/:entityId",
   authenticateEntity,
-  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.NORMAL_ADMIN]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   DeleteEntityById
 );
 
