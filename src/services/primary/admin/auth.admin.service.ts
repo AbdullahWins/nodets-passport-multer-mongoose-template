@@ -31,16 +31,13 @@ export const signUpAdminService = async (
   // Upload file if exists
   if (file) {
     const { filePath } = await uploadFiles(file);
-    console.log("filePath", filePath);
     if (filePath) {
       adminData.image = filePath;
     }
   }
-  console.log("adminData", adminData);
 
   //validate the admin data
   const validatedData = validateZodSchema(adminData, AdminSignupDtoZodSchema);
-  console.log("validatedData", validatedData);
 
   // Create the admin
   const admin = await Admin.create(validatedData);
