@@ -24,7 +24,7 @@ router.post("/signup", SignUpAdmin);
 router.get(
   "/all",
   authenticateEntity,
-  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN]),
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   GetAllAdmins
 );
 router.get(

@@ -3,6 +3,7 @@ export const staticProps = {
   default: {
     DEFAULT_IMAGE_PATH: "public/default/default.png",
     DEFAULT_DOCUMENT_PATH: "public/default/default.png",
+    DEFAULT_SUPER_ADMIN: "super_admin",
   },
 
   cors: {

@@ -1,22 +1,6 @@
 // src/interfaces/common/common.interface.ts
 import { Types } from "mongoose";
 
-export interface ICommonEntitySchema {
-  _id: Types.ObjectId;
-  email: string;
-  phone: string;
-  password: string;
-  role: string;
-  image?: string;
-  googleId?: string;
-  otp?: string | undefined;
-  otpExpires?: number | undefined;
-  isEmailVerified?: boolean;
-  createdAt?: number;
-  updatedAt?: number;
-  __v?: number;
-}
-
 // common schema
 export interface ICommonSchema {
   _id?: Types.ObjectId;

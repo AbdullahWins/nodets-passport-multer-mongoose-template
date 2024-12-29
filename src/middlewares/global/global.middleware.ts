@@ -1,6 +1,5 @@
 //src/middlewares/global/global.middleware.ts
 import express from "express";
-import passport from "passport";
 import { Application } from "express";
 import helmet from "helmet";
 import sanitize from "express-mongo-sanitize";
@@ -9,7 +8,6 @@ import { multerConfig } from "../../configs/multer/multer.config";
 import { parseJsonBodyMiddleware } from "../parse/parse.middleware";
 import { promClientMiddleware } from "../monitor/monitor.middleware";
 import { requestLoggerMiddleware } from "../logger/logger.middleware";
-import { configurePassport } from "../../configs/passport/passport.config";
 
 export const globalMiddleware = (app: Application) => {
   app.use(corsConfig);
@@ -29,8 +27,4 @@ export const globalMiddleware = (app: Application) => {
 
   // Prometheus metrics middleware
   app.use(promClientMiddleware);
-
-  // Initialize Passport configuration
-  configurePassport();
-  app.use(passport.initialize());
 };

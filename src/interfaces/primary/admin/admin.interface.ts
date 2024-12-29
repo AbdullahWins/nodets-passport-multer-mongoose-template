@@ -1,33 +1,57 @@
 // src/interfaces/admin/admin.interface.ts
 import { Model } from "mongoose";
-import { ICommonEntitySchema } from "../../common/common/common.interface";
+import { ICommonSchema } from "../../common";
 
 // admin interface
-export interface IAdmin extends ICommonEntitySchema {
-  fullName: string;
-  isVerified?: boolean;
+export interface IAdmin extends ICommonSchema {
+  school_uid: string;
+  name: string;
+  email: string;
+  image: string;
+  password: string;
+  role: string;
+  assigned_schools: string[];
 }
 
 // admin signup interface
 export interface IAdminSignup {
-  googleId?: string;
-  fullName?: string;
-  email?: string;
-  password?: string;
-  role?: string;
+  name: string;
+  email: string;
+  image: string;
+  password: string;
+  role: string;
+  assigned_schools: string[];
 }
 
 // admin login interface
-export interface IAdminLogin {
-  googleId?: string;
+export interface IAdminSignin {
+  school_uid: string;
+  email: string;
+  password: string;
+}
+
+// admin create interface
+export interface IAdminCreate {
+  school_uid?: string;
+  name: string;
+  email: string;
+  image: string;
+  password: string;
+  role?: string;
+  assigned_schools?: string[];
+}
+
+// admin update interface
+export interface IAdminUpdate {
+  name?: string;
   email?: string;
+  image?: string;
   password?: string;
+  role?: string;
+  assigned_schools?: string[];
 }
 
 // admin schema methods
-export interface IAdminModel extends Model<IAdmin> {
-  isEntityExistsById(adminId: string, select?: string): Promise<IAdmin | null>;
-  isEntityExistsByEmail(email: string, select?: string): Promise<IAdmin | null>;
-}
+export interface IAdminModel extends Model<IAdmin> {}
 
 export interface IAdminDocument extends IAdmin, Document {}

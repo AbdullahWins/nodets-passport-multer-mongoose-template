@@ -1,7 +1,5 @@
 // src/interfaces/jwt/jwt.interface.ts
-import { Model, Types } from "mongoose";
-import { Strategy as JwtStrategy } from "passport-jwt";
-import { Strategy as LocalStrategy } from "passport-local";
+import { Types } from "mongoose";
 
 export interface IJwtPayload {
   _id: Types.ObjectId | string;
@@ -10,11 +8,3 @@ export interface IJwtPayload {
   isAccessingOwnData?: boolean;
 }
 
-
-export interface IConfigureJwtStrategy {
-  (jwtSecret: string): JwtStrategy;
-}
-
-export interface IConfigureLocalStrategy {
-  (model: Model<any>): LocalStrategy;
-}

@@ -74,7 +74,7 @@ SchoolSchema.statics.isUserExistsByEmail = async function (
 SchoolSchema.statics.isUserExistsBySchoolId = async function (
   schoolId: string
 ): Promise<ISchool | null> {
-  const user = await this.findOne({ school_id: schoolId }).lean();
+  const user = await this.findOne({ school_uid: schoolId }).lean();
   return user;
 };
 

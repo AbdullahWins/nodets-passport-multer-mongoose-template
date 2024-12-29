@@ -6,24 +6,29 @@ import { getFileUrl } from "../../../utils";
 // Base Admin DTO with minimal properties
 class AdminDtoBase implements Partial<IAdmin> {
   _id: Types.ObjectId;
-  fullName: string;
+  name: string;
   email: string;
   image: string;
-  role: string;
-  isEmailVerified: boolean;
+  password: string;
+  assigned_schools: string[];
 
   constructor(
     admin: Pick<
       IAdmin,
-      "_id" | "fullName" | "email" | "image" | "role" | "isEmailVerified"
+      | "_id"
+      | "name"
+      | "email"
+      | "image"
+      | "password"
+      | "assigned_schools"
     >
   ) {
     this._id = admin._id!;
-    this.fullName = admin.fullName;
+    this.name = admin.name;
     this.email = admin.email;
     this.image = getFileUrl(admin.image);
-    this.role = admin.role;
-    this.isEmailVerified = admin.isEmailVerified || false;
+    this.password = admin.password;
+    this.assigned_schools = admin.assigned_schools;
   }
 }
 

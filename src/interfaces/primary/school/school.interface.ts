@@ -35,7 +35,7 @@ export interface ISchoolUpdate {
 // school schema methods
 export interface ISchoolModel extends Model<ISchool> {
   isSchoolExistsById(
-    school_id: string,
+    school_uid: string,
     select?: string
   ): Promise<ISchool | null>;
 }
