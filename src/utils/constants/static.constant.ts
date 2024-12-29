@@ -38,7 +38,6 @@ export const staticProps = {
   common: {
     TEXT_REQUIRED_FOR_QR_CODE: "Text is required for QR code generation",
     INVALID_DATA: "Invalid data!",
-    FAILED_TO_CREATE: "Failed to create!",
     SOMETHING_WENT_WRONG: "Something went wrong!",
     NOT_FOUND: "Not found!",
     NOT_CREATED: "Not created!",
@@ -50,12 +49,20 @@ export const staticProps = {
     NO_PASSWORD_SET: "No password set!",
 
     CREATED: "Created successfully!",
+    FAILED_TO_CREATE: "Failed to create!",
+
     RETRIEVED: "Retrieved successfully!",
+    FAILED_TO_RETRIEVE: "Failed to retrieve!",
+
     UPDATED: "Updated successfully!",
+    FAILED_TO_UPDATE: "Failed to update!",
+
     DELETED: "Deleted successfully!",
+    FAILED_TO_DELETE: "Failed to delete!",
 
     PASSWORD_UPDATED: "Password updated successfully!",
     PASSWORD_RESET: "Password reset successfully!",
+
     LOGGED_IN: "Logged in successfully!",
     LOGGED_OUT: "Logged out successfully!",
 
@@ -71,6 +78,9 @@ export const staticProps = {
     MULTER_ERROR: "Multer error occured!",
     VALIDATION_ERROR: "Validation error!",
     INTERNAL_SERVER_ERROR: "Internal server error!",
+
+    FILE_UPLOADED: "File uploaded successfully!",
+    FAILED_TO_UPLOAD_FILE: "Failed to upload file!",
   },
 
   otp: {

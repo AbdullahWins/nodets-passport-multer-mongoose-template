@@ -1,11 +1,16 @@
 // src/services/entity/entity.service.ts
 import httpStatus from "http-status";
-import { paginate } from "../../../utils";
-import { ApiError } from "../../../cores";
-import { getSchoolModel } from "../../../cores";
+import { paginate, staticProps } from "../../../utils";
+import {
+  ApiError,
+  removeFile,
+  uploadFiles,
+  validateZodSchema,
+} from "../../../cores";
 import { EntityResponseDto } from "../../../dtos";
-import { IEntity, IEntityUpdate } from "../../../interfaces";
-import { EntitySchema, ENTITY_MODEL_NAME } from "../../../models";
+import { IEntityUpdate, IUploadFile } from "../../../interfaces";
+import { getEntityModel } from "../../../models";
+import { EntityUpdateDtoZodSchema } from "../../../validations";
 
 // Get all entitys with pagination
 export const getAllEntitysService = async (
@@ -13,11 +18,14 @@ export const getAllEntitysService = async (
   page: number,
   limit: number
 ) => {
-  const EntityModel = await getSchoolModel<IEntity>(
-    school_uid,
-    ENTITY_MODEL_NAME,
-    EntitySchema
-  );
+  if (!school_uid) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  const EntityModel = await getEntityModel(school_uid);
 
   const paginatedResult = await paginate(EntityModel.find(), { page, limit });
 
@@ -30,18 +38,21 @@ export const getAllEntitysService = async (
 
 // Get a entity by ID
 export const getEntityByIdService = async (
-  school_uid: string,
-  entityId: string
+  school_uid: string | undefined,
+  entityId: string | undefined
 ) => {
-  const EntityModel = await getSchoolModel<IEntity>(
-    school_uid,
-    ENTITY_MODEL_NAME,
-    EntitySchema
-  );
+  if (!entityId || !school_uid) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  const EntityModel = await getEntityModel(school_uid);
 
   const entity = await EntityModel.findById(entityId);
   if (!entity) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Entity not found.");
+    throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
   }
 
   return new EntityResponseDto(entity);
@@ -49,28 +60,61 @@ export const getEntityByIdService = async (
 
 // Update a entity by ID
 export const updateEntityByIdService = async (
-  entityId: string,
-  updateData: IEntityUpdate
+  entityId: string | undefined,
+  data: IEntityUpdate,
+  single: IUploadFile[] | undefined
 ) => {
-  const EntityModel = await getSchoolModel<IEntity>(
-    updateData.school_uid,
-    ENTITY_MODEL_NAME,
-    EntitySchema
-  );
+  if (!entityId) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  if (single) {
+    try {
+      const { filePath } = await uploadFiles(single);
+
+      if (data.entity_image) {
+        removeFile(data.entity_image);
+      }
+
+      data.entity_image = filePath || staticProps.default.DEFAULT_IMAGE_PATH;
+    } catch (error) {
+      throw new ApiError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        staticProps.common.FAILED_TO_UPLOAD_FILE
+      );
+    }
+  }
+
+  const validatedData = validateZodSchema(data, EntityUpdateDtoZodSchema);
+
+  if (!validatedData.school_uid) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  const EntityModel = await getEntityModel(validatedData.school_uid);
 
   const entity = await EntityModel.findById(entityId);
   if (!entity) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Entity not found.");
+    throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
   }
 
   const updatedEntity = await EntityModel.findOneAndUpdate(
     { _id: entityId },
-    { $set: updateData },
+    { $set: validatedData },
     { new: true, runValidators: true }
   );
 
   if (!updatedEntity) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Failed to update entity.");
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      staticProps.common.FAILED_TO_UPDATE
+    );
   }
 
   return new EntityResponseDto(updatedEntity);
@@ -79,18 +123,21 @@ export const updateEntityByIdService = async (
 // Delete a entity by ID
 export const deleteEntityByIdService = async (
   school_uid: string,
-  entityId: string
+  entityId: string | undefined
 ) => {
-  const EntityModel = await getSchoolModel<IEntity>(
-    school_uid,
-    ENTITY_MODEL_NAME,
-    EntitySchema
-  );
+  if (!entityId || !school_uid) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  const EntityModel = await getEntityModel(school_uid);
 
   const result = await EntityModel.deleteOne({ _id: entityId });
 
   if (result.deletedCount === 0) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Entity not found.");
+    throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_FOUND);
   }
 
   return result;

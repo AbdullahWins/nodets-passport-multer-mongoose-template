@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Schema } from "mongoose";
 import { IEntity } from "../../../interfaces";
+import { getSchoolModel } from "../../../cores";
 
 // Define the Entity schema
 export const EntitySchema = new Schema<IEntity>({
@@ -41,3 +42,12 @@ export const EntitySchema = new Schema<IEntity>({
 
 // Export model name for dynamic usage
 export const ENTITY_MODEL_NAME = "Entity";
+
+export const getEntityModel = async (school_uid: string) => {
+  return await getSchoolModel<IEntity>(
+    school_uid,
+    ENTITY_MODEL_NAME,
+    EntitySchema
+  );
+};
+
