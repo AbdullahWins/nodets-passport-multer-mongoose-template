@@ -6,6 +6,7 @@ import {
   SchoolRouter,
   EntityRouter,
   StudentRouter,
+  TeacherRouter,
 } from "..";
 
 export const apiRouter = express.Router();
@@ -30,6 +31,10 @@ const apiRoutes: { path: string; route: Router }[] = [
   {
     path: "/students",
     route: StudentRouter,
+  },
+  {
+    path: "/teachers",
+    route: TeacherRouter,
   },
 ];
 
