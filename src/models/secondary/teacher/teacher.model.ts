@@ -21,6 +21,10 @@ export const TeacherSchema = new Schema<ITeacher>({
     type: String,
     required: [true, "Name is required"],
   },
+  username: {
+    type: String,
+    required: [true, "Username is required"],
+  },
   gender: {
     type: String,
     required: [true, "Gender is required"],
@@ -115,6 +119,10 @@ export const TeacherSchema = new Schema<ITeacher>({
   password: {
     type: String,
     required: [true, "Password is required"],
+  },
+  role: {
+    type: String,
+    required: [true, "Role is required"],
   },
 });
 

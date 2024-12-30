@@ -49,14 +49,17 @@ export const signUpStudentService = async (
 
 export const signInStudentService = async (studentData: IStudentSignIn) => {
   //validate the student data
-  const validatedData = validateZodSchema(studentData, StudentLoginDtoZodSchema);
+  const validatedData = validateZodSchema(
+    studentData,
+    StudentLoginDtoZodSchema
+  );
 
   // Get the Student model
   const StudentModel = await getStudentModel(validatedData.school_uid);
 
-  // Find the student by email
+  // Find the student by username
   const student = await StudentModel.findOne({
-    email: validatedData.email,
+    username: validatedData.username,
   });
 
   if (!student) {
@@ -78,7 +81,7 @@ export const signInStudentService = async (studentData: IStudentSignIn) => {
   // Generate JWT token
   const jwtPayload = {
     _id: student._id,
-    email: student.email,
+    username: student.username,
     role: student.role,
   };
   const token = generateJwtToken(jwtPayload);

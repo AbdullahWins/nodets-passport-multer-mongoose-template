@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 export interface IJwtPayload {
   _id: Types.ObjectId | string;
-  email: string;
+  username: string;
   role: string;
   isAccessingOwnData?: boolean;
 }

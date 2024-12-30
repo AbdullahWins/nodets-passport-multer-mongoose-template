@@ -8,6 +8,7 @@ export interface ITeacher extends ICommonSchema {
   school_uid: string;
   teacher_index: number;
   name: string;
+  username: string;
   gender: string;
   nid_number: string;
   mobile_number: string;
@@ -40,6 +41,7 @@ export interface ITeacher extends ICommonSchema {
   // Metadata
   image: string;
   password: string;
+  role: string;
 }
 
 // teacher create interface
@@ -47,6 +49,7 @@ export interface ITeacherCreate {
   school_uid: string;
   teacher_index: number;
   name: string;
+  username: string;
   gender: string;
   nid_number: string;
   mobile_number: string;
@@ -69,6 +72,7 @@ export interface ITeacherCreate {
   tax_identification_number: string;
   image: string;
   password: string;
+  role: string;
 }
 
 // teacher update interface
@@ -76,6 +80,7 @@ export interface ITeacherUpdate {
   school_uid?: string | undefined;
   teacher_index?: number | undefined;
   name?: string | undefined;
+  username?: string | undefined;
   gender?: string | undefined;
   nid_number?: string | undefined;
   mobile_number?: string | undefined;
@@ -98,12 +103,13 @@ export interface ITeacherUpdate {
   tax_identification_number?: string | undefined;
   image?: string | undefined;
   password?: string | undefined;
+  role?: string | undefined;
 }
 
 // teacher sign-in interface
 export interface ITeacherSignIn {
   school_uid: string;
-  email: string;
+  username: string;
   password: string;
 }
 

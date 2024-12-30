@@ -49,14 +49,17 @@ export const signUpTeacherService = async (
 
 export const signInTeacherService = async (teacherData: ITeacherSignIn) => {
   //validate the teacher data
-  const validatedData = validateZodSchema(teacherData, TeacherLoginDtoZodSchema);
+  const validatedData = validateZodSchema(
+    teacherData,
+    TeacherLoginDtoZodSchema
+  );
 
   // Get the Teacher model
   const TeacherModel = await getTeacherModel(validatedData.school_uid);
 
-  // Find the teacher by email
+  // Find the teacher by username
   const teacher = await TeacherModel.findOne({
-    email: validatedData.email,
+    username: validatedData.username,
   });
 
   if (!teacher) {
@@ -78,7 +81,7 @@ export const signInTeacherService = async (teacherData: ITeacherSignIn) => {
   // Generate JWT token
   const jwtPayload = {
     _id: teacher._id,
-    email: teacher.email,
+    username: teacher.username,
     role: teacher.role,
   };
   const token = generateJwtToken(jwtPayload);

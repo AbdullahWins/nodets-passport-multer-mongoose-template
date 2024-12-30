@@ -7,6 +7,7 @@ const BaseTeacherDtoZodSchema = z.object({
   school_uid: z.string().min(1, "School UID is required"),
   teacher_index: z.number().int().min(1, "Teacher Index is required"),
   name: z.string().min(1, "Name is required"),
+  username: z.string().min(1, "Username is required"),
   gender: z
     .enum(["Male", "Female", "Other"])
     .refine((val) => val !== undefined, "Gender is required"),
@@ -49,12 +50,14 @@ const BaseTeacherDtoZodSchema = z.object({
   // Metadata
   image: z.string().min(1, "Image is required"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
+  role: z.string().min(1, "Role is required"),
 });
 
 // Teacher Signup DTO schema
 export const TeacherSignupDtoZodSchema = BaseTeacherDtoZodSchema.pick({
   school_uid: true,
   teacher_index: true,
+  username: true,
   name: true,
   gender: true,
   nid_number: true,
@@ -78,12 +81,13 @@ export const TeacherSignupDtoZodSchema = BaseTeacherDtoZodSchema.pick({
   tax_identification_number: true,
   image: true,
   password: true,
+  role: true,
 });
 
 // Teacher Login DTO schema
 export const TeacherLoginDtoZodSchema = BaseTeacherDtoZodSchema.pick({
   school_uid: true,
-  email: true,
+  username: true,
   password: true,
 });
 

@@ -10,7 +10,7 @@ jest.mock("jsonwebtoken");
 describe("JWT Service", () => {
   const mockUser: IJwtPayload = {
     _id: new ObjectId("64b642d1a4c8f97d6d4a1abc"),
-    email: "abc@gmail.com",
+    username: "abc",
     role: "user", // Add role to match the actual implementation
   };
   const mockToken = "mockedToken";
@@ -31,7 +31,7 @@ describe("JWT Service", () => {
       expect(jwt.sign).toHaveBeenCalledWith(
         {
           _id: mockUser._id.toString(), // Convert ObjectId to string as implemented
-          email: mockUser.email,
+          username: mockUser.username,
           role: mockUser.role,
         },
         environment.jwt.JWT_ACCESS_TOKEN_SECRET,

@@ -84,7 +84,7 @@ export const StudentSignupDtoZodSchema = BaseStudentDtoZodSchema.pick({
 // Student Login DTO schema
 export const StudentLoginDtoZodSchema = BaseStudentDtoZodSchema.pick({
   school_uid: true,
-  email: true,
+  username: true,
   password: true,
 });
 
