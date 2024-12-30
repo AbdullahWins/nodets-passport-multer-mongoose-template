@@ -7,6 +7,7 @@ import {
   EntityRouter,
   StudentRouter,
   TeacherRouter,
+  SchoolAdminRouter,
 } from "..";
 
 export const apiRouter = express.Router();
@@ -36,6 +37,10 @@ const apiRoutes: { path: string; route: Router }[] = [
     path: "/teachers",
     route: TeacherRouter,
   },
+  {
+    path: "/school-admins",
+    route: SchoolAdminRouter,
+  }
 ];
 
 apiRoutes.forEach((route) => apiRouter.use(route.path, route.route));
