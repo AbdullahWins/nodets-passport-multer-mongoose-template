@@ -1,6 +1,12 @@
 //src/routers/main/routes.ts
 import express, { Router } from "express";
-import { AuthRouter, SchoolRouter, EntityRouter, AdminRouter } from "..";
+import {
+  AuthRouter,
+  AdminRouter,
+  SchoolRouter,
+  EntityRouter,
+  StudentRouter,
+} from "..";
 
 export const apiRouter = express.Router();
 
@@ -20,6 +26,10 @@ const apiRoutes: { path: string; route: Router }[] = [
   {
     path: "/entities",
     route: EntityRouter,
+  },
+  {
+    path: "/students",
+    route: StudentRouter,
   },
 ];
 

@@ -9,7 +9,7 @@ import {
 } from "../../services";
 import { sendResponse, staticProps } from "../../utils";
 import { IMulterFiles } from "../../interfaces";
-
+ 
 export const CentralSignin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const parsedData = req.body;
