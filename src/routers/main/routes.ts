@@ -4,7 +4,6 @@ import {
   AuthRouter,
   AdminRouter,
   SchoolRouter,
-  EntityRouter,
   StudentRouter,
   TeacherRouter,
   SchoolAdminRouter,
@@ -24,10 +23,6 @@ const apiRoutes: { path: string; route: Router }[] = [
   {
     path: "/schools",
     route: SchoolRouter,
-  },
-  {
-    path: "/entities",
-    route: EntityRouter,
   },
   {
     path: "/students",
