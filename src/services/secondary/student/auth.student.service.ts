@@ -5,7 +5,7 @@ import { ApiError } from "../../../cores";
 import { StudentResponseDto } from "../../../dtos";
 import { getStudentModel } from "../../../models";
 import { hashString, compareString, generateJwtToken } from "../../../cores";
-import { ENUM_SCHOOL_ROLES, staticProps } from "../../../utils";
+import { ENUM_SCHOOL_ROLES, ENUM_STUDENT_STATUS, staticProps } from "../../../utils";
 import {
   StudentLoginDtoZodSchema,
   StudentSignupDtoZodSchema,
@@ -17,6 +17,8 @@ export const signUpStudentService = async (
 ) => {
   //add default role
   studentData.role = ENUM_SCHOOL_ROLES.STUDENT;
+  //add default student status
+  studentData.status = ENUM_STUDENT_STATUS.PENDING;
   // Hash the password
   studentData.password = await hashString(studentData.password!);
   // Add default image
@@ -31,7 +33,10 @@ export const signUpStudentService = async (
   }
 
   //validate the student data
-  const validatedData = validateZodSchema(studentData, StudentSignupDtoZodSchema);
+  const validatedData = validateZodSchema(
+    studentData,
+    StudentSignupDtoZodSchema
+  );
 
   //TODO: we will check if the school exists or not here to avoid creating database and student for non-existing school
 

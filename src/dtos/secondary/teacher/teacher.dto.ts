@@ -10,6 +10,8 @@ export class TeacherDto implements Partial<ITeacher> {
   school_uid: string;
   teacher_index: number;
   name: string;
+  username: string;
+  // password: string;
   gender: string;
   nid_number: string;
   mobile_number: string;
@@ -37,6 +39,8 @@ export class TeacherDto implements Partial<ITeacher> {
     this.school_uid = teacher.school_uid;
     this.teacher_index = teacher.teacher_index!;
     this.name = teacher.name;
+    this.username = teacher.username;
+    // this.password = teacher.password;
     this.gender = teacher.gender!;
     this.nid_number = teacher.nid_number!;
     this.mobile_number = teacher.mobile_number!;

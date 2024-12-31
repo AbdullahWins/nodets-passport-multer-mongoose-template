@@ -8,7 +8,7 @@ export class SchoolAdminDto implements Partial<ISchoolAdmin> {
   school_uid: string;
   name: string;
   username: string;
-  password: string;
+  // password: string;
   mobile_number: string;
   role: string;
 
@@ -17,7 +17,7 @@ export class SchoolAdminDto implements Partial<ISchoolAdmin> {
     this.school_uid = schoolAdmin.school_uid;
     this.name = schoolAdmin.name;
     this.username = schoolAdmin.username;
-    this.password = schoolAdmin.password;
+    // this.password = schoolAdmin.password;
     this.mobile_number = schoolAdmin.mobile_number;
     this.role = schoolAdmin.role;
   }

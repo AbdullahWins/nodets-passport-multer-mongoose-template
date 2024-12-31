@@ -7,13 +7,17 @@ import {
   sendResponse,
   paginate,
   parseQueryData,
+  ENUM_SCHOOL_ROLES,
 } from "../../../utils";
 import { ApiError } from "../../../cores";
 import { ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
 import { catchAsync } from "../../../middlewares";
 import { SchoolResponseDto } from "../../../dtos";
 import { School } from "../../../models";
-import { connectToSchoolDB } from "../../../configs";
+import {
+  createSchoolMetadata,
+  signUpSchoolAdminService,
+} from "../../../services";
 
 // get all schools with pagination
 export const GetAllSchools: RequestHandler = catchAsync(
@@ -96,22 +100,27 @@ export const AddOneSchool: RequestHandler = catchAsync(
       throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
     }
 
-    // Step 2: Create a connection to the new database
-    const schoolDB = await connectToSchoolDB(school_db_name);
+    const schoolAdminData = {
+      school_uid: school_uid,
+      name: "School Admin",
+      username: "admin",
+      password: "admin",
+      mobile_number: "none",
+      role: ENUM_SCHOOL_ROLES.SCHOOL_ADMIN,
+    };
 
-    if (!schoolDB) {
-      throw new ApiError(
-        httpStatus.INTERNAL_SERVER_ERROR,
-        staticProps.database.CONNECTION_ERROR_SECONDARY
-      );
-    }
+    const schoolMetadata = {
+      school_uid: school_uid,
+      school_name: school_name,
+      school_db_name: school_db_name,
+    };
 
-    // Optional: Add some initial setup to the new database if required
-    await schoolDB.collection("metadata").insertOne({
-      created_at: new Date(),
-      school_name,
-      school_uid,
-    });
+    const schoolAdmin = await signUpSchoolAdminService(schoolAdminData);
+
+    const schoolMeta = await createSchoolMetadata(schoolMetadata);
+
+    console.log("schoolAdmin", schoolAdmin);
+    console.log("schoolMeta", schoolMeta);
 
     // Step 3: Return the school information in the response
     const schoolFromDto = new SchoolResponseDto(schoolData);

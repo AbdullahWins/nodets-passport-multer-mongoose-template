@@ -20,7 +20,7 @@ export class StudentDto implements Partial<IStudent> {
   religion: string;
   blood_group: string;
   disability: string;
-  password: string;
+  // password: string;
   image: string;
   father_name_english: string;
   father_name_bangla: string;
@@ -42,6 +42,9 @@ export class StudentDto implements Partial<IStudent> {
   permanent_address_upozilla: string;
   permanent_address_post_office: string;
   permanent_address_post_code: string;
+  //meta
+  role: string;
+  status: string;
 
   constructor(student: IStudent) {
     this._id = student._id!;
@@ -58,7 +61,7 @@ export class StudentDto implements Partial<IStudent> {
     this.religion = student.religion;
     this.blood_group = student.blood_group;
     this.disability = student.disability;
-    this.password = student.password;
+    // this.password = student.password;
     this.image = getFileUrl(student.image);
     this.father_name_english = student.father_name_english;
     this.father_name_bangla = student.father_name_bangla;
@@ -80,6 +83,9 @@ export class StudentDto implements Partial<IStudent> {
     this.permanent_address_upozilla = student.permanent_address_upozilla;
     this.permanent_address_post_office = student.permanent_address_post_office;
     this.permanent_address_post_code = student.permanent_address_post_code;
+    //meta
+    this.role = student.role;
+    this.status = student.status;
   }
 }
 

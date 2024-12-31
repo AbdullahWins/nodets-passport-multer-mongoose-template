@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
 import { ITeacher } from "../../../interfaces";
 import { getSchoolModel } from "../../../cores";
+import { ENUM_SHRADED_DATABASE_NAMES } from "../../../utils";
 
 // Define the Teacher schema
 export const TeacherSchema = new Schema<ITeacher>({
@@ -126,13 +127,10 @@ export const TeacherSchema = new Schema<ITeacher>({
   },
 });
 
-// Export model name for dynamic usage
-export const TEACHER_MODEL_NAME = "Teacher";
-
 export const getTeacherModel = async (school_uid: string) => {
   return await getSchoolModel<ITeacher>(
     school_uid,
-    TEACHER_MODEL_NAME,
+    ENUM_SHRADED_DATABASE_NAMES.TEACHER_MODEL_NAME,
     TeacherSchema
   );
 };

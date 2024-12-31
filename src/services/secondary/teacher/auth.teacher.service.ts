@@ -16,7 +16,7 @@ export const signUpTeacherService = async (
   file: IUploadFile[] | undefined
 ) => {
   //add default role
-  teacherData.role = ENUM_SCHOOL_ROLES.STUDENT;
+  teacherData.role = ENUM_SCHOOL_ROLES.TEACHER;
   // Hash the password
   teacherData.password = await hashString(teacherData.password!);
   // Add default image

@@ -9,6 +9,7 @@ export class EntityDto implements Partial<IEntity> {
   school_uid: string;
   name: string;
   email: string;
+  // password: string;
   image: string;
   address: string;
 
@@ -17,6 +18,7 @@ export class EntityDto implements Partial<IEntity> {
     this.school_uid = entity.school_uid;
     this.name = entity.name;
     this.email = entity.email;
+    // this.password = entity.password;
     this.image = getFileUrl(entity.image);
     this.address = entity.address;
   }

@@ -39,7 +39,9 @@ const BaseStudentDtoZodSchema = z.object({
   permanent_address_upozilla: z.string().min(1),
   permanent_address_post_office: z.string().min(1),
   permanent_address_post_code: z.string().min(1),
+  //meta
   role: z.string().min(1),
+  status: z.string().min(1),
 });
 
 // Student Signup DTO schema
@@ -79,6 +81,9 @@ export const StudentSignupDtoZodSchema = BaseStudentDtoZodSchema.pick({
   permanent_address_upozilla: true,
   permanent_address_post_office: true,
   permanent_address_post_code: true,
+  //meta
+  role: true,
+  status: true,
 });
 
 // Student Login DTO schema

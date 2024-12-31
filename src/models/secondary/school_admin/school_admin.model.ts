@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import { ISchoolAdmin } from "../../../interfaces";
 import { getSchoolModel } from "../../../cores";
-import { ENUM_SCHOOL_ROLES } from "../../../utils";
+import { ENUM_SCHOOL_ROLES, ENUM_SHRADED_DATABASE_NAMES } from "../../../utils";
 
 // Define the SchoolAdmin schema
 export const SchoolAdminSchema = new Schema<ISchoolAdmin>({
@@ -32,13 +32,10 @@ export const SchoolAdminSchema = new Schema<ISchoolAdmin>({
   },
 });
 
-// Export model name for dynamic usage
-export const SCHOOL_ADMIN_MODEL_NAME = "SchoolAdmin";
-
 export const getSchoolAdminModel = async (school_uid: string) => {
   return await getSchoolModel<ISchoolAdmin>(
     school_uid,
-    SCHOOL_ADMIN_MODEL_NAME,
+    ENUM_SHRADED_DATABASE_NAMES.SCHOOL_ADMIN_MODEL_NAME,
     SchoolAdminSchema
   );
 };

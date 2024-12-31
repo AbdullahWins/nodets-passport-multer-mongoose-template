@@ -15,7 +15,7 @@ export const signUpSchoolAdminService = async (
   schoolAdminData: ISchoolAdminCreate
 ) => {
   //add default role
-  schoolAdminData.role = ENUM_SCHOOL_ROLES.STUDENT;
+  schoolAdminData.role = ENUM_SCHOOL_ROLES.SCHOOL_ADMIN;
   // Hash the password
   schoolAdminData.password = await hashString(schoolAdminData.password!);
 
@@ -25,6 +25,8 @@ export const signUpSchoolAdminService = async (
     SchoolAdminSignupDtoZodSchema
   );
 
+  console.log("validatedData", validatedData);
+
   //TODO: we will check if the school exists or not here to avoid creating database and schoolAdmin for non-existing school
 
   // Get the SchoolAdmin model
@@ -32,6 +34,9 @@ export const signUpSchoolAdminService = async (
 
   // Create the schoolAdmin
   const schoolAdmin = await SchoolAdminModel.create(validatedData);
+
+  console.log("schoolAdmin", schoolAdmin);
+
   if (!schoolAdmin) {
     throw new ApiError(httpStatus.NOT_FOUND, staticProps.common.NOT_CREATED);
   }

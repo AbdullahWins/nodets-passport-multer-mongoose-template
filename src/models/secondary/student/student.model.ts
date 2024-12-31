@@ -1,7 +1,11 @@
 import { Schema } from "mongoose";
 import { IStudent } from "../../../interfaces";
 import { getSchoolModel } from "../../../cores";
-import { ENUM_SCHOOL_ROLES } from "../../../utils";
+import {
+  ENUM_SCHOOL_ROLES,
+  ENUM_SHRADED_DATABASE_NAMES,
+  ENUM_STUDENT_STATUS,
+} from "../../../utils";
 
 // Define the Student schema
 export const StudentSchema = new Schema<IStudent>({
@@ -157,15 +161,18 @@ export const StudentSchema = new Schema<IStudent>({
     default: ENUM_SCHOOL_ROLES.STUDENT,
     required: [true, "Role is required"],
   },
+  status: {
+    type: String,
+    enum: ENUM_STUDENT_STATUS,
+    default: ENUM_STUDENT_STATUS.PENDING,
+    required: [true, "Status is required"],
+  },
 });
-
-// Export model name for dynamic usage
-export const STUDENT_MODEL_NAME = "Student";
 
 export const getStudentModel = async (school_uid: string) => {
   return await getSchoolModel<IStudent>(
     school_uid,
-    STUDENT_MODEL_NAME,
+    ENUM_SHRADED_DATABASE_NAMES.STUDENT_MODEL_NAME,
     StudentSchema
   );
 };

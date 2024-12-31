@@ -41,6 +41,7 @@ export interface IStudent extends ICommonSchema {
   permanent_address_post_code: string;
   //meta fields
   role: string;
+  status: string;
 }
 
 // student add interface
@@ -82,6 +83,7 @@ export interface IStudentCreate {
   permanent_address_post_code: string;
   //meta fields
   role?: string;
+  status: string;
 }
 
 // student update interface
@@ -123,6 +125,7 @@ export interface IStudentUpdate {
   permanent_address_post_code?: string;
   //meta fields
   role?: string;
+  status: string;
 }
 
 export interface IStudentSignIn {

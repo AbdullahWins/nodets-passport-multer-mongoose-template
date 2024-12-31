@@ -11,6 +11,7 @@ import { ENUM_AUTH_ROLES } from "../../../utils";
 // controllers
 import {
   GetAllStudents,
+  GetAllPendingStudents,
   GetStudentById,
   SignUpStudent,
   SignInStudent,
@@ -24,6 +25,12 @@ router.get(
   authenticateEntity,
   authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
   GetAllStudents
+);
+router.get(
+  "/pending",
+  authenticateEntity,
+  authorizeEntity([ENUM_AUTH_ROLES.SUPER_ADMIN, ENUM_AUTH_ROLES.STAFF_ADMIN]),
+  GetAllPendingStudents
 );
 router.get(
   "/find/:studentId",

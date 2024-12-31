@@ -12,6 +12,12 @@ export interface ISchoolAdmin extends ICommonSchema {
   role: string;
 }
 
+export interface ISchoolMetadata {
+  school_uid: string;
+  school_name: string;
+  school_db_name: string;
+}
+
 // schoolAdmin add interface
 export interface ISchoolAdminCreate {
   school_uid: string;

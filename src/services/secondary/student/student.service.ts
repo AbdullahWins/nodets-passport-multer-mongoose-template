@@ -1,6 +1,6 @@
 // src/services/student/student.service.ts
 import httpStatus from "http-status";
-import { paginate, staticProps } from "../../../utils";
+import { ENUM_STUDENT_STATUS, paginate, staticProps } from "../../../utils";
 import {
   ApiError,
   removeFile,
@@ -35,6 +35,34 @@ export const getAllStudentsService = async (
 
   return { studentsFromDto, meta: paginatedResult.meta };
 };
+
+// Get all pending students (applied for admission)
+export const getAllPendingStudentsService = async (
+  school_uid: string,
+  page: number,
+  limit: number
+) => {
+  if (!school_uid) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      staticProps.common.DATA_REQUIRED
+    );
+  }
+
+  const StudentModel = await getStudentModel(school_uid);
+
+  const paginatedResult = await paginate(
+    StudentModel.find({ status: ENUM_STUDENT_STATUS.PENDING }),
+    { page, limit }
+  );
+
+  const studentsFromDto = paginatedResult.data.map(
+    (student) => new StudentResponseDto(student.toObject())
+  );
+
+  return { studentsFromDto, meta: paginatedResult.meta };
+};
+
 
 // Get a student by ID
 export const getStudentByIdService = async (

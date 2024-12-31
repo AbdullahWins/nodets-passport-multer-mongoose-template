@@ -8,6 +8,7 @@ import {
   getStudentByIdService,
   updateStudentByIdService,
   deleteStudentByIdService,
+  getAllPendingStudentsService,
 } from "../../../services";
 import { IMulterFiles } from "../../../interfaces";
 
@@ -18,6 +19,23 @@ export const GetAllStudents: RequestHandler = catchAsync(
     const { school_uid } = req.body;
 
     const result = await getAllStudentsService(school_uid, page, limit);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      message: staticProps.common.RETRIEVED,
+      data: result.studentsFromDto,
+      meta: result.meta,
+    });
+  }
+);
+
+// Get all pending students with pagination
+export const GetAllPendingStudents: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { page, limit } = parseQueryData(req.query);
+    const { school_uid } = req.body;
+
+    const result = await getAllPendingStudentsService(school_uid, page, limit);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
