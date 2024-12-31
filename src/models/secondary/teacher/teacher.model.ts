@@ -24,6 +24,7 @@ export const TeacherSchema = new Schema<ITeacher>({
   },
   username: {
     type: String,
+    unique: true,
     required: [true, "Username is required"],
   },
   gender: {

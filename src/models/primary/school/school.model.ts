@@ -12,11 +12,15 @@ const SchoolSchema = new Schema<ISchoolDocument>({
   school_email: {
     type: String,
     required: [true, "Email is required"],
-    unique: true,
   },
   school_name: {
     type: String,
     required: [true, "School name is required"],
+  },
+  school_username: {
+    type: String,
+    unique: true,
+    required: [true, "Username is required"],
   },
   school_address: {
     type: String,
@@ -28,10 +32,12 @@ const SchoolSchema = new Schema<ISchoolDocument>({
   },
   school_uid: {
     type: String,
+    unique: true,
     required: true,
   },
   school_db_name: {
     type: String,
+    unique: true,
     required: true,
   },
   createdAt: {

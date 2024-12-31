@@ -6,6 +6,7 @@ import { ICommonSchema } from "../../common";
 export interface IAdmin extends ICommonSchema {
   school_uid: string;
   name: string;
+  username: string;
   email: string;
   image: string;
   password: string;
@@ -16,6 +17,7 @@ export interface IAdmin extends ICommonSchema {
 // admin signup interface
 export interface IAdminSignup {
   name: string;
+  username: string;
   email: string;
   image: string;
   password: string;
@@ -26,7 +28,7 @@ export interface IAdminSignup {
 // admin login interface
 export interface IAdminSignin {
   school_uid: string;
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -35,6 +37,7 @@ export interface IAdminCreate {
   school_uid?: string;
   name: string;
   email: string;
+  username: string;
   image: string;
   password: string;
   role?: string;
@@ -44,6 +47,7 @@ export interface IAdminCreate {
 // admin update interface
 export interface IAdminUpdate {
   name?: string;
+  username?: string;
   email?: string;
   image?: string;
   password?: string;

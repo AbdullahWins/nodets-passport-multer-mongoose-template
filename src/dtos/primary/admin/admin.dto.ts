@@ -7,6 +7,7 @@ import { getFileUrl } from "../../../utils";
 class AdminDtoBase implements Partial<IAdmin> {
   _id: Types.ObjectId;
   name: string;
+  username: string;
   email: string;
   // password: string;
   image: string;
@@ -15,11 +16,18 @@ class AdminDtoBase implements Partial<IAdmin> {
   constructor(
     admin: Pick<
       IAdmin,
-      "_id" | "name" | "email" | "image" | "password" | "assigned_schools"
+      | "_id"
+      | "name"
+      | "username"
+      | "email"
+      | "image"
+      | "password"
+      | "assigned_schools"
     >
   ) {
     this._id = admin._id!;
     this.name = admin.name;
+    this.username = admin.username;
     this.email = admin.email;
     // this.password = admin.password;
     this.image = getFileUrl(admin.image);

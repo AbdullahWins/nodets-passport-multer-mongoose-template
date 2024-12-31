@@ -15,9 +15,15 @@ export const signUpAdminService = async (
   adminData: IAdminCreate,
   file: IUploadFile[] | undefined
 ) => {
-  //add default role
-  adminData.role = ENUM_ADMIN_ROLES.STAFF_ADMIN;
-
+  //check if the role is valid
+  if (
+    !Object.values(ENUM_ADMIN_ROLES).includes(
+      adminData.role as ENUM_ADMIN_ROLES
+    )
+  ) {
+    adminData.role = ENUM_ADMIN_ROLES.STAFF_ADMIN as ENUM_ADMIN_ROLES;
+  }
+  
   //add default school_uid and assigned_schools
   adminData.school_uid = staticProps.default.DEFAULT_SUPER_ADMIN;
   adminData.assigned_schools = [staticProps.default.DEFAULT_SUPER_ADMIN];
@@ -52,9 +58,9 @@ export const signInAdminService = async (adminData: IAdminSignin) => {
   //validate the admin data
   const validatedData = validateZodSchema(adminData, AdminLoginDtoZodSchema);
 
-  // Find the admin by email
+  // Find the admin by username
   const admin = await Admin.findOne({
-    email: validatedData.email,
+    username: validatedData.username,
   });
 
   if (!admin) {
@@ -76,7 +82,7 @@ export const signInAdminService = async (adminData: IAdminSignin) => {
   // Generate JWT token
   const jwtPayload = {
     _id: admin._id,
-    email: admin.email,
+    username: admin.username,
     role: admin.role,
   };
   const token = generateJwtToken(jwtPayload);

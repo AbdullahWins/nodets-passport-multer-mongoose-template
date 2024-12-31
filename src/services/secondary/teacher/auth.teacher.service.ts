@@ -5,7 +5,7 @@ import { ApiError } from "../../../cores";
 import { TeacherResponseDto } from "../../../dtos";
 import { getTeacherModel } from "../../../models";
 import { hashString, compareString, generateJwtToken } from "../../../cores";
-import { ENUM_SCHOOL_ROLES, staticProps } from "../../../utils";
+import { ENUM_TEACHER_ROLES, staticProps } from "../../../utils";
 import {
   TeacherLoginDtoZodSchema,
   TeacherSignupDtoZodSchema,
@@ -15,8 +15,14 @@ export const signUpTeacherService = async (
   teacherData: ITeacherCreate,
   file: IUploadFile[] | undefined
 ) => {
-  //add default role
-  teacherData.role = ENUM_SCHOOL_ROLES.TEACHER;
+  //check if the role is valid
+  if (
+    !Object.values(ENUM_TEACHER_ROLES).includes(
+      teacherData.role as ENUM_TEACHER_ROLES
+    )
+  ) {
+    teacherData.role = ENUM_TEACHER_ROLES.TEACHER as ENUM_TEACHER_ROLES;
+  }
   // Hash the password
   teacherData.password = await hashString(teacherData.password!);
   // Add default image
@@ -31,7 +37,10 @@ export const signUpTeacherService = async (
   }
 
   //validate the teacher data
-  const validatedData = validateZodSchema(teacherData, TeacherSignupDtoZodSchema);
+  const validatedData = validateZodSchema(
+    teacherData,
+    TeacherSignupDtoZodSchema
+  );
 
   //TODO: we will check if the school exists or not here to avoid creating database and teacher for non-existing school
 

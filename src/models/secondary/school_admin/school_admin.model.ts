@@ -15,6 +15,7 @@ export const SchoolAdminSchema = new Schema<ISchoolAdmin>({
   },
   username: {
     type: String,
+    unique: true,
     required: [true, "Username is required"],
   },
   password: {

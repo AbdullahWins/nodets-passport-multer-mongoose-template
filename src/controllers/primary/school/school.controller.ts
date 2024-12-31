@@ -9,8 +9,8 @@ import {
   parseQueryData,
   ENUM_SCHOOL_ROLES,
 } from "../../../utils";
-import { ApiError } from "../../../cores";
-import { ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
+import { ApiError, uploadFiles } from "../../../cores";
+import { IMulterFiles, ISchoolAdd, ISchoolUpdate } from "../../../interfaces";
 import { catchAsync } from "../../../middlewares";
 import { SchoolResponseDto } from "../../../dtos";
 import { School } from "../../../models";
@@ -73,20 +73,32 @@ export const AddOneSchool: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     // Parsing data from the request
     const parsedData = req.body;
+    const { single } = req.files as IMulterFiles;
 
     const {
       school_email,
       school_name,
+      school_username,
       school_address,
-      school_image,
       school_uid,
     } = parsedData as ISchoolAdd;
+
+    // upload the image if it exists or set it to default
+    let school_image;
+    // Upload single file if exists
+    if (single) {
+      const { filePath } = await uploadFiles(single);
+      if (filePath) {
+        school_image = filePath;
+      }
+    }
 
     // Construct the new school data
     const school_db_name = `school_${school_uid.toLowerCase()}`;
     const constructedData = {
       school_email,
       school_name,
+      school_username,
       school_address,
       school_image,
       school_uid,
@@ -115,12 +127,14 @@ export const AddOneSchool: RequestHandler = catchAsync(
       school_db_name: school_db_name,
     };
 
+    //TODO: Step 2: Insert the school admin data into the school database as transaction to ensure data consistency
     const schoolAdmin = await signUpSchoolAdminService(schoolAdminData);
 
     const schoolMeta = await createSchoolMetadata(schoolMetadata);
 
-    console.log("schoolAdmin", schoolAdmin);
-    console.log("schoolMeta", schoolMeta);
+    if (!schoolAdmin || !schoolMeta) {
+      throw new ApiError(httpStatus.BAD_REQUEST, staticProps.common.NOT_FOUND);
+    }
 
     // Step 3: Return the school information in the response
     const schoolFromDto = new SchoolResponseDto(schoolData);

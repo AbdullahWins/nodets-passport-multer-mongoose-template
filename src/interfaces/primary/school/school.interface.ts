@@ -6,6 +6,7 @@ import { ICommonSchema } from "../../common/common/common.interface";
 export interface ISchool extends ICommonSchema {
   school_email: string;
   school_name: string;
+  school_username: string;
   school_address: string;
   school_image: string;
   school_uid: string;
@@ -16,6 +17,7 @@ export interface ISchool extends ICommonSchema {
 export interface ISchoolAdd {
   school_email: string;
   school_name: string;
+  school_username: string;
   school_address: string;
   school_image: string;
   school_uid: string;
@@ -26,6 +28,7 @@ export interface ISchoolAdd {
 export interface ISchoolUpdate {
   school_email?: string;
   school_name?: string;
+  school_username?: string;
   school_address?: string;
   school_image?: string;
   school_uid?: string;

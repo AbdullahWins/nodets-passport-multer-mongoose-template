@@ -9,7 +9,7 @@ import {
 } from "../../services";
 import { sendResponse, staticProps } from "../../utils";
 import { IMulterFiles } from "../../interfaces";
- 
+
 export const CentralSignin: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
     const parsedData = req.body;
@@ -17,8 +17,10 @@ export const CentralSignin: RequestHandler = catchAsync(
     let result;
 
     if (parsedData.school_uid === staticProps.default.DEFAULT_SUPER_ADMIN) {
+      console.log("1");
       result = await signInAdminService(parsedData);
     } else {
+      console.log("2");
       result = await signInEntityService(parsedData);
     }
 

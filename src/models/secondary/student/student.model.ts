@@ -15,6 +15,7 @@ export const StudentSchema = new Schema<IStudent>({
   },
   username: {
     type: String,
+    unique: true,
     required: [true, "Username is required"],
   },
   name_english: {
@@ -43,7 +44,6 @@ export const StudentSchema = new Schema<IStudent>({
   },
   email: {
     type: String,
-    unique: true,
     required: [true, "Email is required"],
   },
   nationality: {
