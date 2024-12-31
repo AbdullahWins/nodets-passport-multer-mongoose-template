@@ -1,5 +1,5 @@
 //src/configs/multer/multer.config.ts
-import { Request } from "express";
+import { Request, RequestHandler } from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -40,7 +40,7 @@ const upload = multer({
   },
 });
 
-export const multerConfig = upload.fields([
+export const multerConfig: RequestHandler = upload.fields([
   { name: "single", maxCount: 1 },
   { name: "document", maxCount: 1 },
   { name: "multiple", maxCount: 10 },

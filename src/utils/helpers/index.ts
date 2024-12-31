@@ -1,7 +1,8 @@
 //src/utils/helpers/index.ts
 export * from "./entity.helper";
-export * from "./paginate.util";
-export * from "./parse.util";
-export * from "./response.util";
-export * from "./root.util";
-export * from "./url.util";
+export * from "./paginate.helper";
+export * from "./parse.helper";
+export * from "./response.helper";
+export * from "./root.helper";
+export * from "./url.helper";
+export * from "./dbFinder.helper";

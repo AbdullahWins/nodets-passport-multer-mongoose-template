@@ -1,7 +1,7 @@
 //src/middlewares/logger/logger.middleware.ts
 import { NextFunction, Request, Response } from "express";
 import moment from "moment";
-import { httpLogger } from "../../services";
+import { httpLogger } from "../../cores";
 import { getRequestFulllUrl } from "../../utils";
 
 export const requestLoggerMiddleware = (

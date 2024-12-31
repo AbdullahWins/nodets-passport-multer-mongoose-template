@@ -21,17 +21,7 @@ export const CommonEntitySchema = new Schema({
     },
     // select: false,
   },
-  otp: {
-    type: String,
-  },
-  otpExpires: {
-    type: Number,
-  },
-  googleId: {
-    type: String, // Field for storing Google ID (or any other social login ID)
-    unique: true, // Ensures no duplicate Google IDs are stored
-    sparse: true, // Allows this field to be absent for users without Google login
-  },
+  
   createdAt: {
     type: Number,
     default: () => moment().utc().unix(),

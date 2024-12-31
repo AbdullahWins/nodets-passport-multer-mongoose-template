@@ -1,5 +1,5 @@
 import cors, { CorsOptions } from "cors";
-import { ApiError, errorLogger, infoLogger } from "../../services";
+import { ApiError, errorLogger, infoLogger } from "../../cores";
 import { staticProps } from "../../utils";
 
 const corsOptions: CorsOptions = {

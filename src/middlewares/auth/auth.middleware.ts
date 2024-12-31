@@ -1,19 +1,20 @@
-//src/middlewares/auth/auth.middleware.ts 
+//src/middlewares/auth/auth.middleware.ts
 import { NextFunction, Request, Response } from "express";
-import passport from "passport";
+import jwt from "jsonwebtoken";
 import httpStatus from "http-status";
 import { ENUM_AUTH_ROLES, staticProps } from "../../utils";
 import { IJwtPayload } from "../../interfaces";
-import { ApiError } from "../../services";
+import { ApiError } from "../../cores";
+import { environment } from "../../configs";
 
 // Auth middleware for roles
 export const authorizeEntity =
   (roles?: ENUM_AUTH_ROLES[]) =>
   async (req: Request, _res: Response, next: NextFunction) => {
     try {
-      const user = req.user as IJwtPayload;
+      const entity = req.entity as IJwtPayload;
 
-      if (!user) {
+      if (!entity) {
         throw new ApiError(
           httpStatus.UNAUTHORIZED,
           staticProps.jwt.INVALID_TOKEN
@@ -23,44 +24,53 @@ export const authorizeEntity =
       // Check if the role is allowed
       const allowedRoles = roles ?? Object.values(ENUM_AUTH_ROLES);
 
-      if (!allowedRoles.includes(user.role as ENUM_AUTH_ROLES)) {
+      if (!allowedRoles.includes(entity.role as ENUM_AUTH_ROLES)) {
         throw new ApiError(
           httpStatus.FORBIDDEN,
           `Forbidden: Required roles '${allowedRoles.join(", ")}' but found '${
-            user.role
+            entity.role
           }'`
         );
       }
 
-      // Attach user to request object if needed
-      req.user = user;
+      // Attach entity to request object if needed
+      req.entity = entity;
       next();
     } catch (error) {
       next(error);
     }
   };
 
-// Auth middleware for routes
+// Auth middleware to authenticate the entity using JWT
 export const authenticateEntity = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  return passport.authenticate(
-    "jwt",
-    { session: false },
-    (err: any, user: IJwtPayload) => {
-      if (err) {
-        return next(err);
-      }
-      if (user) {
-        req.user = user;
-        return next();
-      }
-      return res.status(401).json({
-        message: "Entity authentication failed",
-        error: "Unauthorized",
-      });
-    }
-  )(req, res, next);
+  const token = req.header("Authorization")?.replace("Bearer ", "");
+
+  if (!token) {
+    return res.status(httpStatus.UNAUTHORIZED).json({
+      message: staticProps.jwt.INVALID_TOKEN,
+      error: "Unauthorized",
+    });
+  }
+
+  try {
+    // Verify the JWT token and decode the payload
+    const decoded = jwt.verify(
+      token,
+      environment.jwt.JWT_ACCESS_TOKEN_SECRET
+    ) as IJwtPayload;
+
+    // Attach the entity to the request object
+    req.entity = decoded;
+
+    return next();
+  } catch (err) {
+    return res.status(httpStatus.UNAUTHORIZED).json({
+      message: staticProps.jwt.INVALID_TOKEN,
+      error: "Unauthorized",
+    });
+  }
 };

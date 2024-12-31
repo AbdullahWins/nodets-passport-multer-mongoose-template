@@ -1,40 +1,40 @@
 //src/routers/main/routes.ts
 import express, { Router } from "express";
 import {
+  AuthRouter,
   AdminRouter,
-  GameRouter,
-  ProductRouter,
-  StoreRouter,
-  TicketRouter,
-  UserRouter,
+  SchoolRouter,
+  StudentRouter,
+  TeacherRouter,
+  SchoolAdminRouter,
 } from "..";
 
 export const apiRouter = express.Router();
 
 const apiRoutes: { path: string; route: Router }[] = [
   {
-    path: "/users",
-    route: UserRouter,
+    path: "/auth",
+    route: AuthRouter,
   },
   {
     path: "/admins",
     route: AdminRouter,
   },
   {
-    path: "/stores",
-    route: StoreRouter,
+    path: "/schools",
+    route: SchoolRouter,
   },
   {
-    path: "/games",
-    route: GameRouter,
+    path: "/students",
+    route: StudentRouter,
   },
   {
-    path: "/products",
-    route: ProductRouter,
+    path: "/teachers",
+    route: TeacherRouter,
   },
   {
-    path: "/tickets",
-    route: TicketRouter,
+    path: "/school-admins",
+    route: SchoolAdminRouter,
   },
 ];
 
