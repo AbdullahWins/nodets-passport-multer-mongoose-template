@@ -7,6 +7,7 @@ import {
   EntityRouter,
   StudentRouter,
   TeacherRouter,
+  HeadTeacherRouter,
   SchoolAdminRouter,
 } from "..";
 
@@ -38,9 +39,13 @@ const apiRoutes: { path: string; route: Router }[] = [
     route: TeacherRouter,
   },
   {
+    path: "/head-teachers",
+    route: HeadTeacherRouter,
+  },
+  {
     path: "/school-admins",
     route: SchoolAdminRouter,
-  }
+  },
 ];
 
 apiRoutes.forEach((route) => apiRouter.use(route.path, route.route));
