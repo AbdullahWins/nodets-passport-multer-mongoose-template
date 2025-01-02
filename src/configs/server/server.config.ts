@@ -1,9 +1,9 @@
 //src/configs/server/server.config.ts
 import { Application } from "express";
 import { Server } from "http";
-import { connectToDatabases } from "../database/database.config";
-import { environment } from "../environment/environment.config";
 import { errorLogger, infoLogger } from "../../cores";
+import { environment } from "../environment";
+import { connectToDatabases, connectToRedis } from "../database";
 
 // server related works
 process.on("uncaughtException", (error) => {
@@ -17,8 +17,9 @@ export const startServer = async (app: Application) => {
   try {
     // server listen
     server = app.listen(environment.server.SERVER_PORT, async () => {
-      // connect database after server started
+      // connect mongodb databases and redis after server started
       await connectToDatabases();
+      await connectToRedis();
 
       infoLogger.info(
         `Listening on port http://localhost:${environment.server.SERVER_PORT}/api/v1`

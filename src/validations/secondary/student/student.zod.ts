@@ -94,8 +94,6 @@ export const StudentLoginDtoZodSchema = BaseStudentDtoZodSchema.pick({
 });
 
 // Student Update DTO schema
-export const StudentUpdateDtoZodSchema =
-  BaseStudentDtoZodSchema.partial().extend({
-    school_uid: z.string().min(1),
-    role: z.string().min(1),
-  });
+export const StudentUpdateDtoZodSchema = BaseStudentDtoZodSchema.partial().extend({
+  school_uid: z.string().min(1),
+});

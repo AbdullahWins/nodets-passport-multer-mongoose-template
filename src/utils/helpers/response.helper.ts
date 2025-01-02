@@ -1,7 +1,7 @@
 //src/utils/helpers/global/response.helper.ts
 import { Response } from "express";
 import { IApiReponse } from "../../interfaces";
-import { infoLogger } from "../../cores";
+import { errorLogger, infoLogger } from "../../cores";
 
 export const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
   const responseData: IApiReponse<T> = {
@@ -31,7 +31,7 @@ export const sendError = <T>(res: Response, data: IApiReponse<T>): void => {
   };
 
   // log the error before sending
-  infoLogger.error({
+  errorLogger.error({
     message: responseData.message,
   });
 

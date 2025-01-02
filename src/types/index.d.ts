@@ -7,6 +7,11 @@ declare global {
       entity: IJwtPayload | null | undefined;
       file: any;
       files: any;
+      rateLimit: {
+        limit: number;
+        remaining: number;
+        resetTime: number;
+      };
     }
   }
 }

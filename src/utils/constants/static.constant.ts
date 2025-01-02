@@ -37,6 +37,7 @@ export const staticProps = {
   },
 
   common: {
+    LIMIT_EXCEEDED: "Too many requests! Please try again later.",
     TEXT_REQUIRED_FOR_QR_CODE: "Text is required for QR code generation",
     INVALID_DATA: "Invalid data!",
     SOMETHING_WENT_WRONG: "Something went wrong!",

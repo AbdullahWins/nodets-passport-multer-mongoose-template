@@ -1,5 +1,4 @@
 //src/config/database/primary/primary.database.config.ts
-
 export const primaryDatabaseOptions = {
   writeConcern: { w: 1 },
 

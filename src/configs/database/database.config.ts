@@ -1,11 +1,11 @@
 // src/configs/database/database.config.ts
 import mongoose from "mongoose";
-import { environment } from "../environment/environment.config";
 import { errorLogger, infoLogger } from "../../cores";
 import { staticProps } from "../../utils";
-import { secondaryDatabaseOptions } from "./secondary/secondary.database.config";
-import { primaryDatabaseOptions } from "./primary/primary.database.config";
 import { School } from "../../models";
+import { environment } from "../environment";
+import { primaryDatabaseOptions } from "./primary";
+import { secondaryDatabaseOptions } from "./secondary";
 
 // Primary DB Connection
 const connectToPrimaryDB = async () => {

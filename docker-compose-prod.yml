@@ -1,0 +1,85 @@
+services:
+#application service
+  app:
+    build: .
+    container_name: paathshala-server
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+    volumes:
+      - .:/app  # Optional: useful in development to sync local changes
+    networks:
+      - paathshala-network
+    depends_on:
+      - mongodb
+      - redis
+
+#database service
+  mongodb:
+    image: mongo:7.0.5
+    container_name: mongodb-for-paathshala
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    networks:
+      - paathshala-network
+
+#cache service
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: redis-for-paathshala
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - paathshala-network
+
+#monitoring service
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - app
+    networks:
+      - paathshala-network
+
+#visualization service
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=root
+      - GF_SECURITY_ADMIN_PASSWORD=root
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - paathshala-network
+
+#volumes
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+  grafana_data:
+    driver: local
+
+#networks
+networks:
+  paathshala-network:
+    driver: bridge
