@@ -1,6 +1,6 @@
 //src/configs/email/email.config.ts
 import nodemailer from "nodemailer";
-import { environment } from "../environment/environment.config";
+import { environment } from "../environment";
 
 export const transporter = nodemailer.createTransport({
   host: environment.email.NODEMAILER_EMAIL_HOSTNAME,
