@@ -1,6 +1,6 @@
 //src/index.ts
 import express, { Application } from "express";
-import { startServer } from "./configs";
+import { setupCluster, startServer } from "./configs";
 import {
   checkImageExists,
   globalErrorHandler,
@@ -14,7 +14,7 @@ export const app: Application = express();
 // middleware
 globalMiddleware(app);
 
-// all routes 
+// all routes
 app.use("/api/v1", apiRouter);
 
 // files route
@@ -31,5 +31,8 @@ app.use(globalErrorHandler);
 // not found route
 app.use(notFoundRouter);
 
-// server & database
+// server & database startup
+//only one server
 startServer(app);
+//multiple servers with clusters
+// setupCluster(app);

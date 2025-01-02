@@ -6,8 +6,8 @@ import { staticProps } from "../../utils";
 
 // Rate limiting middleware (requests per IP)
 export const limiterConfig = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 1, // limit each IP to 1 request per windowMs
+  windowMs: 1 * 60 * 1000, // 1 minutes
+  max: 1000, // limit each IP to 1000 request per windowMs
   standardHeaders: true,
   legacyHeaders: false,
   handler: (_req: Request, _res: Response, _next: NextFunction) => {
