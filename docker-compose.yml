@@ -1,7 +1,7 @@
 services:
   mongodb:
     image: mongo:7.0.5
-    container_name: mongodb-for-paathshaala
+    container_name: mongodb-for-paathshala
     ports:
       - "27017:27017"
     volumes:
@@ -10,18 +10,18 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     networks:
-      - paathshaala-network
+      - paathshala-network
 
   redis:
     image: redis:7.2.4-alpine
-    container_name: redis-for-paathshaala
+    container_name: redis-for-paathshala
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     command: ["redis-server", "--appendonly", "yes"]
     networks:
-      - paathshaala-network
+      - paathshala-network
 
 volumes:
   mongodb_data:
@@ -30,5 +30,5 @@ volumes:
     driver: local
 
 networks:
-  paathshaala-network:
+  paathshala-network:
     driver: bridge

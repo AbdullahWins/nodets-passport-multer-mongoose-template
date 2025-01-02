@@ -15,7 +15,6 @@ export const environment = {
   },
 
   db: {
-    MONGODB_URI: process.env.MONGODB_URI || "mongodb://localhost:27017",
     MONGODB_PRIMARY_DB_URI:
       process.env.MONGODB_PRIMARY_DB_URI || "mongodb://localhost:27017",
     MONGODB_SECONDARY_DB_URI:
@@ -27,11 +26,6 @@ export const environment = {
     JWT_ACCESS_TOKEN_SECRET: process.env.JWT_ACCESS_TOKEN_SECRET || "default",
     JWT_ACCESS_TOKEN_EXPIRATION_TIME:
       process.env.JWT_ACCESS_TOKEN_EXPIRATION_TIME || "15m",
-  },
-  google: {
-    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "default",
-    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "default",
-    GOOGLE_REDIRECT_URI: process.env.GOOGLE_REDIRECT_URI || "default",
   },
 
   encryption: {

@@ -9,7 +9,7 @@ import {
   uploadFiles,
   validateZodSchema,
 } from "../../../cores";
-import { ApiError, setCache, getCache } from "../../../cores"; // Redis helpers
+import { ApiError, setCache, getCache } from "../../../cores";
 import { StudentResponseDto } from "../../../dtos";
 import { getStudentModel } from "../../../models";
 import { hashString, compareString, generateJwtToken } from "../../../cores";

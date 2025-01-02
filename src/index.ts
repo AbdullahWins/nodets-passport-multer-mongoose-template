@@ -1,6 +1,9 @@
 //src/index.ts
 import express, { Application } from "express";
-import { setupCluster, startServer } from "./configs";
+import {
+  // setupCluster,
+   startServer
+  } from "./configs";
 import {
   checkImageExists,
   globalErrorHandler,
