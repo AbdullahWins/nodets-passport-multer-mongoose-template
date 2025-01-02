@@ -3,28 +3,32 @@ import express from "express";
 import { Application } from "express";
 import helmet from "helmet";
 import sanitize from "express-mongo-sanitize";
-import { corsConfig } from "../../configs";
+import { corsConfig, limiterConfig } from "../../configs";
 import { multerConfig } from "../../configs/multer/multer.config";
 import { parseJsonBodyMiddleware } from "../parse/parse.middleware";
 import { promClientMiddleware } from "../monitor/monitor.middleware";
 import { requestLoggerMiddleware } from "../logger/logger.middleware";
 
 export const globalMiddleware = (app: Application) => {
+  //security middleware
   app.use(corsConfig);
   app.use(sanitize());
   app.use(helmet());
+  app.use(limiterConfig);
+
+  //performance middleware
   app.use(requestLoggerMiddleware);
 
-  // Add body parsing middleware
+  //add body parsing middleware
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Multer middleware for handling multipart/form-data (both files and text)
+  //multer middleware for handling multipart/form-data (both files and text)
   app.use(multerConfig);
 
-  // Custom JSON parsing middleware
+  //custom JSON parsing middleware
   app.use(parseJsonBodyMiddleware);
 
-  // Prometheus metrics middleware
+  //prometheus metrics middleware
   app.use(promClientMiddleware);
 };
